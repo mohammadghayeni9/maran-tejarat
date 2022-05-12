@@ -1,0 +1,12 @@
+:root {
+    /* input and button */
+    --input-border-radius: 0.5rem;
+    --input-padding: 1rem 0.75rem;
+    --input-box-shadow-hover:3px 4px 12px;
+    /* card */
+    --card-border-radius: 1rem;
+    --card-padding: 1rem;
+    --card-box-shadow-hover:5px 6px 8px;
+    
+    
+}

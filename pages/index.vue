@@ -6,8 +6,8 @@
         <input
           type="text"
           class="search-input"
-          ref="inputSearch"
           placeholder="جستجو"
+          v-model="searchValue"
         />
         <div class="icon-search">
           <img src="@/components/icons/icon-search.png" alt="" />
@@ -15,8 +15,8 @@
       </div>
     </div>
     <perfect-scrollbar class="home-content">
-      <div class="home-card" v-for="i in 20" :key="i">
-        <Card :cardData="i" />
+      <div class="home-card" v-for="card in searchedCards" :key="card.id">
+        <Card :cardData="card" />
       </div>
     </perfect-scrollbar>
   </div>
@@ -29,8 +29,103 @@ import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 export default {
   components: {
     Card,
-    PerfectScrollbar
-  }
+    PerfectScrollbar,
+  },
+  data() {
+    return {
+      searchValue: '',
+      cards: [
+        {
+          id: 1,
+          title: 'کاربر شماره 1'
+        },
+        {
+          id: 2,
+          title: 'کاربر شماره 2'
+        },
+        {
+          id: 3,
+          title: 'کاربر شماره 3'
+        },
+        {
+          id: 4,
+          title: 'کاربر شماره 4'
+        },
+        {
+          id: 5,
+          title: 'کاربر شماره 5'
+        },
+        {
+          id: 6,
+          title: 'کاربر شماره 6'
+        },
+        {
+          id: 7,
+          title: 'کاربر شماره 7'
+        },
+        {
+          id: 8,
+          title: 'کاربر شماره 8'
+        },
+        {
+          id: 9,
+          title: 'کاربر شماره 9'
+        },
+        {
+          id: 10,
+          title: 'کاربر شماره 10'
+        },
+        {
+          id: 11,
+          title: 'کاربر شماره 11'
+        },
+        {
+          id: 12,
+          title: 'کاربر شماره 12'
+        },
+        {
+          id: 13,
+          title: 'کاربر شماره 13'
+        },
+        {
+          id: 14,
+          title: 'کاربر شماره 14'
+        },
+        {
+          id: 15,
+          title: 'کاربر شماره 15'
+        },
+        {
+          id: 16,
+          title: 'کاربر شماره 16'
+        },
+        {
+          id: 17,
+          title: 'کاربر شماره 17'
+        },
+        {
+          id: 18,
+          title: 'کاربر شماره 19'
+        },
+        {
+          id: 19,
+          title: 'کاربر شماره 19'
+        },
+      ],
+    }
+  },
+  methods: {
+    search (event) {
+      this.searchedCards = this.cards.forEach((card) => {
+        card.title == event
+      });
+    }
+  },
+  computed: {
+    searchedCards: function () {
+      return this.cards.filter(card => card.title.includes(this.searchValue));
+    }
+  },
 }
 </script>
 

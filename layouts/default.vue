@@ -1,5 +1,5 @@
 <template>
-  <v-app dark dir="rtl">
+  <v-app dir="rtl">
     <v-main>
       <Nuxt />
     </v-main>

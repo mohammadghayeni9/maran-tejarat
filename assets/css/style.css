@@ -19,6 +19,15 @@
 
 .v-application {
 	font-family: iranSans !important;
+	background-color: var(--background-color-primary) !important;
+	color: var(--text-primary-color) !important;
+	max-height: 100vh;
+	min-height: 100vh;
+	overflow: hidden;
+}
+
+.v-main {
+	padding-top: 5rem !important;
 }
 
 html {

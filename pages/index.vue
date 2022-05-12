@@ -116,11 +116,9 @@ export default {
   },
   methods: {
     search (event) {
-      console.log(event);
       this.searchedCards = this.cards.forEach((card) => {
         card.title == event
       });
-      console.log(this.searchedCards);
     }
   },
   computed: {

@@ -133,13 +133,6 @@ export default {
 
 <style scoped lang="scss">
 .home-view {
-  padding: 2rem 1rem;
-  margin: auto;
-  max-width: 80vw;
-  overflow: hidden;
-  @media screen and (max-width: 700px) {
-    max-width: 100vw;
-  }
   .home-header {
     display: flex;
     align-items: center;

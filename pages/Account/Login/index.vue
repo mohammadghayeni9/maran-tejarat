@@ -45,6 +45,7 @@ export default {
     SVGBlob2,
     SVGBlob3,
   },
+  layout: 'login',
   data() {
     return {
       username: "",

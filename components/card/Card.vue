@@ -22,6 +22,7 @@
             v-for="item in recordListDropdown"
             :key="item.title"
             link
+            :to="item.link"
           >
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
@@ -49,6 +50,7 @@
             v-for="item in reportListDropdown"
             :key="item.title"
             link
+            :to="item.link"
           >
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
@@ -67,24 +69,30 @@ export default {
     return {
       recordListDropdown: [
         {
-          title: 'ثبت وقایع مهم'
+          title: 'ثبت وقایع مهم',
+          link: '/forms/event/'
         },
         {
-          title: 'ثبت توافق'
+          title: 'ثبت توافق',
+          link: '/forms/event/'
         },
         {
-          title: 'ثبت جلسه بازخورد'
+          title: 'ثبت جلسه بازخورد',
+          link: '/forms/event/'
         }
       ],
       reportListDropdown: [
         {
-          title: 'مشاهده وقایع مهم / توافقات'
+          title: 'مشاهده وقایع مهم / توافقات',
+          link: '/forms/event/'
         },
         {
-          title: 'مشاهده سوابق ارزیابی دوره‌ای'
+          title: 'مشاهده سوابق ارزیابی دوره‌ای',
+          link: '/forms/event/'
         },
         {
-          title: 'مشاهده جلسات بازخورد'
+          title: 'مشاهده جلسات بازخورد',
+          link: '/forms/event/'
         }
       ]
     }

@@ -38,7 +38,9 @@ export default {
     },
   },
 
-  vuetify: {},
+  vuetify: {
+    rtl: true,
+  },
 
   build: {},
 };

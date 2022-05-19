@@ -1,14 +1,15 @@
 <template>
     <div class="header">
         <img src="@/components/icons/vispar-logo-text.png" class="logo-header" />
-        <v-switch
+        <!-- <v-switch
             class="switch"
             v-model="themeIsDark"
             inset
             label="تم تاریک"
             color="indigo"
             @change="toggleTeme"
-        ></v-switch>
+        ></v-switch> -->
+        <div class="header-logout" @click="logout">خروج</div>
     </div>
 </template>
 
@@ -38,6 +39,11 @@ export default {
                 localStorage.setItem('user-theme', 'light-theme');
                 document.documentElement.className = 'light-theme';
             }
+        },
+        logout () {
+            localStorage.clear();
+            this.$router.push('/account/login/');
+            this.$toast.info('با موفقیت خارج شدید')
         }
     }
 }
@@ -57,10 +63,14 @@ export default {
             height: 100%;
         }
         .switch {
-            direction: ltr;
             .v-input--switch__track {
                 color: rgba(255, 255, 255, 0.9);
             }
+        }
+        .header-logout {
+            color: var(--text-secondary-color);
+            cursor: pointer;
+            user-select: none;
         }
     }
 </style>

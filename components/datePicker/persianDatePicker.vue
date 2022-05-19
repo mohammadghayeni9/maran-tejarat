@@ -32,7 +32,7 @@ export default {
         "day-dimensions": "2.08rem",
         radius: "0.25rem",
         background: "var(--background-color-secondary)",
-      }
+      },
     };
   },
 };
@@ -48,10 +48,14 @@ export default {
       border: 1px solid var(--bordr-input-color);
       border-radius: var(--input-border-radius);
       padding: var(--input-padding);
-      min-height: 3.35rem;
-      transform: translateY(-15px);
-      color: var(--text-color-primary);
+      min-height: 54px;
+      transform: translateY(-10px);
+      color: var(--text-primary-color);
       background-color: var(--background-color-secondary);
+      outline: none !important;
+      &::placeholder {
+        color: var(--text-color-primary);
+      }
     }
   }
 }

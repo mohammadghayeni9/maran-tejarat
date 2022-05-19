@@ -10,7 +10,7 @@
           :src="require('@/components/icons/vispar-logo.png')"
         />
         <div class="login-view-title">
-          به سامانه مدیدیریت عملکرد گروه صنعتی ویسپار خوش آمدید
+          به سامانه مدیریت عملکرد گروه صنعتی ویسپار خوش آمدید
         </div>
       </div>
       <div class="login-view-form">
@@ -37,7 +37,7 @@ import SVGBlob1 from "~/components/icons/blob1.svg";
 import SVGBlob2 from "~/components/icons/blob2.svg";
 import SVGBlob3 from "~/components/icons/blob3.svg";
 
-import { routes } from '~/API/routes'
+import { routes } from "~/API/routes";
 
 export default {
   components: {
@@ -45,28 +45,36 @@ export default {
     SVGBlob2,
     SVGBlob3,
   },
-  layout: 'login',
+  layout: "login",
   data() {
     return {
-      username: "",
-      password: "",
+      username: null,
+      password: null,
     };
   },
   methods: {
-    async login () {
-      localStorage.clear()
-      try {
-        const response = await this.$axios.$post(routes.login, {
-          email: this.username,
-          password: this.password
-        });
-        console.log(response);
-        this.$router.push('/');
-      } catch (e) {
-        console.log(e);
+    async login() {
+      localStorage.clear();
+      if (this.username.length && this.password.length) {
+        try {
+          const response = await this.$axios.$post(routes.login, {
+            email: this.username,
+            password: this.password,
+          });
+          localStorage.setItem("access_token", response.access);
+          localStorage.setItem("refresh_token", response.refresh);
+          this.$toast.success('با موفقیت وارد شدید');
+          this.$router.push("/");
+        } catch (e) {
+          if (e.response?.status === 401) {
+            this.$toast.error('نام کاربری یا رمز ورود اشتباه وارد شده است');
+          }
+        }
+      } else {
+        this.$toast.error('نام کاربری و رمز ورود الزامی است');
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -76,7 +84,7 @@ export default {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #eceef4;
+  background-color: #eeeef4;
   position: relative;
   overflow: hidden;
   .svg-blob1 {
@@ -86,7 +94,7 @@ export default {
     width: 45rem;
     height: 45rem;
     animation-name: blob-animate;
-    animation-duration: 4s;
+    animation-duration: 6s;
     animation-iteration-count: infinite;
     animation-direction: alternate;
   }
@@ -105,18 +113,19 @@ export default {
   }
   .svg-blob3 {
     position: absolute;
-    top: 10rem;
-    left: 15rem;
+    top: 30rem;
+    left: 10rem;
     width: 30rem;
     height: 30rem;
     animation-name: blob-animate;
-    animation-duration: 6s;
+    animation-duration: 10s;
     animation-iteration-count: infinite;
     animation-direction: alternate;
   }
   .login-view-container {
-    width: 60vw;
-    height: 70vh;
+    border: 1px solid #c0c8ee;
+    width: 65vw;
+    height: 75vh;
     margin: auto;
     border-radius: 2rem;
     box-shadow: 0 0 25px #aaaaaa25;
@@ -134,7 +143,7 @@ export default {
       .login-view-logo {
         display: flex;
         justify-content: center;
-        margin: 1rem auto;
+        margin: 1.5rem auto;
         width: 10rem;
         height: 10rem;
       }
@@ -144,7 +153,7 @@ export default {
         color: #222;
         font-size: 1.25rem;
         text-align: center;
-        margin: 0 2.5rem;
+        margin: 1rem 2.5rem;
       }
     }
     .login-view-form {
@@ -153,7 +162,7 @@ export default {
       align-items: center;
       flex-direction: column;
       padding-top: 2rem;
-      max-width: 18rem;
+      max-width: 20rem;
       margin: auto;
       @media screen and (max-width: 420px) {
         max-width: 100%;
@@ -161,18 +170,18 @@ export default {
       }
       .login-input {
         outline: none;
-        border: none;
+        border: 1px solid #c0c8ee;
         border-radius: var(--input-border-radius);
         margin-top: 1.5rem;
         width: 100%;
         padding: var(--input-padding);
-        background-color: var(--background-color-primary-lighter);
+        background-color: #f0f3f9;
         &::placeholder {
-          font-size: 0.75rem;
+          font-size: 0.8rem;
         }
       }
       .login-button {
-        margin-top: 3rem;
+        margin-top: 4rem;
         outline: none;
         border: none;
         padding: var(--input-padding);
@@ -181,6 +190,10 @@ export default {
         background-color: #0ca2b9;
         color: white;
         cursor: pointer;
+        &.disabled {
+          pointer-events: none;
+          background-color: rgb(165, 175, 195);
+        }
       }
     }
   }

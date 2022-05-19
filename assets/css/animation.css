@@ -1,11 +1,11 @@
 @keyframes blob-animate {
     0% {
-        transform: rotate(45deg) translate(10px);
+        transform: translate(40px, -25px);
     }
     50% {
-        transform: rotate(135deg) translate(-10px);
+        transform: translate(-30px, 35px);
     }
     100% {
-        transform: rotate(-45deg) translate(0);
+        transform: translate(10px, -10px);
     }
 }

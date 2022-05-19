@@ -1,28 +1,24 @@
 <template>
-  <div class="event-form">
-    <v-col cols="12 mb-5" class="event-form-title">ثبت وقایع مهم</v-col>
+  <div class="agreement-form">
+    <v-col cols="12 mb-5" class="agreement-form-title">ثبت توافق</v-col>
     <v-col cols="12" sm="6" lg="4">
       <persianDatePicker />
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
-      <v-select
-        :items="items"
-        label="انتخاب توافق صورت گرفته"
-        outlined
-      ></v-select>
+      <v-text-field label="موعد انجام" outlined></v-text-field>
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
       <v-text-field label="شرح" outlined></v-text-field>
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
-      <v-select :items="items" label="انتخاب شاخص" outlined></v-select>
+      <v-text-field label="هدف کمی / کیفی" outlined></v-text-field>
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
-      <v-select :items="items" label="ارزیابی" outlined></v-select>
+      <v-select :items="items" label="انتخاب شاخص" outlined></v-select>
     </v-col>
     <v-col cols="12"></v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
-      <v-btn class="event-form-btn" elevation="2">ثبت واقعه مهم</v-btn>
+      <v-btn class="agreement-form-btn" elevation="2">ثبت توافق</v-btn>
     </v-col>
   </div>
 </template>
@@ -38,15 +34,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.event-form {
+.agreement-form {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  .event-form-title {
+  .agreement-form-title {
     font-size: 1.25rem;
   }
-  .event-form-btn {
+  .agreement-form-btn {
     height: 54px;
     width: 100%;
     background-color: var(--color-blue);

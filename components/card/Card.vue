@@ -74,7 +74,7 @@ export default {
         },
         {
           title: 'ثبت توافق',
-          link: '/forms/event/'
+          link: '/forms/agreement/'
         },
         {
           title: 'ثبت جلسه بازخورد',

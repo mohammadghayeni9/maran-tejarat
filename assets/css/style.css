@@ -37,10 +37,19 @@
 
 .v-input__slot label {
   color: var(--text-primary-color) !important;
+  font-size: 0.9rem;
 }
 
 .v-input__slot .mdi-menu-down {
 	color: var(--text-primary-color) !important;
+}
+
+.global-toast {
+  font-family: iranSans !important;
+  border-radius: var(--input-border-radius) !important;
+  padding: 1.25rem 2.5rem !important;
+  text-align: center !important;
+  direction: rtl !important;
 }
 
 html {

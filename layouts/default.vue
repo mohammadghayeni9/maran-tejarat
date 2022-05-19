@@ -33,6 +33,7 @@ export default {
     padding: 2rem 1rem !important;
     margin: auto;
     max-width: 80vw;
+    width: 100%;
     overflow: hidden;
     @media screen and (max-width: 700px) {
       max-width: 100vw;

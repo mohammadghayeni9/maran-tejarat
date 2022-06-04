@@ -32,11 +32,11 @@ export default {
   .v-main {
     padding: 2rem 1rem !important;
     margin: auto;
-    max-width: 80vw;
-    width: 100%;
+    max-width: 1600px;
+    width: 80vw;
     overflow: hidden;
     @media screen and (max-width: 700px) {
-      max-width: 100vw;
+      width: 100vw;
     }
   }
 }

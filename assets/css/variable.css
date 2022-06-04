@@ -5,6 +5,6 @@
     --input-box-shadow-hover:3px 4px 12px;
     /* card */
     --card-border-radius: 1rem;
-    --card-padding: 1rem;
+    --card-padding: 0.5rem 0.75rem;
     --card-box-shadow-hover:5px 6px 8px;
 }

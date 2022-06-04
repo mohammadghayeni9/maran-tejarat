@@ -1,7 +1,7 @@
 <template>
   <div class="home-view">
     <div class="home-header">
-      <div class="subject-list-title">لیست همکاران</div>
+      <div class="subject-list-title">اسامی همکاران</div>
       <div class="search-box">
         <input
           type="text"
@@ -37,79 +37,98 @@ export default {
       cards: [
         {
           id: 1,
-          title: 'کاربر شماره 1'
+          title: 'کاربر شماره 1',
+          avatar: require('@/static/icon.png')
         },
         {
           id: 2,
-          title: 'کاربر شماره 2'
+          title: 'کاربر شماره 2',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 3,
-          title: 'کاربر شماره 3'
+          title: 'کاربر شماره 3',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 4,
-          title: 'کاربر شماره 4'
+          title: 'کاربر شماره 4',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 5,
-          title: 'کاربر شماره 5'
+          title: 'کاربر شماره 5',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 6,
-          title: 'کاربر شماره 6'
+          title: 'کاربر شماره 6',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 7,
-          title: 'کاربر شماره 7'
+          title: 'کاربر شماره 7',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 8,
-          title: 'کاربر شماره 8'
+          title: 'کاربر شماره 8',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 9,
-          title: 'کاربر شماره 9'
+          title: 'کاربر شماره 9',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 10,
-          title: 'کاربر شماره 10'
+          title: 'کاربر شماره 10',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 11,
-          title: 'کاربر شماره 11'
+          title: 'کاربر شماره 11',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 12,
-          title: 'کاربر شماره 12'
+          title: 'کاربر شماره 12',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 13,
-          title: 'کاربر شماره 13'
+          title: 'کاربر شماره 13',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 14,
-          title: 'کاربر شماره 14'
+          title: 'کاربر شماره 14',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 15,
-          title: 'کاربر شماره 15'
+          title: 'کاربر شماره 15',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 16,
-          title: 'کاربر شماره 16'
+          title: 'کاربر شماره 16',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 17,
-          title: 'کاربر شماره 17'
+          title: 'کاربر شماره 17',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 18,
-          title: 'کاربر شماره 19'
+          title: 'کاربر شماره 19',
+          avatar: require('@/assets/images/placeholder.png')
         },
         {
           id: 19,
-          title: 'کاربر شماره 19'
+          title: 'کاربر شماره 19',
+          avatar: require('@/assets/images/placeholder.png')
         },
       ],
     }
@@ -180,7 +199,6 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
     padding: 1rem 0.2rem;
     max-height: 80vh;
     overflow-y: auto;

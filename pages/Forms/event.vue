@@ -1,6 +1,9 @@
 <template>
   <div class="event-form">
-    <v-col cols="12 mb-5" class="event-form-title">ثبت وقایع مهم</v-col>
+    <v-col cols="10 mb-5" class="event-form-title">ثبت وقایع مهم</v-col>
+    <v-col cols="2 justify-end d-flex">
+      <SVGBack class="back-icon" @click="$router.push('/')" />
+    </v-col>
     <v-col cols="12" sm="6" lg="4">
       <persianDatePicker />
     </v-col>
@@ -29,10 +32,12 @@
 
 <script>
 import persianDatePicker from "@/components/datePicker/persianDatePicker.vue";
+import SVGBack from "@/components/icons/back-icon.svg"
 
 export default {
   components: {
     persianDatePicker,
+    SVGBack,
   },
 };
 </script>
@@ -43,6 +48,13 @@ export default {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  .back-icon {
+    object-fit: cover;
+    max-height: 2rem;
+    width: fit-content;
+    margin-right: auto;
+    cursor: pointer;
+  }
   .event-form-title {
     font-size: 1.25rem;
   }

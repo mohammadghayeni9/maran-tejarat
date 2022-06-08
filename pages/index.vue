@@ -15,8 +15,8 @@
       </div>
     </div>
     <perfect-scrollbar class="home-content">
-      <div class="home-card" v-for="card in searchedCards" :key="card.id">
-        <Card :cardData="card" />
+      <div class="home-card" v-for="user in searchedUsers" :key="user.id">
+        <Card :cardData="user" />
       </div>
     </perfect-scrollbar>
   </div>
@@ -25,6 +25,7 @@
 <script>
 import Card from "@/components/card/Card.vue";
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
+import { routes } from "~/API/routes";
 
 export default {
   components: {
@@ -34,6 +35,7 @@ export default {
   data() {
     return {
       searchValue: '',
+      users: [],
       cards: [
         {
           id: 1,
@@ -134,15 +136,22 @@ export default {
     }
   },
   methods: {
-    search (event) {
-      this.searchedCards = this.cards.forEach((card) => {
-        card.title == event
-      });
+    async getUsers () {
+      try {
+        const response = await this.$axios.get(routes.users);
+        this.users = response.data.results;
+        console.log(response.data.results);
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
+  created() {
+    this.getUsers();
+  },
   computed: {
-    searchedCards: function () {
-      return this.cards.filter(card => card.title.includes(this.searchValue));
+    searchedUsers: function () {
+      return this.users.filter(user => user?.first_name.includes(this.searchValue) || user?.last_name.includes(this.searchValue) || (user?.first_name + ' ' + user?.last_name).includes(this.searchValue));
     }
   },
 }

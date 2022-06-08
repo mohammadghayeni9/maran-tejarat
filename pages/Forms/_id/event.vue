@@ -5,23 +5,24 @@
       <SVGBack class="back-icon" @click="$router.push('/')" />
     </v-col>
     <v-col cols="12" sm="6" lg="4">
-      <persianDatePicker />
+      <persianDatePicker placeholder="تاریخ" @select="selectEventDate" />
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
       <v-select
         :items="items"
         label="انتخاب توافق صورت گرفته"
         outlined
+        v-model="agreement"
       ></v-select>
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
-      <v-text-field label="شرح" outlined></v-text-field>
+      <v-text-field label="شرح" outlined v-model="description"></v-text-field>
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
-      <v-select :items="items" label="انتخاب شاخص" outlined></v-select>
+      <v-select :items="items" label="انتخاب شاخص" outlined v-model="indicator"></v-select>
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
-      <v-select :items="items" label="ارزیابی" outlined></v-select>
+      <v-select :items="items" label="ارزیابی" outlined v-model="evaluate"></v-select>
     </v-col>
     <v-col cols="12"></v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
@@ -39,6 +40,20 @@ export default {
     persianDatePicker,
     SVGBack,
   },
+  data() {
+    return {
+      eventDate: null,
+      agreement: null,
+      description: null,
+      indicator: null,
+      evaluate: null,
+    }
+  },
+  methods: {
+    selectEventDate(date) {
+      this.eventDate = date;
+    }
+  }
 };
 </script>
 

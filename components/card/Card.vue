@@ -2,7 +2,7 @@
   <div class="card-container">
     <div class="card-content">
       <img class="card-avatar" :src="avatarComputed" alt="avatar">
-      <div class="card-title">{{ cardData.title }}</div>
+      <div class="card-title">{{ cardData.first_name }} {{cardData.last_name}}</div>
     </div>
     <div class="card-actions">
       <v-menu
@@ -14,7 +14,8 @@
           <button 
             class="card-btn record-btn"
             v-bind="attrs"
-            v-on="on"  
+            v-on="on"
+            @click="setId(cardData.id)"
           >
             <span>ثبت</span>
           </button>
@@ -25,7 +26,7 @@
             v-for="item in recordListDropdown"
             :key="item.title"
             link
-            :to="item.link"
+            :to="'/forms/' + id + '/' + item.link + '/'"
           >
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
@@ -53,7 +54,7 @@
             v-for="item in reportListDropdown"
             :key="item.title"
             link
-            :to="item.link"
+            :to="'/forms/' + id + '/' + item.link + '/'"
           >
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
@@ -70,32 +71,33 @@ export default {
   },
   data() {
     return {
+      id: null,
       recordListDropdown: [
         {
           title: 'ثبت وقایع مهم',
-          link: '/forms/event/'
+          link: 'event'
         },
         {
           title: 'ثبت توافق',
-          link: '/forms/agreement/'
+          link: 'agreement'
         },
         {
           title: 'ثبت جلسه بازخورد',
-          link: '/forms/meeting/'
+          link: 'meeting'
         }
       ],
       reportListDropdown: [
         {
           title: 'مشاهده وقایع مهم / توافقات',
-          link: '/forms/event/'
+          link: 'event'
         },
         {
           title: 'مشاهده سوابق ارزیابی دوره‌ای',
-          link: '/forms/event/'
+          link: 'evaluate'
         },
         {
           title: 'مشاهده جلسات بازخورد',
-          link: '/forms/event/'
+          link: 'meeting'
         }
       ]
     }
@@ -103,15 +105,18 @@ export default {
   computed: {
     avatarComputed: function() {
       return this.cardData?.avatar || require('@/assets/images/placeholder.png');
-    }
+    },
   },
   methods: {
-    toggleExpand(id) {
-      console.log(document.getElementById);
+    setId(id) {
+      console.log(id);
+      this.id = id;
+    },
+    linkComputed (formType) {
+      return `/forms/${this.id}/${formType}/`
     }
   }
 }
-
 </script>
 
 <style lang="scss">

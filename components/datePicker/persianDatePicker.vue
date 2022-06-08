@@ -4,7 +4,8 @@
     :column="1"
     mode="single"
     id="date-picker"
-    placeholder="تاریخ"
+    :placeholder="placeholder"
+    @select="select"
   ></date-picker>
 </template>
 
@@ -12,6 +13,9 @@
 import datePicker from "@alireza-ab/vue-persian-datepicker";
 
 export default {
+  props: {
+    placeholder: '',
+  },
   components: {
     datePicker,
   },
@@ -35,6 +39,11 @@ export default {
       },
     };
   },
+  methods: {
+    select(date) {
+      this.$emit('select', date.toString());
+    }
+  }
 };
 </script>
 

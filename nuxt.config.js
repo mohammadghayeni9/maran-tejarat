@@ -29,7 +29,7 @@ export default {
   modules: ["@nuxtjs/axios", "@nuxtjs/pwa", "nuxt-svg-loader", "@nuxtjs/toast"],
 
   axios: {
-    baseURL: "https://s-rahmani.ir/visparp/",
+    baseURL: "https://s-rahmani.ir/vispar/",
   },
 
   pwa: {
@@ -50,4 +50,8 @@ export default {
   },
 
   build: {},
+
+  router: {
+    middleware: 'auth'
+  },
 };

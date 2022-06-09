@@ -28,8 +28,8 @@
 
 <script>
 import persianDatePicker from "@/components/datePicker/persianDatePicker.vue";
-import { routes } from "~/API/routes";
 import SVGBack from "@/components/icons/back-icon.svg"
+import { routes } from "~/API/routes";
 
 
 export default {

@@ -26,10 +26,10 @@ export default {
 
   buildModules: ["@nuxtjs/vuetify"],
 
-  modules: ["@nuxtjs/axios", "@nuxtjs/pwa", "nuxt-svg-loader"],
+  modules: ["@nuxtjs/axios", "@nuxtjs/pwa", "nuxt-svg-loader", "@nuxtjs/toast"],
 
   axios: {
-    baseURL: "https://s-rahmani.ir/visparp/",
+    baseURL: "https://s-rahmani.ir/vispar/",
   },
 
   pwa: {
@@ -42,5 +42,16 @@ export default {
     rtl: true,
   },
 
+  toast: {
+      position: 'top-right',
+      keepOnHover: true,
+      duration: '3000',
+      className: 'global-toast'
+  },
+
   build: {},
+
+  router: {
+    middleware: 'auth'
+  },
 };

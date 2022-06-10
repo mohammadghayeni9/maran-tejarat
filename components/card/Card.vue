@@ -1,6 +1,9 @@
 <template>
   <div class="card-container">
-    <div class="card-title">{{ cardData.title }}</div>
+    <div class="card-content">
+      <img class="card-avatar" :src="avatarComputed" alt="avatar">
+      <div class="card-title">{{ cardData.first_name }} {{cardData.last_name}}</div>
+    </div>
     <div class="card-actions">
       <v-menu
         rounded="lg"
@@ -11,7 +14,8 @@
           <button 
             class="card-btn record-btn"
             v-bind="attrs"
-            v-on="on"  
+            v-on="on"
+            @click="setId(cardData.id)"
           >
             <span>ثبت</span>
           </button>
@@ -22,7 +26,7 @@
             v-for="item in recordListDropdown"
             :key="item.title"
             link
-            :to="item.link"
+            :to="'/forms/' + id + '/' + item.link + '/'"
           >
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
@@ -40,6 +44,7 @@
             class="card-btn report-btn"
             v-bind="attrs"
             v-on="on"
+            @click="setId(cardData.id)"
           >
             <span>گزارش‌ها</span>
           </button>
@@ -50,7 +55,7 @@
             v-for="item in reportListDropdown"
             :key="item.title"
             link
-            :to="item.link"
+            :to="'/report/' + id + '/' + item.link + '/'"
           >
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
@@ -67,42 +72,56 @@ export default {
   },
   data() {
     return {
+      id: null,
       recordListDropdown: [
         {
           title: 'ثبت وقایع مهم',
-          link: '/forms/event/'
+          link: 'event'
         },
         {
           title: 'ثبت توافق',
-          link: '/forms/event/'
+          link: 'agreement'
         },
         {
           title: 'ثبت جلسه بازخورد',
-          link: '/forms/event/'
+          link: 'meeting'
         }
       ],
       reportListDropdown: [
         {
           title: 'مشاهده وقایع مهم / توافقات',
-          link: '/forms/event/'
+          link: 'eventAgreement'
         },
         {
           title: 'مشاهده سوابق ارزیابی دوره‌ای',
-          link: '/forms/event/'
+          link: 'evaluate'
         },
         {
           title: 'مشاهده جلسات بازخورد',
-          link: '/forms/event/'
+          link: 'meeting'
         }
       ]
     }
   },
+  computed: {
+    avatarComputed: function() {
+      return this.cardData?.avatar || require('@/assets/images/placeholder.png');
+    },
+  },
+  methods: {
+    setId(id) {
+      this.id = id;
+    },
+    linkComputed (formType) {
+      return `/forms/${this.id}/${formType}/`
+    }
+  }
 }
-
 </script>
 
 <style lang="scss">
 .card-container {
+  position: relative;
   display: flex;
   flex-flow: column;
   padding: var(--card-padding);
@@ -110,19 +129,40 @@ export default {
   border: 1px solid var(--color-green);
   box-shadow: 1px 1px 5px var(--card-box-shadow);
   row-gap: 2rem;
-  transition: box-shadow 0.6s ease;
-  background-color: var(--background-color-primary);
+  transition: all 0.5s ease;
+  background-color: var(--background-color-primary-lighter);
   min-width: 320px;
   max-width: 520px;
+  height: 5.7rem;
+  overflow: hidden;
   &:hover {
     box-shadow: var(--card-box-shadow-hover) var(--card-box-shadow);
+    height: 9rem;
   }
-  .card-title {
-    text-align: center;
-    font-size: 1.05rem;
-    color: var(--text-color-primary);
+  .card-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    .card-avatar {
+      max-width: 4.5rem;
+      min-width: 4.5rem;
+      max-height: 4.5rem;
+      min-height: 4.5rem;
+      border-radius: 50%;
+      object-fit: cover;
+      padding: 2px;
+      border: 2px solid var(--color-blue);
+    }
+    .card-title {
+      text-align: center;
+      font-size: 1.05rem;
+      color: var(--text-color-primary);
+    }
   }
   .card-actions {
+    position: absolute;
+    top: 5.75rem;
+    left: 1rem;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -132,20 +172,21 @@ export default {
       border: none;
       border-radius: 0.4rem;
       padding: 0.3rem 0.8rem;
-      color: var(--text-color-primary);
+      // color: var(--text-color-primary);
+      color: #fff;
       cursor: pointer;
       border: 2px solid transparent;
       transition: all 0.4s ease;
       box-shadow: 0 3px 10px var(--card-box-shadow);
       width: 5.5rem;
       font-size: 0.8rem;
-	    color: var(--color-text-primary);
     }
     .record-btn {
       background-color: var(--color-green);
       &:hover {
         background-color: transparent;
         border: 2px solid var(--color-green);
+        color: var(--text-color-primary);
       }
     }
     .assessment-btn {
@@ -153,6 +194,7 @@ export default {
       &:hover {
         background-color: transparent;
         border: 2px solid var(--color-blue);
+        color: var(--text-color-primary);
       }
     }
     .report-btn {
@@ -160,6 +202,7 @@ export default {
       &:hover {
         background-color: transparent;
         border: 2px solid var(--color-red);
+        color: var(--text-color-primary);
       }
     }
   }

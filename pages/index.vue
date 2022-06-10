@@ -1,7 +1,7 @@
 <template>
   <div class="home-view">
     <div class="home-header">
-      <div class="subject-list-title">لیست همکاران</div>
+      <div class="subject-list-title">اسامی همکاران</div>
       <div class="search-box">
         <input
           type="text"
@@ -15,8 +15,11 @@
       </div>
     </div>
     <perfect-scrollbar class="home-content">
-      <div class="home-card" v-for="card in searchedCards" :key="card.id">
-        <Card :cardData="card" />
+      <div class="loading" v-if="loading">
+        <img :src="require('assets/images/loading.gif')" alt="loading">
+      </div>
+      <div class="home-card" v-for="user in searchedUsers" :key="user.id" v-else>
+        <Card :cardData="user" />
       </div>
     </perfect-scrollbar>
   </div>
@@ -25,6 +28,7 @@
 <script>
 import Card from "@/components/card/Card.vue";
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
+import { routes } from "~/API/routes";
 
 export default {
   components: {
@@ -33,97 +37,30 @@ export default {
   },
   data() {
     return {
+      loading: false,
       searchValue: '',
-      cards: [
-        {
-          id: 1,
-          title: 'کاربر شماره 1'
-        },
-        {
-          id: 2,
-          title: 'کاربر شماره 2'
-        },
-        {
-          id: 3,
-          title: 'کاربر شماره 3'
-        },
-        {
-          id: 4,
-          title: 'کاربر شماره 4'
-        },
-        {
-          id: 5,
-          title: 'کاربر شماره 5'
-        },
-        {
-          id: 6,
-          title: 'کاربر شماره 6'
-        },
-        {
-          id: 7,
-          title: 'کاربر شماره 7'
-        },
-        {
-          id: 8,
-          title: 'کاربر شماره 8'
-        },
-        {
-          id: 9,
-          title: 'کاربر شماره 9'
-        },
-        {
-          id: 10,
-          title: 'کاربر شماره 10'
-        },
-        {
-          id: 11,
-          title: 'کاربر شماره 11'
-        },
-        {
-          id: 12,
-          title: 'کاربر شماره 12'
-        },
-        {
-          id: 13,
-          title: 'کاربر شماره 13'
-        },
-        {
-          id: 14,
-          title: 'کاربر شماره 14'
-        },
-        {
-          id: 15,
-          title: 'کاربر شماره 15'
-        },
-        {
-          id: 16,
-          title: 'کاربر شماره 16'
-        },
-        {
-          id: 17,
-          title: 'کاربر شماره 17'
-        },
-        {
-          id: 18,
-          title: 'کاربر شماره 19'
-        },
-        {
-          id: 19,
-          title: 'کاربر شماره 19'
-        },
-      ],
+      users: [],
     }
   },
   methods: {
-    search (event) {
-      this.searchedCards = this.cards.forEach((card) => {
-        card.title == event
-      });
+    async getUsers () {
+      try {
+        this.loading = true;
+        const response = await this.$axios.get(routes.users);
+        this.users = response.data.results;
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.loading = false;
+      }
     }
   },
+  created() {
+    this.getUsers();
+  },
   computed: {
-    searchedCards: function () {
-      return this.cards.filter(card => card.title.includes(this.searchValue));
+    searchedUsers: function () {
+      return this.users.filter(user => user?.first_name.includes(this.searchValue) || user?.last_name.includes(this.searchValue) || (user?.first_name + ' ' + user?.last_name).includes(this.searchValue));
     }
   },
 }
@@ -180,7 +117,6 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
     padding: 1rem 0.2rem;
     max-height: 80vh;
     overflow-y: auto;

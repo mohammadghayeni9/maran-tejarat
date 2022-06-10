@@ -15,7 +15,10 @@
       </div>
     </div>
     <perfect-scrollbar class="home-content">
-      <div class="home-card" v-for="user in searchedUsers" :key="user.id">
+      <div class="loading" v-if="loading">
+        <img :src="require('assets/images/loading.gif')" alt="loading">
+      </div>
+      <div class="home-card" v-for="user in searchedUsers" :key="user.id" v-else>
         <Card :cardData="user" />
       </div>
     </perfect-scrollbar>
@@ -34,115 +37,21 @@ export default {
   },
   data() {
     return {
+      loading: false,
       searchValue: '',
       users: [],
-      cards: [
-        {
-          id: 1,
-          title: 'کاربر شماره 1',
-          avatar: require('@/static/icon.png')
-        },
-        {
-          id: 2,
-          title: 'کاربر شماره 2',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 3,
-          title: 'کاربر شماره 3',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 4,
-          title: 'کاربر شماره 4',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 5,
-          title: 'کاربر شماره 5',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 6,
-          title: 'کاربر شماره 6',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 7,
-          title: 'کاربر شماره 7',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 8,
-          title: 'کاربر شماره 8',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 9,
-          title: 'کاربر شماره 9',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 10,
-          title: 'کاربر شماره 10',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 11,
-          title: 'کاربر شماره 11',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 12,
-          title: 'کاربر شماره 12',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 13,
-          title: 'کاربر شماره 13',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 14,
-          title: 'کاربر شماره 14',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 15,
-          title: 'کاربر شماره 15',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 16,
-          title: 'کاربر شماره 16',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 17,
-          title: 'کاربر شماره 17',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 18,
-          title: 'کاربر شماره 19',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-        {
-          id: 19,
-          title: 'کاربر شماره 19',
-          avatar: require('@/assets/images/placeholder.png')
-        },
-      ],
     }
   },
   methods: {
     async getUsers () {
       try {
+        this.loading = true;
         const response = await this.$axios.get(routes.users);
         this.users = response.data.results;
-        console.log(response.data.results);
       } catch (error) {
         console.log(error);
+      } finally {
+        this.loading = false;
       }
     }
   },

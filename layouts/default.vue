@@ -26,6 +26,7 @@ export default {
 
 <style lang="scss" scoped>
 .v-application {
+  background-color: var(--background-color-secondary) !important;
   .header-container {
     margin-bottom: 5rem;
   }

@@ -5,10 +5,10 @@
       <SVGBack class="back-icon" @click="$router.push('/')" />
     </v-col>
     <v-col cols="12" sm="6" lg="4">
-      <persianDatePicker placeholder="تاریخ" @select="selectAgreementDate" />
+      <persianDatePicker placeholder="تاریخ" ref="pdp"/>
     </v-col>
     <v-col cols="12" sm="6" lg="4">
-      <persianDatePicker placeholder="موعد انجام" @select="selectDeadlineDate" />
+      <persianDatePicker placeholder="موعد انجام" ref="deadlinePdp"/>
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
       <v-text-field label="شرح" outlined v-model="description"></v-text-field>
@@ -21,7 +21,10 @@
     </v-col>
     <v-col cols="12"></v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
-      <v-btn class="agreement-form-btn" elevation="2" @click="recordAgreement">ثبت توافق</v-btn>
+      <v-btn class="agreement-form-btn disable-btn" elevation="2" v-if="loading">
+        <img :src="require('assets/images/loading.gif')" alt="loading">
+      </v-btn>
+      <v-btn class="agreement-form-btn" elevation="2" @click="recordAgreement" v-else>ثبت توافق</v-btn>
     </v-col>
   </div>
 </template>
@@ -39,6 +42,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       agreementDate: '',
       deadlineDate: '',
       description: '',
@@ -53,11 +57,12 @@ export default {
   methods: {
     async recordAgreement() {
       try {
+        this.loading = true;
         await this.$axios.post(routes.recordEventAgreement, {
           type_report: "A",
           be_evaluated: this.$route.params.id,  //ایدی ارزیابی شونده
-          date_report: this.agreementDate,
-          deadline: this.deadlineDate,
+          date_report: this.$refs?.pdp?.$refs?.persianDatePicker?.$refs?.pdpInput?.value,
+          deadline: this.$refs?.deadlinePdp?.$refs?.persianDatePicker?.$refs?.pdpInput?.value,
           description: this.description,
           quantitative_qualitative_goal: this.goal,
           indicators: this.indicator
@@ -68,8 +73,13 @@ export default {
         this.description = '';
         this.goal = '';
         this.indicator = '';
+        this.$refs.pdp.$refs.persianDatePicker.$refs.pdpInput.value = null;
+        this.$refs.deadlinePdp.$refs.persianDatePicker.$refs.pdpInput.value = null;
       } catch (error) {
+        this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
         console.log(error);
+      } finally {
+        this.loading = false;
       }
     },
     async getIndicators() {
@@ -79,12 +89,6 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    },
-    selectAgreementDate(date) {
-      this.agreementDate = date;
-    },
-    selectDeadlineDate(date) {
-      this.deadlineDate = date;
     }
   }
 };
@@ -112,6 +116,10 @@ export default {
     background-color: var(--color-blue);
     border-radius: var(--input-border-radius);
     color: var(--text-primary-color);
+  }
+  .disable-btn {
+    cursor: default;
+    pointer-events: none;
   }
 }
 </style>

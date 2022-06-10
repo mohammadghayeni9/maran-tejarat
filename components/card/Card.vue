@@ -44,6 +44,7 @@
             class="card-btn report-btn"
             v-bind="attrs"
             v-on="on"
+            @click="setId(cardData.id)"
           >
             <span>گزارش‌ها</span>
           </button>
@@ -54,7 +55,7 @@
             v-for="item in reportListDropdown"
             :key="item.title"
             link
-            :to="'/forms/' + id + '/' + item.link + '/'"
+            :to="'/report/' + id + '/' + item.link + '/'"
           >
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
@@ -89,7 +90,7 @@ export default {
       reportListDropdown: [
         {
           title: 'مشاهده وقایع مهم / توافقات',
-          link: 'event'
+          link: 'eventAgreement'
         },
         {
           title: 'مشاهده سوابق ارزیابی دوره‌ای',
@@ -109,7 +110,6 @@ export default {
   },
   methods: {
     setId(id) {
-      console.log(id);
       this.id = id;
     },
     linkComputed (formType) {
@@ -130,7 +130,7 @@ export default {
   box-shadow: 1px 1px 5px var(--card-box-shadow);
   row-gap: 2rem;
   transition: all 0.5s ease;
-  background-color: var(--background-color-primary);
+  background-color: var(--background-color-primary-lighter);
   min-width: 320px;
   max-width: 520px;
   height: 5.7rem;

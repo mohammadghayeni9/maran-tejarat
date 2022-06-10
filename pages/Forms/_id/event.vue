@@ -5,7 +5,7 @@
       <SVGBack class="back-icon" @click="$router.push('/')" />
     </v-col>
     <v-col cols="12" sm="6" lg="4">
-      <persianDatePicker placeholder="تاریخ" @select="selectEventDate" />
+      <persianDatePicker placeholder="تاریخ" @select="selectEventDate" ref="pdp"/>
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
       <v-select
@@ -19,14 +19,17 @@
       <v-text-field label="شرح" outlined v-model="description"></v-text-field>
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
-      <v-select :items="indicators" item-text="name" item-value="axes" abel="انتخاب شاخص" outlined v-model="indicator"></v-select>
+      <v-select :items="indicators" item-text="name" item-value="axes" label="انتخاب شاخص" outlined v-model="indicator"></v-select>
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
       <v-select :items="items" label="ارزیابی" outlined v-model="evaluate"></v-select>
     </v-col>
     <v-col cols="12"></v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
-      <v-btn class="event-form-btn" elevation="2" @click="recordEvent">ثبت واقعه مهم</v-btn>
+      <v-btn class="event-form-btn disable-btn" elevation="2" v-if="loading">
+        <img :src="require('assets/images/loading.gif')" alt="loading">
+      </v-btn>
+      <v-btn class="event-form-btn" elevation="2" @click="recordEvent" v-else>ثبت واقعه مهم</v-btn>
     </v-col>
   </div>
 </template>
@@ -43,6 +46,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       eventDate: null,
       agreement: null,
       description: null,
@@ -57,10 +61,11 @@ export default {
   methods: {
     async recordEvent() {
       try {
+        this.loading = true;
         await this.$axios.post(routes.recordEventAgreement, {
           type_report: "E",
           be_evaluated: this.$route.params.id,  //ایدی ارزیابی شونده
-          date_report: this.eventDate,
+          date_report: this.$refs?.pdp?.$refs?.persianDatePicker?.$refs?.pdpInput?.value,
           agreement: this.agreemnet,
           description: this.description,
           evaluate: this.evaluate,
@@ -72,8 +77,12 @@ export default {
         this.description = '';
         this.evaluate = '';
         this.indicator = '';
+        this.$refs.pdp.$refs.persianDatePicker.$refs.pdpInput.value = null
       } catch (error) {
+        this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
         console.log(error);
+      } finally {
+        this.loading = false;
       }
     },
     async getIndicators() {
@@ -83,9 +92,6 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    },
-    selectEventDate(date) {
-      this.eventDate = date;
     }
   }
 };
@@ -113,6 +119,10 @@ export default {
     background-color: var(--color-blue);
     border-radius: var(--input-border-radius);
     color: var(--text-primary-color);
+  }
+  .disable-btn {
+    cursor: default;
+    pointer-events: none;
   }
 }
 </style>

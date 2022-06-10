@@ -4,8 +4,9 @@
     :column="1"
     mode="single"
     id="date-picker"
+    ref="persianDatePicker"
     :placeholder="placeholder"
-    @select="select"
+    clearable
   ></date-picker>
 </template>
 
@@ -39,11 +40,6 @@ export default {
       },
     };
   },
-  methods: {
-    select(date) {
-      this.$emit('select', date.toString());
-    }
-  }
 };
 </script>
 

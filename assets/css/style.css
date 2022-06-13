@@ -1,0 +1,69 @@
+@font-face {
+  font-family: "iranSans";
+  src: url("../font/IranSans.woff") format("woff");
+}
+@font-face {
+  font-family: "iranSans-light";
+  src: url("../font/IranSans.woff") format("woff");
+  font-weight: lighter;
+}
+@font-face {
+  font-family: "iranSans-bold";
+  src: url("../font/IranSans.woff") format("woff");
+  font-weight: bold;
+}
+
+* {
+  letter-spacing: 0 !important;
+}
+
+.v-application {
+  font-family: iranSans !important;
+  background-color: var(--background-color-primary) !important;
+  color: var(--text-primary-color) !important;
+  max-height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.v-input__slot {
+  background-color: var(--background-color-secondary) !important;
+}
+
+.v-input__slot fieldset {
+  border-color: var(--bordr-input-color) !important;
+  border-radius: var(--input-border-radius) !important;
+}
+
+.v-input__slot label {
+  color: var(--text-primary-color) !important;
+  font-size: 0.9rem;
+}
+
+.v-input__slot .mdi-menu-down {
+	color: var(--text-primary-color) !important;
+}
+
+.global-toast {
+  font-family: iranSans !important;
+  border-radius: var(--input-border-radius) !important;
+  padding: 1.25rem 2.5rem !important;
+  text-align: center !important;
+  direction: rtl !important;
+}
+
+html {
+  font-size: 16px;
+}
+
+@media screen and (max-width: 960px) {
+  html {
+    font-size: 14px !important;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  html {
+    font-size: 12px !important;
+  }
+}

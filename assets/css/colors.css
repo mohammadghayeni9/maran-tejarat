@@ -11,11 +11,13 @@
   --color-blue-dark: #0993a9;
   --color-red: #fd4d4d;
   --color-orange: #ff893a;
-  --color-green: #46bdbd;
+  --color-green: #46bd64;
   --color-purple: #6d6dbf;
   --color-blue-sky: #3e9de1;
   /* box-shadow */
   --card-box-shadow: #bbabbb88;
+  /* border */
+  --bordr-input-color: #9c9c9c;
 }
 
 :root.dark-theme {
@@ -33,4 +35,6 @@
   --color-green: #46bdbd;
   /* box-shadow */
   --card-box-shadow: #38383899;
+  /* border */
+  --bordr-input-color: #838383;
 }

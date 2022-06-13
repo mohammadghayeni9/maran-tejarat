@@ -36,7 +36,7 @@ export default {
         "main-box-shadow": "1px 1px 8px 1px --card-box-shadow",
         "day-dimensions": "2.08rem",
         radius: "0.25rem",
-        background: "var(--background-color-secondary)",
+        background: "var(--background-color-primary)",
       },
     };
   },

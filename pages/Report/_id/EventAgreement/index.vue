@@ -104,25 +104,27 @@ export default {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        padding: 1rem 0.2rem;
-        max-height: 70vh;   
-        overflow-y: auto;
+        padding: 1rem 0.2rem 1rem 1rem;
+        max-height: 70vh;
+        overflow: hidden !important;   
+        width: 100%;
+        gap: 5rem;
         .report-target {
             display: flex;
+            flex-wrap: wrap;
             flex-direction: column;
             width: 100%;
             box-shadow: 0px 1px 10px var(--card-box-shadow);
             padding: 2.5rem 1rem 1.25rem 1rem;
             border-radius: var(--input-border-radius);
             position: relative;
-            margin-bottom: 5rem;
             gap: 1rem;
             .target-title {
                 position: absolute;
                 background-color: var(--background-color-secondary);
-                top: -24px;
+                top: -14px;
                 right: 1rem;
-                padding: 10px;
+                padding: 0 10px;
                 font-size: 1.15rem;
             }
         }

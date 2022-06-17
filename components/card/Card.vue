@@ -32,7 +32,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <button class="card-btn assessment-btn">
+      <button class="card-btn assessment-btn" @click="goToEvaluate(cardData.id)">
         <span>امتیازدهی</span>
       </button>
       <v-menu
@@ -111,6 +111,9 @@ export default {
   methods: {
     setId(id) {
       this.id = id;
+    },
+    goToEvaluate(id) {
+      this.$router.push(/evaluate/ + id + /assignindicator/)
     },
   }
 }

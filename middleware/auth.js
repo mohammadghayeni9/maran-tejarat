@@ -7,7 +7,7 @@ export default function (context) {
     context.$axios.onError((error) => {
       if (
         error.response.status === 401 &&
-        context.route.name !== "Account-Login"
+        context.route.name !== "account-login"
       ) {
         localStorage.clear();
         return context.redirect("/account/login/");
@@ -15,12 +15,12 @@ export default function (context) {
     })
     
     if (!localStorage.getItem("access_token")) {
-      if (context.route.name !== 'Account-Login') {
+      if (context.route.name !== 'account-login') {
         localStorage.clear();
         return context.redirect("/account/login/"); 
       }
     } else {
-      if (context.route.name === 'Account-Login') {
+      if (context.route.name === 'account-login') {
         return context.redirect(context.from.fullpath)
       }
     }

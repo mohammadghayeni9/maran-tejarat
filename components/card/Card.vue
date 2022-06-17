@@ -112,9 +112,6 @@ export default {
     setId(id) {
       this.id = id;
     },
-    linkComputed (formType) {
-      return `/forms/${this.id}/${formType}/`
-    }
   }
 }
 </script>

@@ -43,7 +43,7 @@ export default {
         this.loading = true;
         await this.$axios.post(routes.recordMeeting, {
           be_evaluated: this.$route.params.id,
-          date_report: this.$refs.pdp.$refs.persianDatePicker.$refs.pdpInput.value,
+          date_report: this.dateReportComputed,
           description: this.description,
         });
         this.$toast.success('جلسه بازخورد با موفقیت ثبت شد');
@@ -58,6 +58,11 @@ export default {
       }
     },
   },
+  computed: {
+    dateReportComputed() {
+      return this.$refs?.pdp?.$refs?.persianDatePicker?.$refs?.pdpInput?.value.replaceAll('/', '-');
+    }
+  }
 };
 </script>
 

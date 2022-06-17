@@ -1,6 +1,6 @@
 <template>
   <v-app dir="rtl">
-    <div class="header-container">
+    <div class="header-container" v-if="$route.name !== 'Account-Login'">
       <Header />
     </div>
     <v-main>

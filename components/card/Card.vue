@@ -105,7 +105,7 @@ export default {
   },
   computed: {
     avatarComputed: function() {
-      return this.cardData?.avatar || require('@/assets/images/placeholder.png');
+      return this.cardData?.picture || require('@/assets/images/placeholder.png');
     },
   },
   methods: {

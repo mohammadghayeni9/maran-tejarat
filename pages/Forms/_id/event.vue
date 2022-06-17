@@ -22,7 +22,7 @@
       <v-select :items="indicators" item-text="name" item-value="axes" label="انتخاب شاخص" outlined v-model="indicator"></v-select>
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
-      <v-select :items="items" label="ارزیابی" outlined v-model="evaluate"></v-select>
+      <v-select :items="evaluates" item-text="title" item-value="value" label="ارزیابی" outlined v-model="evaluate"></v-select>
     </v-col>
     <v-col cols="12"></v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
@@ -53,6 +53,16 @@ export default {
       indicator: null,
       evaluate: null,
       indicators: [],
+      evaluates: [
+        {
+          title: 'فرصت بهبود',
+          value: 'O'
+        },
+        {
+          title: 'نقطه قوت',
+          value: 'S'
+        }
+      ]
     }
   },
   mounted() {
@@ -65,7 +75,7 @@ export default {
         await this.$axios.post(routes.recordEventAgreement, {
           type_report: "E",
           be_evaluated: this.$route.params.id,  //ایدی ارزیابی شونده
-          date_report: this.$refs?.pdp?.$refs?.persianDatePicker?.$refs?.pdpInput?.value,
+          date_report: this.dateComputed,
           agreement: this.agreemnet,
           description: this.description,
           evaluate: this.evaluate,
@@ -92,6 +102,11 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    }
+  },
+  computed: {
+    dateComputed() {
+      return this.$refs?.pdp?.$refs?.persianDatePicker?.$refs?.pdpInput?.value.replaceAll('/', '-');
     }
   }
 };

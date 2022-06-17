@@ -61,8 +61,8 @@ export default {
         await this.$axios.post(routes.recordEventAgreement, {
           type_report: "A",
           be_evaluated: this.$route.params.id,  //ایدی ارزیابی شونده
-          date_report: this.$refs?.pdp?.$refs?.persianDatePicker?.$refs?.pdpInput?.value,
-          deadline: this.$refs?.deadlinePdp?.$refs?.persianDatePicker?.$refs?.pdpInput?.value,
+          date_report: this.dateReportComputed,
+          deadline: this.deadlineComputed,
           description: this.description,
           quantitative_qualitative_goal: this.goal,
           indicators: this.indicator
@@ -90,6 +90,14 @@ export default {
         console.log(error);
       }
     }
+  },
+  computed: {
+    dateReportComputed() {
+      return this.$refs?.pdp?.$refs?.persianDatePicker?.$refs?.pdpInput?.value.replaceAll('/', '-');
+    },
+    deadlineComputed() {
+      return this.$refs?.deadlinePdp?.$refs?.persianDatePicker?.$refs?.pdpInput?.value.replaceAll('/', '-');
+    } 
   }
 };
 </script>

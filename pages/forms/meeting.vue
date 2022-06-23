@@ -42,7 +42,7 @@ export default {
       try {
         this.loading = true;
         await this.$axios.post(routes.recordMeeting, {
-          be_evaluated: this.$route.params.id,
+          be_evaluated: localStorage.getItem('beEvaluatedUserId'),
           date_report: this.dateReportComputed,
           description: this.description,
         });

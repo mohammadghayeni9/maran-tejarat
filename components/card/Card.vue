@@ -26,7 +26,7 @@
             v-for="item in recordListDropdown"
             :key="item.title"
             link
-            :to="'/forms/' + id + '/' + item.link + '/'"
+            :to="'/forms/' + item.link + '/'"
           >
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
@@ -55,7 +55,7 @@
             v-for="item in reportListDropdown"
             :key="item.title"
             link
-            :to="'/report/' + id + '/' + item.link + '/'"
+            :to="'/report/' + item.link + '/'"
           >
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
@@ -110,10 +110,11 @@ export default {
   },
   methods: {
     setId(id) {
-      this.id = id;
+      localStorage.setItem('beEvaluatedUserId', id);
     },
-    goToEvaluate(id) {
-      this.$router.push(/evaluate/ + id + /assignindicator/)
+    goToEvaluate() {
+      localStorage.setItem('beEvaluatedUserId', id);
+      this.$router.push('/evaluate/assignindicator/');
     },
   }
 }

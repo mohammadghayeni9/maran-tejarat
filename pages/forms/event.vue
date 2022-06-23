@@ -74,7 +74,7 @@ export default {
         this.loading = true;
         await this.$axios.post(routes.recordEventAgreement, {
           type_report: "E",
-          be_evaluated: this.$route.params.id,  //ایدی ارزیابی شونده
+          be_evaluated: localStorage.getItem('beEvaluatedUserId'),  //ایدی ارزیابی شونده
           date_report: this.dateComputed,
           agreement: this.agreemnet,
           description: this.description,

@@ -62,6 +62,7 @@ export default {
           });
           localStorage.setItem("access_token", response.access);
           localStorage.setItem("refresh_token", response.refresh);
+          this.parseJwtToken(response.access);
           this.$toast.success('با موفقیت وارد شدید');
           this.$router.push("/");
         } catch (e) {
@@ -73,6 +74,16 @@ export default {
         this.$toast.error('نام کاربری و رمز ورود الزامی است');
       }
     },
+    parseJwtToken (token) {
+      var base64Url = token.split('.')[1];
+      var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      const { assessor, is_eval_time } = JSON.parse(jsonPayload);
+      localStorage.setItem('isAssessor', assessor);
+      localStorage.setItem('isEvalTime', is_eval_time);
+    }
   },
 };
 </script>

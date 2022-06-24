@@ -13,9 +13,9 @@
             <span>تارخ ثبت : </span>
             {{ reportData.date_report }}
         </v-col>
-        <v-col cols="auto" class="d-flex justify-end pr-0">
+        <!-- <v-col cols="auto" class="d-flex justify-end pr-0">
             <v-btn>نمایش جزئیات</v-btn>
-        </v-col>
+        </v-col> -->
     </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
     .report-event-agreement-card {
         background-color: var(--background-color-primary-lighter);
         border-radius: var(--input-border-radius);
-        border: 1px solid var(--color-green);
+        border: 2px solid var(--color-blue-dark);
         min-width: 100%;
         display: flex;
         flex-wrap: wrap;

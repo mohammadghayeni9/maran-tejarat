@@ -6,19 +6,22 @@
             <SVGBack class="back-icon" @click="$router.push('/')" />
         </v-col>
     </div>
+    <v-col cols="12" class="d-flex justify-center" v-if="!reports.length && !loading">هیچ گزارشی ثبت نشده است</v-col>
     <perfect-scrollbar class="reports-content">
       <div class="loading" v-if="loading">
         <img :src="require('assets/images/loading.gif')" alt="loading">
       </div>
-      <div class="report-target report-event-target" v-if="!loading">
+      <div class="report-target report-event-target" v-else-if="!loading && reports.length">
             <span class="target-title">وقایع</span>
-            <div class="report-card" v-for="report in eventReportsComputed" :key="report.id">
+            <v-col cols="12" class="d-flex justify-center" v-if="!eventReportsComputed.length && !reports.length">هیچ واقعه‌ای ثبت نشده است</v-col>
+            <div class="report-card" v-for="report in eventReportsComputed" :key="report.id" v-else>
                 <report-event-agreement-card :reportData="report" />
             </div>
       </div>
-      <div class="report-target report-agreement-target" v-if="!loading">
+      <div class="report-target report-agreement-target" v-if="!loading && reports.length">
             <span class="target-title">توافقات</span>
-            <div class="report-card" v-for="report in agreementReportsComputed" :key="report.id">
+            <v-col cols="12" class="d-flex justify-center" v-if="!agreementReportsComputed.length">هیچ توافقی ثبت نشده است</v-col>
+            <div class="report-card" v-for="report in agreementReportsComputed" :key="report.id" v-else>
                 <report-event-agreement-card :reportData="report" />
             </div>
       </div>
@@ -41,7 +44,7 @@ export default {
     data () {
         return {
             loading: false,
-            reports: null,
+            reports: [],
         }
     },
     created() {
@@ -50,10 +53,12 @@ export default {
     computed: {
         eventReportsComputed() {
             let eventReports = this.reports.filter((report) => report.type_report === 'E');
+            console.log(eventReports);
             return eventReports;
         },
         agreementReportsComputed() {
             let agreementReports = this.reports.filter((report) => report.type_report === 'A');
+            console.log(agreementReports);
             return agreementReports;
         },
     },
@@ -62,7 +67,7 @@ export default {
             try {
                 this.loading = true;
                 const response = await this.$axios.post(routes.reportEventAgreements, {
-                    assessor: 1
+                    staff: localStorage.getItem('beEvaluatedUserId')
                 })
                 this.reports = response.data;
             } catch (error) {

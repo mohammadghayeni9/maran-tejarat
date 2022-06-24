@@ -8,6 +8,9 @@
             <div class="loading d-flex justify-center" v-if="loading">
                 <img :src="require('assets/images/loading.gif')" alt="loading">
             </div>
+            <v-col cols="12" v-else-if="!indicators.length" class="d-flex justify-center">
+                هیچ شاخصی ثبت نشده است
+            </v-col>
             <v-card
                 v-else
                 class="mx-auto rounded-xl overflow-hidden"
@@ -49,7 +52,7 @@
                 </v-list>
             </v-card>
         </v-col>
-        <v-col cols="12" class="d-flex justify-end">
+        <v-col cols="12" class="d-flex justify-end" v-if="!loading && indicators.length">
             <v-btn color="gray--text lighten-4 light-blue" elevation="2" class="px-12 py-5 rounded-lg">ثبت</v-btn>
         </v-col>
     </div>
@@ -65,13 +68,14 @@ export default {
     },
     data() {
         return {
-            indicators: null,
+            indicators: [],
             selectedIndicators: [],
             loading: false,
         }
     },
-    mounted() {
+    created() {
         this.getIndicators();
+        this.getSelectedIndicators();
     },
     methods: {
         async getIndicators() {
@@ -79,6 +83,19 @@ export default {
                 this.loading = true;
                 const response = await this.$axios.get(routes.indicators);
                 this.indicators = response?.data?.results;
+            } catch (error) {
+                console.log(error);
+            } finally {
+                this.loading = false;
+            }
+        },
+        async getSelectedIndicators() {
+            try {
+                this.loading = true;
+                const response = await this.$axios.post(routes.selectedIndicators, {
+                    staff: localStorage.getItem('beEvaluatedUserId')
+                });
+                this.selectedIndicators = response?.data?.results;
             } catch (error) {
                 console.log(error);
             } finally {

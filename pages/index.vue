@@ -1,45 +1,40 @@
 <template>
   <div class="home-view">
-    <div class="home-header">
-      <div class="subject-list-title">اسامی همکاران</div>
-      <div class="search-box">
-        <input
-          type="text"
-          class="search-input"
-          placeholder="جستجو"
-          v-model="searchValue"
-        />
-        <div class="icon-search">
-          <img src="@/components/icons/icon-search.png" alt="" />
-        </div>
-      </div>
-    </div>
-    <perfect-scrollbar class="home-content">
-      <div class="loading" v-if="loading">
+    <v-tabs class="home-tabs">
+      <v-tab>ارزیابی کننده</v-tab>
+      <v-tab>ارزیابی شونده</v-tab>
+      <div class="loading d-flex justify-center" v-if="loading">
         <img :src="require('assets/images/loading.gif')" alt="loading">
       </div>
-      <div class="home-card" v-for="user in searchedUsers" :key="user.id" v-else>
-        <Card :cardData="user" />
-      </div>
-    </perfect-scrollbar>
+      <v-tab-item v-else>
+        <v-tabs class="mt-5">
+          <v-tab v-for="unit in units" :key="unit.id">{{ unit.name }}</v-tab>
+          <v-tab-item v-for="unit in units" :key="unit.name">
+            <homeUsersContent :loading="loading" :unit="unit" :users="users" />
+          </v-tab-item>
+        </v-tabs>
+      </v-tab-item>
+      <v-tab-item></v-tab-item>
+    </v-tabs>
   </div>
 </template>
 
 <script>
-import Card from "@/components/card/Card.vue";
-import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
+import homeUsersContent from "@/components/card/homeUsersContent.vue"
 import { routes } from "~/API/routes";
 
 export default {
   components: {
-    Card,
-    PerfectScrollbar,
+    homeUsersContent,
   },
   data() {
     return {
       loading: false,
-      searchValue: '',
       users: [],
+      reportEventForMe: [],
+      reportAgreementForMe: [],
+      reportMeetingForMe: [],
+      units: [],
     }
   },
   methods: {
@@ -50,85 +45,76 @@ export default {
         this.users = response.data.results;
       } catch (error) {
         console.log(error);
-      } finally {
-        this.loading = false;
+      }
+    },
+    async getEventReports () {
+      try {
+        const response = await this.$axios.get(routes.reportEventAgreementsForMe, {
+          report_type: "E"
+        });
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getAgreementReports () {
+      try {
+        const response = await this.$axios.get(routes.reportEventAgreementsForMe, {
+          report_type: "A"
+        });
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getMeetingReports () {
+      try {
+        const response = await this.$axios.get(routes.reportMeetingForMe);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getUnits () {
+      try {
+        const response = await this.$axios.get(routes.units);
+        this.units = response.data.results;
+      } catch (error) {
+        console.log(error);
       }
     }
   },
   created() {
     this.getUsers();
+    this.getUnits();
   },
-  computed: {
-    searchedUsers: function () {
-      return this.users.filter(user => user?.first_name.includes(this.searchValue) || user?.last_name.includes(this.searchValue) || (user?.first_name + ' ' + user?.last_name).includes(this.searchValue));
-    }
+  mounted() {
+    this.getEventReports();
+    this.getAgreementReports();
+    this.getMeetingReports();
+    setTimeout(() => {
+      this.loading = false;
+    }, 1000);
   },
 }
 </script>
 
-<style src="vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css"/>
-
-<style scoped lang="scss">
-.home-view {
-  .home-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    column-gap: 1rem;
-    padding: 0.75rem;
+<style lang="scss">
+.home-tabs {
+  .v-tabs-bar {
+    background-color: var(--background-color-primary-lighter) !important;
     overflow: hidden;
-    .subject-list-title {
-      font-size: 1.2rem;
-      white-space: nowrap;
-    }
-    .search-box {
-      width: 75%;
-      max-width: 24rem;
-      display: flex;
-      position: relative;
-    }
-    .search-input {
-      border: var(--color-blue) solid 3px;
-      background: var(--background-color-primary-lighter);
-      color: var(--text-primary-color);
-      border-radius: 50px;
-      outline: none;
-      height: calc(2rem + 18px);
-      padding: var(--input-padding);
-      width: 100%;
-      transition: box-shadow 0.6s 0.1s;
-      &:hover {
-        box-shadow: var(--input-box-shadow-hover) var(--card-box-shadow);
-        transition: box-shadow 0.6s;
-      }
-    }
-    .icon-search {
-      position: absolute;
-      left: 5px;
-      width: 2.5rem;
-      text-align: center;
-      height: 2.5rem;
-      img {
-        margin: 0.7rem 0 0 0;
-      }
-    }
+    border-radius: var(--card-border-radius);
   }
-  .home-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 1rem 0.2rem;
-    max-height: 80vh;
-    overflow-y: auto;
-    row-gap: 1rem;
-    .home-card {
-      padding: 0 0.5rem;
-      min-width: 33%;
-      @media screen and (max-width: 400px) {
-        padding: 0;
-      }
-    }
+  .v-tabs-items {
+    background-color: transparent !important;
+  }
+  .loading {
+    position: absolute;
+    top: -25px;
+    left: 0;
+    right: 0;
+    transform: scale(0.8);
   }
 }
 </style>
-

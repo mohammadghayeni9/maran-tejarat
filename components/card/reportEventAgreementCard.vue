@@ -1,8 +1,9 @@
 <template>
     <div class="report-event-agreement-card">
         <v-col cols="12 pb-0">
-            <span v-if="reportData.type_report === 'E'">شرح واقعه : </span>
-            <span v-else> شرح توافق : </span>
+            <span v-if="type === 'E'">شرح واقعه : </span>
+            <span v-else-if="type === 'A'"> شرح توافق : </span>
+            <span v-else-if="type === 'M'"> شرح جلسه : </span>
             {{ reportData.description }}
         </v-col>
         <!-- <v-col v-if="reportData.type_report === 'E'">
@@ -22,6 +23,7 @@
 <script>
 export default {
     props: {
+        type: '',
         reportData: {}
     },
 }
@@ -29,7 +31,7 @@ export default {
 
 <style lang="scss" scoped>
     .report-event-agreement-card {
-        background-color: var(--background-color-primary-lighter);
+        background-color: var(--background-color-primary);
         border-radius: var(--input-border-radius);
         border: 2px solid var(--color-blue-dark);
         min-width: 100%;

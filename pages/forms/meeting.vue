@@ -88,9 +88,9 @@ export default {
   .meeting-form-btn {
     height: 54px;
     width: 100%;
-    background-color: var(--color-blue);
     border-radius: var(--input-border-radius);
-    color: var(--text-primary-color);
+    background-color: var(--color-blue-sky);
+    color: var(--color-white);
   }
   .disable-btn {
     cursor: default;

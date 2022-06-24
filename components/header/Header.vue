@@ -59,6 +59,9 @@ export default {
         background:linear-gradient(10deg, var(--color-blue-sky), var(--color-purple)) ;
         height: 5rem;
         padding: 0 1.5rem 0 2.5rem;
+        @media screen and (max-width: 700px) {
+            padding: 0 0 0 1rem;
+        }
         .logo-header {
             height: 100%;
         }
@@ -68,7 +71,7 @@ export default {
             }
         }
         .header-logout {
-            color: var(--text-secondary-color);
+            color: var(--color-white);
             cursor: pointer;
             user-select: none;
         }

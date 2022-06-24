@@ -13,16 +13,16 @@
       </div>
       <div class="report-target report-event-target" v-else-if="!loading && reports.length">
             <span class="target-title">وقایع</span>
-            <v-col cols="12" class="d-flex justify-center" v-if="!eventReportsComputed.length && !reports.length">هیچ واقعه‌ای ثبت نشده است</v-col>
+            <v-col cols="12" class="d-flex justify-center" v-if="!eventReportsComputed.length">هیچ واقعه‌ای ثبت نشده است</v-col>
             <div class="report-card" v-for="report in eventReportsComputed" :key="report.id" v-else>
-                <report-event-agreement-card :reportData="report" />
+                <report-event-agreement-card type="E" :reportData="report" />
             </div>
       </div>
       <div class="report-target report-agreement-target" v-if="!loading && reports.length">
             <span class="target-title">توافقات</span>
             <v-col cols="12" class="d-flex justify-center" v-if="!agreementReportsComputed.length">هیچ توافقی ثبت نشده است</v-col>
             <div class="report-card" v-for="report in agreementReportsComputed" :key="report.id" v-else>
-                <report-event-agreement-card :reportData="report" />
+                <report-event-agreement-card type="A" :reportData="report" />
             </div>
       </div>
     </perfect-scrollbar>
@@ -53,12 +53,10 @@ export default {
     computed: {
         eventReportsComputed() {
             let eventReports = this.reports.filter((report) => report.type_report === 'E');
-            console.log(eventReports);
             return eventReports;
         },
         agreementReportsComputed() {
             let agreementReports = this.reports.filter((report) => report.type_report === 'A');
-            console.log(agreementReports);
             return agreementReports;
         },
     },
@@ -109,7 +107,7 @@ export default {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        padding: 1rem 0.2rem 1rem 1rem;
+        padding: 1rem 0.2rem 1rem 0.2rem;
         max-height: 70vh;
         overflow: hidden !important;   
         width: 100%;

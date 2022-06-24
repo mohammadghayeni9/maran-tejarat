@@ -18,42 +18,42 @@
                 :elevation="2"
             >
                 <v-list shaped>
-                <v-list-item-group
-                    v-model="selectedIndicators"
-                    multiple
-                >
-                    <template v-for="(indicator, i) in indicators">
-                    <v-divider
-                        v-if="!indicator"
-                        :key="`divider-${i}`"
-                    ></v-divider>
-
-                    <v-list-item
-                        v-else
-                        :key="`item-${i}`"
-                        :value="indicator"
-                        active-class="light-blue--text text--accent-4"
+                    <v-list-item-group
+                        v-model="selectedIndicators"
+                        multiple
                     >
-                        <template v-slot:default="{ active }">
-                        <v-list-item-content>
-                            <v-list-item-title v-text="indicator.name"></v-list-item-title>
-                        </v-list-item-content>
+                        <template v-for="(indicator, i) in indicators">
+                            <v-divider
+                                v-if="!indicator"
+                                :key="`divider-${i}`"
+                            ></v-divider>
 
-                        <v-list-item-action>
-                            <v-checkbox
-                            :input-value="active"
-                            color="light-blue"
-                            ></v-checkbox>
-                        </v-list-item-action>
+                            <v-list-item
+                                v-else
+                                :key="`item-${i}`"
+                                :value="indicator"
+                                active-class="light-blue--text text--accent-4"
+                            >
+                                <template v-slot:default="{ active }">
+                                    <v-list-item-content>
+                                        <v-list-item-title v-text="indicator.name"></v-list-item-title>
+                                    </v-list-item-content>
+
+                                    <v-list-item-action>
+                                        <v-checkbox
+                                        :input-value="active"
+                                        color="light-blue"
+                                        ></v-checkbox>
+                                    </v-list-item-action>
+                                </template>
+                            </v-list-item>
                         </template>
-                    </v-list-item>
-                    </template>
-                </v-list-item-group>
+                    </v-list-item-group>
                 </v-list>
             </v-card>
         </v-col>
         <v-col cols="12" class="d-flex justify-end" v-if="!loading && indicators.length">
-            <v-btn color="gray--text lighten-4 light-blue" elevation="2" class="px-12 py-5 rounded-lg">ثبت</v-btn>
+            <v-btn elevation="2" class="px-12 py-5 rounded-lg record-btn" @click="assignIndicatorsToUser">ثبت</v-btn>
         </v-col>
     </div>
 </template>
@@ -95,12 +95,28 @@ export default {
                 const response = await this.$axios.post(routes.selectedIndicators, {
                     staff: localStorage.getItem('beEvaluatedUserId')
                 });
-                this.selectedIndicators = response?.data?.results;
+                this.selectedIndicators = response?.data;
             } catch (error) {
                 console.log(error);
             } finally {
                 this.loading = false;
             }
+        },
+        async assignIndicatorsToUser () {
+            try {
+                await this.$axios.post(routes.registerIndicators, {
+                    be_evaluated: localStorage.getItem('beEvaluatedUserId'),
+                    list_of_Indicator: this.listIndicatorsIdComputed
+                });
+                this.$toast.success('شاخص ها با موفقیت انساب داده شد');
+            } catch (error) {
+                this.$toast.error('خطایی رخ داده است دوباره سعی کنید');
+            }
+        }
+    },
+    computed: {
+        listIndicatorsIdComputed() {
+            return this.selectedIndicators.map(indicator => indicator.indicators)
         }
     }
 }
@@ -121,6 +137,10 @@ export default {
         width: fit-content;
         margin-right: auto;
         cursor: pointer;
+    }
+    .record-btn {
+        background-color: var(--color-blue-sky);
+        color: var(--color-white);
     }
 }
 </style>

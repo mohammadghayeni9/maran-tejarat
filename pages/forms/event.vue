@@ -53,6 +53,7 @@ export default {
       indicator: null,
       evaluate: null,
       indicators: [],
+      reports: [],
       evaluates: [
         {
           title: 'فرصت بهبود',
@@ -62,10 +63,11 @@ export default {
           title: 'نقطه قوت',
           value: 'S'
         }
-      ]
+      ],
     }
   },
-  mounted() {
+  created() {
+    // this.getReportEventAgreements();
     this.getIndicators();
   },
   methods: {
@@ -102,12 +104,26 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    async getReportEventAgreements() {
+      try {
+        const response = await this.$axios.post(routes.reportEventAgreements, {
+          staff: localStorage.getItem('beEvaluatedUserId')
+        })
+        this.reports = response.data;
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
   computed: {
     dateComputed() {
       return this.$refs?.pdp?.$refs?.persianDatePicker?.$refs?.pdpInput?.value.replaceAll('/', '-');
-    }
+    },
+    agreementReportsComputed() {
+      let agreementReports = this.reports.filter((report) => report.type_report === 'A');
+      return agreementReports;
+    },
   }
 };
 </script>
@@ -131,9 +147,9 @@ export default {
   .event-form-btn {
     height: 54px;
     width: 100%;
-    background-color: var(--color-blue);
     border-radius: var(--input-border-radius);
-    color: var(--text-primary-color);
+    background-color: var(--color-blue-sky);
+    color: var(--color-white);
   }
   .disable-btn {
     cursor: default;

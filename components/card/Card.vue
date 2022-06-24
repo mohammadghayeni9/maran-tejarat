@@ -127,7 +127,7 @@ export default {
   flex-flow: column;
   padding: var(--card-padding);
   border-radius: var(--card-border-radius);
-  border: 1px solid var(--color-green);
+  border: 1px solid var(--color-blue-dark);
   box-shadow: 1px 1px 5px var(--card-box-shadow);
   row-gap: 2rem;
   transition: all 0.5s ease;
@@ -185,7 +185,7 @@ export default {
     .record-btn {
       background-color: var(--color-green);
       &:hover {
-        background-color: transparent;
+        background-color: var(--background-color-primary);
         border: 2px solid var(--color-green);
         color: var(--text-color-primary);
       }
@@ -193,7 +193,7 @@ export default {
     .assessment-btn {
       background-color: var(--color-blue);
       &:hover {
-        background-color: transparent;
+        background-color: var(--background-color-primary);
         border: 2px solid var(--color-blue);
         color: var(--text-color-primary);
       }
@@ -201,7 +201,7 @@ export default {
     .report-btn {
       background-color: var(--color-red);
       &:hover {
-        background-color: transparent;
+        background-color: var(--background-color-primary);
         border: 2px solid var(--color-red);
         color: var(--text-color-primary);
       }

@@ -4,9 +4,12 @@ export const routes = {
   recordEventAgreement: "report/create_events_agreements/",
   recordMeeting: "report/create-feed-back-session/",
   reportEventAgreements: "report/all-reports/eventsagreements/",
+  reportMeeting: "report/all-reports/feedback/",
   reportEventAgreementsForMe: "auth/show-event-for-evaluated-user/",
   reportMeetingForMe: "report/list-feed-back-session/",
   indicators: "performanceManagement/list-Indicators/",
   units: "auth/listUnit/",
   selectedIndicators: "performanceManagement/getIndicatorsForAccount/",
+  axesList: "performanceManagement/list-axes/",
+  registerIndicators: "performanceManagement/registerIndicatorsForAccount/",
 };

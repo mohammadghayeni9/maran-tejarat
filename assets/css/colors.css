@@ -2,7 +2,7 @@
   --background-color-white: #ffffff;
   --background-color-primary: #fbfbfb;
   --background-color-secondary: #eceef4;
-  --background-color-primary-lighter: #d8d8d888;
+  --background-color-primary-lighter: #dadada77;
   --accent-color: #919191;
   --text-primary-color: #222;
   --text-secondary-color: #2d2d30;
@@ -14,6 +14,7 @@
   --color-green: #46bd64;
   --color-purple: #6d6dbf;
   --color-blue-sky: #3e9de1;
+  --color-white: #FFF;
   /* box-shadow */
   --card-box-shadow: #bbabbb88;
   /* border */

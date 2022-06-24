@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="searchedUsers.length">
         <div class="home-header">
             <div class="search-box">
                 <input
@@ -18,10 +18,13 @@
         </div>
         <perfect-scrollbar class="home-content" v-else>
             <div class="home-card" v-for="user in searchedUsers" :key="user.id">
-                <Card :cardData="user" v-if="user.unit === unit.id" />
+                <Card :cardData="user" />
             </div>
         </perfect-scrollbar>
     </div>
+    <v-col cols="12" class="d-flex justify-center mt-5" v-else>
+        در این واحد هیچ فردی به شما انتساب داده نشده است
+    </v-col>
 </template>
 
 <script>
@@ -46,9 +49,9 @@ export default {
     computed: {
         searchedUsers: function () {
             return this.users.filter(user => 
-                user?.first_name.includes(this.searchValue) || 
+                (user?.first_name.includes(this.searchValue) || 
                 user?.last_name.includes(this.searchValue) || 
-                (user?.first_name + ' ' + user?.last_name).includes(this.searchValue)
+                (user?.first_name + ' ' + user?.last_name).includes(this.searchValue)) && user.unit == this.unit.id
             );
         }
     },
@@ -66,6 +69,7 @@ export default {
     column-gap: 1rem;
     padding: 0.75rem;
     overflow: hidden;
+    margin-top: 1rem;
     .subject-list-title {
       font-size: 1.2rem;
       white-space: nowrap;
@@ -75,10 +79,13 @@ export default {
       max-width: 24rem;
       display: flex;
       position: relative;
+      @media screen and (max-width: 400px) {
+        width: 100%;
+      }
     }
     .search-input {
       border: var(--color-blue-dark) solid 2px;
-      background: var(--background-color-primary-lighter);
+      background: var(--background-color-primary);
       color: var(--text-primary-color);
       border-radius: 50px;
       outline: none;

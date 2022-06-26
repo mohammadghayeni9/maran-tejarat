@@ -19,6 +19,12 @@
     <v-col cols="12" sm="6" lg="4" class="pb-0">
       <v-select :items="indicators" item-text="name" item-value="axes" label="انتخاب شاخص" outlined v-model="indicator"></v-select>
     </v-col>
+    <v-col cols="12" sm="6" lg="4" class="pb-0">
+      <v-checkbox
+        v-model="isOpenAgreement"
+        label="آیا این یک توافق باز است؟"
+      ></v-checkbox>
+    </v-col>
     <v-col cols="12"></v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
       <v-btn class="agreement-form-btn disable-btn" elevation="2" v-if="loading">
@@ -49,6 +55,7 @@ export default {
       goal: '',
       indicator: '',
       indicators: '',
+      isOpenAgreement: false,
     }
   },
   mounted() {
@@ -65,7 +72,8 @@ export default {
           deadline: this.deadlineComputed,
           description: this.description,
           quantitative_qualitative_goal: this.goal,
-          indicators: this.indicator
+          indicators: this.indicator,
+          is_open_agreement: this.isOpenAgreement,
         });
         this.$toast.success('توافق با موفقیت ثبت شد');
         this.agreementDate = '';
@@ -73,6 +81,7 @@ export default {
         this.description = '';
         this.goal = '';
         this.indicator = '';
+        this.isOpenAgreement = false;
         this.$refs.pdp.$refs.persianDatePicker.$refs.pdpInput.value = null;
         this.$refs.deadlinePdp.$refs.persianDatePicker.$refs.pdpInput.value = null;
       } catch (error) {

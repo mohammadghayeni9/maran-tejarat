@@ -9,9 +9,11 @@
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
       <v-select
-        :items="items"
+        :items="openAgreements"
         label="انتخاب توافق صورت گرفته"
         outlined
+        item-value="id"
+        item-text="description"
         v-model="agreement"
       ></v-select>
     </v-col>
@@ -54,6 +56,7 @@ export default {
       evaluate: null,
       indicators: [],
       reports: [],
+      openAgreements: [],
       evaluates: [
         {
           title: 'فرصت بهبود',
@@ -69,21 +72,24 @@ export default {
   created() {
     // this.getReportEventAgreements();
     this.getIndicators();
+    this.getOpenAgreements();
   },
   methods: {
     async recordEvent() {
       try {
         this.loading = true;
+        console.log(this.agreement);
         await this.$axios.post(routes.recordEventAgreement, {
           type_report: "E",
           be_evaluated: localStorage.getItem('beEvaluatedUserId'),  //ایدی ارزیابی شونده
           date_report: this.dateComputed,
-          agreement: this.agreemnet,
+          deadline: this.dateComputed,
+          agreement: this.agreement,
           description: this.description,
           evaluate: this.evaluate,
           indicators: this.indicator
         });
-        this.$toast.success('توافق با موفقیت ثبت شد');
+        this.$toast.success('واقعه با موفقیت ثبت شد');
         this.eventDate = '';
         this.agreement = '';
         this.description = '';
@@ -111,6 +117,16 @@ export default {
           staff: localStorage.getItem('beEvaluatedUserId')
         })
         this.reports = response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getOpenAgreements() {
+      try {
+        const response = await this.$axios.post(routes.openAgreements, {
+          staff: localStorage.getItem('beEvaluatedUserId'),
+        })
+        this.openAgreements = response.data;
       } catch (error) {
         console.log(error);
       }

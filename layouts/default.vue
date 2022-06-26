@@ -24,7 +24,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .v-application {
   background-color: var(--background-color-secondary) !important;
   .header-container {
@@ -39,6 +39,10 @@ export default {
     @media screen and (max-width: 700px) {
       width: 100vw;
     }
+  }
+
+  .loading {
+    transform: scale(0.8) !important;
   }
 }
 </style>

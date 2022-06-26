@@ -56,7 +56,7 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background:linear-gradient(10deg, var(--color-blue-sky), var(--color-purple)) ;
+        background:linear-gradient(10deg, var(--color-blue-sky), var(--color-purple)) !important;
         height: 5rem;
         padding: 0 1.5rem 0 2.5rem;
         @media screen and (max-width: 700px) {

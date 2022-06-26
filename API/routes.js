@@ -12,4 +12,5 @@ export const routes = {
   selectedIndicators: "performanceManagement/getIndicatorsForAccount/",
   axesList: "performanceManagement/list-axes/",
   registerIndicators: "performanceManagement/registerIndicatorsForAccount/",
+  openAgreements: "report/show-all-agreements-open/",
 };

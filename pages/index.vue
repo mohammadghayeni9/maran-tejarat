@@ -15,7 +15,7 @@
         </v-tabs>
       </v-tab-item>
       <v-tab-item v-if="!loading">
-        <v-col cols="12" class="d-flex justify-center" v-if="reportEventForMe.length && reportAgreementForMe.length && reportMeetingForMe.length">موردی برای نمایش وجود ندارد</v-col>
+        <v-col cols="12" class="d-flex justify-center mt-5 pt-5" v-if="!reportEventForMe.length && !reportAgreementForMe.length && !reportMeetingForMe.length">موردی برای نمایش وجود ندارد</v-col>
         <v-tabs class="mt-5" v-else>
           <v-tab v-if="reportEventForMe.length">وقایع</v-tab>
           <v-tab v-if="reportAgreementForMe.length">توافقات</v-tab>
@@ -53,6 +53,7 @@ export default {
       reportAgreementForMe: [],
       reportMeetingForMe: [],
       units: [],
+      extractedUnits: [],
     }
   },
   methods: {
@@ -100,7 +101,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
+    },
   },
   created() {
     this.getUsers();
@@ -131,7 +132,6 @@ export default {
     position: absolute;
     top: -25px;
     left: 1rem;
-    transform: scale(0.8);
   }
 }
 </style>

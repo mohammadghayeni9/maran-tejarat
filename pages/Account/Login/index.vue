@@ -57,7 +57,7 @@ export default {
       if (this.username.length && this.password.length) {
         try {
           const response = await this.$axios.$post(routes.login, {
-            email: this.username,
+            username: this.username,
             password: this.password,
           });
           localStorage.setItem("access_token", response.access);

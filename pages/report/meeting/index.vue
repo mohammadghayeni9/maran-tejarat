@@ -43,7 +43,9 @@ export default {
         async getMeetingReports() {
             try {
                 this.loading = true;
-                const response = await this.$axios.get(routes.reportMeeting)
+                const response = await this.$axios.post(routes.reportMeeting, {
+                    staff: localStorage.getItem('beEvaluatedUserId')
+                })
                 this.reports = response.data.results;
             } catch (error) {
                 console.log(error);

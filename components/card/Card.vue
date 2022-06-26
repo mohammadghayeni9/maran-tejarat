@@ -191,10 +191,10 @@ export default {
       }
     }
     .assessment-btn {
-      background-color: var(--color-blue);
+      background-color: var(--color-blue-sky);
       &:hover {
         background-color: var(--background-color-primary);
-        border: 2px solid var(--color-blue);
+        border: 2px solid var(--color-blue-sky);
         color: var(--text-color-primary);
       }
     }

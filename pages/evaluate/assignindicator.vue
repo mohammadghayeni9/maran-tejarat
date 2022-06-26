@@ -4,6 +4,23 @@
         <v-col cols="2 justify-end d-flex">
             <SVGBack class="back-icon" @click="$router.push('/')" />
         </v-col>
+        <v-col cols="12" v-if="!loading && isAssignIndicators && !selectIndicatorsIsVisible">
+            <v-col cols="12" class="selected-indicator-list rounded-xl px-4 pt-4">
+                شما برای این شخص انتساب شاخص ها را انجام داده اید و لیست شاخص‌های انتخابی شما به شرح ذیل می‌باشد :
+                <br>
+                <br>
+                <ol class="pr-10">
+                    <li v-for="indicator in selectedIndicators" :key="indicator.indicators_name" class="pb-4">
+                        {{indicator.indicators_name}} 
+                        <br>
+                    </li>
+                </ol>
+                <v-col cols="12" class="d-flex justify-end flex-wrap px-0">
+                    <v-btn elevation="2" class="px-2 py-5 mt-2 rounded-lg record-btn mx-1" @click="selectIndicatorsIsVisible = true">مایلم ثبت شاخص ها را دوباره انجام دهم</v-btn>
+                    <v-btn elevation="2" class="px-6 py-5 mt-2 rounded-lg back-btn mx-1" @click="$router.push('/')">بازگشت</v-btn>
+                </v-col>
+            </v-col>
+        </v-col>
         <v-col cols="12">
             <div class="loading d-flex justify-center" v-if="loading">
                 <img :src="require('assets/images/loading.gif')" alt="loading">
@@ -12,14 +29,17 @@
                 هیچ شاخصی ثبت نشده است
             </v-col>
             <v-card
-                v-else
+                v-else-if="selectIndicatorsIsVisible || !isAssignIndicators"
                 class="mx-auto rounded-xl overflow-hidden"
                 max-width="1200"
                 :elevation="2"
             >
+                <v-col cols="12">
+
+                </v-col>
                 <v-list shaped>
                     <v-list-item-group
-                        v-model="selectedIndicators"
+                    v-model="selectedIndicatorsCurrent"
                         multiple
                     >
                         <template v-for="(indicator, i) in indicators">
@@ -50,10 +70,10 @@
                         </template>
                     </v-list-item-group>
                 </v-list>
+                <v-col cols="12" class="d-flex justify-end mt-5 mb-2" v-if="!loading && indicators.length">
+                    <v-btn elevation="2" class="px-12 py-5 rounded-lg record-btn" @click="assignIndicatorsToUser">ثبت</v-btn>
+                </v-col>
             </v-card>
-        </v-col>
-        <v-col cols="12" class="d-flex justify-end" v-if="!loading && indicators.length">
-            <v-btn elevation="2" class="px-12 py-5 rounded-lg record-btn" @click="assignIndicatorsToUser">ثبت</v-btn>
         </v-col>
     </div>
 </template>
@@ -70,6 +90,8 @@ export default {
         return {
             indicators: [],
             selectedIndicators: [],
+            selectedIndicatorsCurrent: [],
+            selectIndicatorsIsVisible: false,
             loading: false,
         }
     },
@@ -103,20 +125,30 @@ export default {
             }
         },
         async assignIndicatorsToUser () {
-            try {
-                await this.$axios.post(routes.registerIndicators, {
-                    be_evaluated: localStorage.getItem('beEvaluatedUserId'),
-                    list_of_Indicator: this.listIndicatorsIdComputed
-                });
-                this.$toast.success('شاخص ها با موفقیت انساب داده شد');
-            } catch (error) {
-                this.$toast.error('خطایی رخ داده است دوباره سعی کنید');
+            if (!this.selectedIndicatorsCurrent.length) {
+                this.$toast.info('هیچ شاخصی انتخاب نشده است');
             }
-        }
+            else {
+                try {
+                    await this.$axios.post(routes.registerIndicators, {
+                        be_evaluated: localStorage.getItem('beEvaluatedUserId'),
+                        list_of_Indicator: this.listIndicatorsIdComputed
+                    });
+                    this.getSelectedIndicators();
+                    this.selectIndicatorsIsVisible = false;
+                    this.$toast.success('شاخص ها با موفقیت انتساب داده شد');
+                } catch (error) {
+                    this.$toast.error('خطایی رخ داده است دوباره سعی کنید');
+                }
+            }
+        },
     },
     computed: {
         listIndicatorsIdComputed() {
-            return this.selectedIndicators.map(indicator => indicator.indicators)
+            return [...new Set(this.selectedIndicatorsCurrent.map(indicator => indicator.indicators || indicator.id))]
+        },
+        isAssignIndicators() {
+            return this.selectedIndicators.length > 0
         }
     }
 }
@@ -131,6 +163,13 @@ export default {
     .assign-indicator-title {
         font-size: 1.25rem;
     }
+    .selected-indicator-list {
+        background: var(--background-color-primary);
+        font-size: 0.95rem;
+        span {
+            font-size: 0.9rem;
+        }
+    }
     .back-icon {
         object-fit: cover;
         max-height: 2rem;
@@ -141,6 +180,12 @@ export default {
     .record-btn {
         background-color: var(--color-blue-sky);
         color: var(--color-white);
+        border: 2px solid var(--color-blue-sky);
+    }
+    .back-btn {
+        background-color: var(--color-white);
+        color: var(--color-blue-sky);
+        border: 2px solid var(--color-blue-sky);
     }
 }
 </style>

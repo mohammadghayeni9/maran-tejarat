@@ -27,7 +27,7 @@
 }
 
 .v-input__slot {
-  background-color: var(--background-color-secondary) !important;
+  /* background-color: var(--background-color-primary) !important; */
 }
 
 .v-input__slot fieldset {

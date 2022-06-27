@@ -4,7 +4,7 @@
         <v-col cols="2 justify-end d-flex">
             <SVGBack class="back-icon" @click="$router.push('/')" />
         </v-col>
-        <v-col cols="12" v-if="!loading && isAssignIndicators && !selectIndicatorsIsVisible">
+        <!-- <v-col cols="12" v-if="!loading && isAssignIndicators && !selectIndicatorsIsVisible">
             <v-col cols="12" class="selected-indicator-list rounded-xl px-4 pt-4">
                 شما برای این شخص انتساب شاخص ها را انجام داده اید و لیست شاخص‌های انتخابی شما به شرح ذیل می‌باشد :
                 <br>
@@ -74,7 +74,7 @@
                     <v-btn elevation="2" class="px-12 py-5 rounded-lg record-btn" @click="assignIndicatorsToUser">ثبت</v-btn>
                 </v-col>
             </v-card>
-        </v-col>
+        </v-col> -->
     </div>
 </template>
 

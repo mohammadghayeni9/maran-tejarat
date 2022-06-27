@@ -114,7 +114,7 @@ export default {
     },
     goToEvaluate(id) {
       localStorage.setItem('beEvaluatedUserId', id);
-      this.$router.push('/evaluate/assignindicator/');
+      this.$router.push('/evaluate/');
     },
   }
 }

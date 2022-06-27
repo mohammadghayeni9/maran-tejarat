@@ -4,27 +4,35 @@
         <v-col cols="2 justify-end d-flex">
             <SVGBack class="back-icon" @click="$router.push('/')" />
         </v-col>
+        <v-col cols="12">
+            <evaluateCard v-for="axes in axesList" :key="axes.id" :axes="axes" :indicators="indicators" />
+        </v-col>
+        <v-col cols="12" class="d-flex justify-end mt-5 mb-2">
+            <v-btn elevation="2" class="px-12 py-5 rounded-lg record-btn">ثبت ارزیابی</v-btn>
+        </v-col>
     </div>
 </template>
 
 <script>
 import SVGBack from "@/components/icons/back-icon.svg"
 import { routes } from "~/API/routes";
+import evaluateCard from '~/components/card/evaluateCard.vue';
 
 export default {
     components: {
         SVGBack,
+        evaluateCard,
     },
     data() {
         return {
             axesList: [],
-            indicatorList: [],
+            indicators: [],
             evaluateItems: []
         }
     },
     created() {
         this.getAxesList();
-        this.getSelectedIndicators();
+        this.getIndicators();
     },
     methods: {
         async getAxesList () {
@@ -35,11 +43,12 @@ export default {
                 console.log(error);
             }
         },
-        async getSelectedIndicators () {
+        async getIndicators () {
             try {
                 const response = await this.$axios.post(routes.selectedIndicators, {
                     staff: localStorage.getItem('beEvaluatedUserId')
                 });
+                this.indicators = response.data;
                 console.log(response);
             } catch (error) {
                 console.log(error);

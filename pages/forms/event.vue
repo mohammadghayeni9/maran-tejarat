@@ -5,7 +5,7 @@
       <SVGBack class="back-icon" @click="$router.push('/')" />
     </v-col>
     <v-col cols="12" sm="6" lg="4">
-      <persianDatePicker placeholder="تاریخ" @select="selectEventDate" ref="pdp"/>
+      <persianDatePicker placeholder="تاریخ" ref="pdp"/>
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
       <v-select
@@ -86,7 +86,7 @@ export default {
           deadline: this.dateComputed,
           agreement: this.agreement,
           description: this.description,
-          evaluate: this.evaluate,
+          assessment_type: this.evaluate,
           indicators: this.indicator
         });
         this.$toast.success('واقعه با موفقیت ثبت شد');
@@ -135,10 +135,6 @@ export default {
   computed: {
     dateComputed() {
       return this.$refs?.pdp?.$refs?.persianDatePicker?.$refs?.pdpInput?.value.replaceAll('/', '-');
-    },
-    agreementReportsComputed() {
-      let agreementReports = this.reports.filter((report) => report.type_report === 'A');
-      return agreementReports;
     },
   }
 };

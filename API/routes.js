@@ -13,4 +13,6 @@ export const routes = {
   axesList: "performanceManagement/list-axes/",
   registerIndicators: "performanceManagement/registerIndicatorsForAccount/",
   openAgreements: "report/show-all-agreements-open/",
+  evalUser: "performanceManagement/eval-a-user/",
+  reportEvaluate: "performanceManagement/show-report-eval/",
 };

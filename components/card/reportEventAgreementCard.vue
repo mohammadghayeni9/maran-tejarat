@@ -1,18 +1,18 @@
 <template>
     <div class="report-event-agreement-card">
-        <v-col cols="12 pb-0">
-            <span v-if="type === 'E'">شرح واقعه : </span>
-            <span v-else-if="type === 'A'"> شرح توافق : </span>
-            <span v-else-if="type === 'M'"> شرح جلسه : </span>
+        <v-col cols="12 pb-1">
+            <span v-if="type === 'E'">شرح واقعه: </span>
+            <span v-else-if="type === 'A'"> شرح توافق: </span>
+            <span v-else-if="type === 'M'"> شرح جلسه: </span>
             {{ reportData.description }}
         </v-col>
-        <!-- <v-col v-if="reportData.type_report === 'E'">
-            <span>ارزیابی : </span>
-            {{ reportData. }}
-        </v-col> -->
-        <v-col cols="col">
-            <span>تارخ ثبت : </span>
-            {{ reportData.date_report }}
+        <v-col cols="12" sm="6" class="pb-1">
+            <span>تارخ ثبت: </span>
+            <span dir="ltr">{{ toPersianDigits(reportData.date_report) }}</span>
+        </v-col>
+        <v-col cols="12" sm="6" v-if="reportData.type_report === 'E'">
+            <span>نوع ارزیابی: </span>
+            {{ assessmentTypeComputed }}
         </v-col>
         <!-- <v-col cols="auto" class="d-flex justify-end pr-0">
             <v-btn>نمایش جزئیات</v-btn>
@@ -26,6 +26,19 @@ export default {
         type: '',
         reportData: {}
     },
+    computed: {
+        assessmentTypeComputed() {
+            return this.reportData.assessment_type === 'S' ? 'نقطه قوت' : 'فرصت بهبود'
+        },
+    },
+    methods: {
+        toPersianDigits(str) {
+            let persianNum = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+            return str?.replace(/[0-9]/g, function(w){
+                return persianNum[+w];
+            });
+        }
+    }
 }
 </script>
 

@@ -11,7 +11,7 @@
         <div class="loading" v-if="loading">
             <img :src="require('assets/images/loading.gif')" alt="loading">
         </div>
-        <div class="report-card" v-for="report in reports" :key="report.id">
+        <div class="report-card" v-for="report in reports" :key="report.id" v-else>
             <report-event-agreement-card type="M" :reportData="report" />
         </div>
     </perfect-scrollbar>
@@ -46,13 +46,13 @@ export default {
                 const response = await this.$axios.post(routes.reportMeeting, {
                     staff: localStorage.getItem('beEvaluatedUserId')
                 })
-                this.reports = response.data.results;
+                this.reports = response.data;
             } catch (error) {
                 console.log(error);
             } finally {
                 this.loading = false;
             }
-        }
+        },
     }
 }
 </script>
@@ -85,12 +85,11 @@ export default {
   .reports-content {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
         padding: 1rem 0.2rem 1rem 0.2rem;
         max-height: 70vh;
         overflow: hidden !important;   
         width: 100%;
-        gap: 5rem;
+        gap: 2rem;
         .report-card {
             width: 100%;
         }

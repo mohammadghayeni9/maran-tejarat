@@ -2,18 +2,15 @@
     <div class="evaluate-card">
         <div class="axes-title pb-5">{{ axes.name }}</div>
         <v-col cols="12">
-            <ol>
-                <li v-for="indicator in indicators" :key="indicator.id">
-                    <indicator-with-items-card :indicator="indicator" />
-                </li>
-            </ol>
+            <div v-for="indicator in indicators" :key="indicator.id" >
+                <indicator-with-items-card :indicator="indicator" v-if="indicator.axes === axes.id" />
+            </div>
         </v-col>
     </div>
 </template>
 
 <script>
 import indicatorWithItemsCard from "./indicatorWithItemsCard.vue";
-import { routes } from "~/API/routes";
 
 export default {
     data() {
@@ -27,26 +24,6 @@ export default {
         axes: {},
         indicators: [],
     },
-    methods: {
-        // async getAxesList () {
-        //     try {
-        //         const response = await this.$axios.get(routes.axesList);
-        //         this.axesList = response.data.results;
-        //     } catch (error) {
-        //         console.log(error);
-        //     }
-        // },
-        // async getIndicators () {
-        //     try {
-        //         const response = await this.$axios.post(routes.selectedIndicators, {
-        //             staff: localStorage.getItem('beEvaluatedUserId')
-        //         });
-        //         console.log(response);
-        //     } catch (error) {
-        //         console.log(error);
-        //     }
-        // }
-    }
 }
 </script>
 

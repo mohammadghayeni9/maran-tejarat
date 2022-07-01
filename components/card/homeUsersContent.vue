@@ -1,5 +1,6 @@
 <template>
-    <div v-if="searchedUsers.length">
+    <div>
+      <div v-if="users.length">
         <div class="home-header">
             <div class="search-box">
                 <input
@@ -21,10 +22,11 @@
                 <Card :cardData="user" />
             </div>
         </perfect-scrollbar>
+      </div>
+      <v-col  cols="12" class="d-flex justify-center mt-5" v-if="!users.length || !searchedUsers.length">
+        کاربری یافت نشد
+      </v-col>
     </div>
-    <v-col cols="12" class="d-flex justify-center mt-5" v-else>
-        در این واحد هیچ فردی به شما انتساب داده نشده است
-    </v-col>
 </template>
 
 <script>

@@ -26,6 +26,12 @@
     <v-col cols="12" sm="6" lg="4" class="pb-0">
       <v-select :items="evaluates" item-text="title" item-value="value" label="ارزیابی" outlined v-model="evaluate"></v-select>
     </v-col>
+    <v-col cols="12" sm="6" lg="4" class="pb-0">
+      <v-checkbox
+        v-model="isClosedAgreement"
+        label="آیا توافق پایان یافته است؟"
+      ></v-checkbox>
+    </v-col>
     <v-col cols="12"></v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
       <v-btn class="event-form-btn disable-btn" elevation="2" v-if="loading">
@@ -67,6 +73,7 @@ export default {
           value: 'S'
         }
       ],
+      isClosedAgreement: false,
     }
   },
   created() {
@@ -78,7 +85,6 @@ export default {
     async recordEvent() {
       try {
         this.loading = true;
-        console.log(this.agreement);
         await this.$axios.post(routes.recordEventAgreement, {
           type_report: "E",
           be_evaluated: localStorage.getItem('beEvaluatedUserId'),  //ایدی ارزیابی شونده
@@ -87,7 +93,8 @@ export default {
           agreement: this.agreement,
           description: this.description,
           assessment_type: this.evaluate,
-          indicators: this.indicator
+          indicators: this.indicator,
+          is_open_agreement: !this.isClosedAgreement,
         });
         this.$toast.success('واقعه با موفقیت ثبت شد');
         this.eventDate = '';
@@ -95,7 +102,8 @@ export default {
         this.description = '';
         this.evaluate = '';
         this.indicator = '';
-        this.$refs.pdp.$refs.persianDatePicker.$refs.pdpInput.value = null
+        this.$refs.pdp.$refs.persianDatePicker.$refs.pdpInput.value = null;
+        this.isClosedAgreement = false;
       } catch (error) {
         this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
         console.log(error);

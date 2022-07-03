@@ -32,7 +32,7 @@ export default {
   modules: ["@nuxtjs/axios", "@nuxtjs/pwa", "nuxt-svg-loader", "@nuxtjs/toast"],
 
   axios: {
-    baseURL: "https://s-rahmani.ir/vispar/",
+    baseURL: "https://admin.pbapms.ir/",
   },
 
   pwa: {

@@ -7,7 +7,7 @@
       <div class="login-view-wrapper">
         <img
           class="login-view-logo"
-          :src="require('@/components/icons/vispar-logo.png')"
+          :src="require('@/components/icons/vispar-logo-text.png')"
         />
         <div class="login-view-title">
           به سامانه مدیریت عملکرد گروه صنعتی ویسپار خوش آمدید
@@ -154,8 +154,8 @@ export default {
         display: flex;
         justify-content: center;
         margin: 1.5rem auto;
-        width: 10rem;
-        height: 10rem;
+        transform: scale(1.25);
+        padding: 1.5rem 0;
       }
       .login-view-title {
         display: flex;

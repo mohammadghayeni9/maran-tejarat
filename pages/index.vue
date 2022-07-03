@@ -1,13 +1,14 @@
 <template>
   <div class="home-view">
     <v-tabs class="home-tabs">
-      <v-tab>ارزیابی کننده</v-tab>
+      <v-tab v-if="isAssessorComputed">ارزیابی کننده</v-tab>
       <v-tab>ارزیابی شونده</v-tab>
       <div class="loading d-flex justify-center" v-if="loading">
         <img :src="require('assets/images/loading.gif')" alt="loading">
       </div>
-      <v-tab-item v-else-if="!loading">
-        <v-tabs class="mt-5">
+      <v-tab-item v-else-if="!loading && isAssessorComputed">
+        <v-col cols="12" class="d-flex justify-center mt-5 pt-5" v-if="!units.length">هنوز فردی برای ازریابی به شما انتساب داده نشده است</v-col>
+        <v-tabs class="mt-5" v-else>
           <v-tab v-for="unit in units" :key="unit.id">{{ unit.name }}</v-tab>
           <v-tab-item v-for="unit in units" :key="unit.name">
             <homeUsersContent :loading="loading" :unit="unit" :users="users" />
@@ -15,7 +16,7 @@
         </v-tabs>
       </v-tab-item>
       <v-tab-item v-if="!loading">
-        <v-col cols="12" class="d-flex justify-center mt-5 pt-5" v-if="!reportEventForMe.length && !reportAgreementForMe.length && !reportMeetingForMe.length">موردی برای نمایش وجود ندارد</v-col>
+        <v-col cols="12" class="d-flex justify-center mt-5 pt-5" v-if="!reportEventForMe.length && !reportAgreementForMe.length && !reportMeetingForMe.length">گزارشی برای نمایش وجود ندارد</v-col>
         <v-tabs class="mt-5" v-else>
           <v-tab v-if="reportEventForMe.length">وقایع</v-tab>
           <v-tab v-if="reportAgreementForMe.length">توافقات</v-tab>
@@ -115,6 +116,12 @@ export default {
       this.loading = false;
     }, 1000);
   },
+  computed: {
+    isAssessorComputed() {
+      console.log(localStorage.getItem('isAssessor'));
+      return localStorage.getItem('isAssessor') == 'true';
+    }
+  }
 }
 </script>
 

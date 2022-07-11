@@ -1,6 +1,6 @@
 <template>
   <div class="event-form">
-    <v-col cols="10 mb-5" class="event-form-title">ثبت وقایع مهم</v-col>
+    <v-col cols="10 mb-5" class="event-form-title">ثبت واقعه مهم</v-col>
     <v-col cols="2 justify-end d-flex">
       <SVGBack class="back-icon" @click="$router.push('/')" />
     </v-col>
@@ -15,6 +15,7 @@
         item-value="id"
         item-text="description"
         v-model="agreement"
+        @change="getSelectedAgreement"
       ></v-select>
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
@@ -77,7 +78,6 @@ export default {
     }
   },
   created() {
-    // this.getReportEventAgreements();
     this.getIndicators();
     this.getOpenAgreements();
   },
@@ -104,6 +104,7 @@ export default {
         this.indicator = '';
         this.$refs.pdp.$refs.persianDatePicker.$refs.pdpInput.value = null;
         this.isClosedAgreement = false;
+        this.getOpenAgreements();
       } catch (error) {
         this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
         console.log(error);
@@ -138,6 +139,10 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    getSelectedAgreement(e) {
+      this.agreement = this.openAgreements.find(agree => agree.id == e);
+      this.indicator = this.indicators.find(indicator => indicator.id == this.agreement.indicators)
     }
   },
   computed: {

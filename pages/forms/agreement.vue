@@ -46,7 +46,7 @@ export default {
       agreementDate: '',
       deadlineDate: '',
       description: '',
-      goal: '',
+      goal: null,
       indicator: '',
       indicators: '',
     }
@@ -56,31 +56,35 @@ export default {
   },
   methods: {
     async recordAgreement() {
-      try {
-        this.loading = true;
-        await this.$axios.post(routes.recordEventAgreement, {
-          type_report: "A",
-          be_evaluated: localStorage.getItem('beEvaluatedUserId'),  //ایدی ارزیابی شونده
-          date_report: this.dateReportComputed,
-          deadline: this.deadlineComputed,
-          description: this.description,
-          quantitative_qualitative_goal: this.goal,
-          indicators: this.indicator,
-          is_open_agreement: true,
-        });
-        this.$toast.success('توافق با موفقیت ثبت شد');
-        this.agreementDate = '';
-        this.deadlineDate = '';
-        this.description = '';
-        this.goal = '';
-        this.indicator = '';
-        this.$refs.pdp.$refs.persianDatePicker.$refs.pdpInput.value = null;
-        this.$refs.deadlinePdp.$refs.persianDatePicker.$refs.pdpInput.value = null;
-      } catch (error) {
-        this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
-        console.log(error);
-      } finally {
-        this.loading = false;
+      if (this.goal) {
+        try {
+          this.loading = true;
+          await this.$axios.post(routes.recordEventAgreement, {
+            type_report: "A",
+            be_evaluated: localStorage.getItem('beEvaluatedUserId'),  //ایدی ارزیابی شونده
+            date_report: this.dateReportComputed,
+            deadline: this.deadlineComputed,
+            description: this.description,
+            quantitative_qualitative_goal: this.goal,
+            indicators: this.indicator,
+            is_open_agreement: true,
+          });
+          this.$toast.success('توافق با موفقیت ثبت شد');
+          this.agreementDate = '';
+          this.deadlineDate = '';
+          this.description = '';
+          this.goal = '';
+          this.indicator = '';
+          this.$refs.pdp.$refs.persianDatePicker.$refs.pdpInput.value = null;
+          this.$refs.deadlinePdp.$refs.persianDatePicker.$refs.pdpInput.value = null;
+        } catch (error) {
+          this.$toast.error('تمام موارد الزامی می‌باشد');
+          console.log(error);
+        } finally {
+          this.loading = false;
+        }
+      } else {
+        this.$toast.error('تمام موارد الزامی می‌باشد');
       }
     },
     async getIndicators() {

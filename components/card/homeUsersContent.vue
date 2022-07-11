@@ -53,7 +53,7 @@ export default {
             return this.users.filter(user => 
                 (user?.first_name.includes(this.searchValue) || 
                 user?.last_name.includes(this.searchValue) || 
-                (user?.first_name + ' ' + user?.last_name).includes(this.searchValue)) && user.unit == this.unit.id
+                (user?.first_name + ' ' + user?.last_name).includes(this.searchValue)) && user.unit == this.unit[1]
             );
         }
     },

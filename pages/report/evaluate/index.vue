@@ -1,23 +1,37 @@
 <template>
-<div class="evaluate-report">
-    <div class="evaluate-report-header">
-        <v-col cols="10" class="reports-title"> گزارش ارزیابی دوره‌ای</v-col>
-        <v-col cols="2 d-flex justify-end">
-            <SVGBack class="back-icon" @click="$router.push('/')" />
-        </v-col>
-    </div>
-    <div class="loading d-flex justify-center" v-if="loading">
-        <img :src="require('assets/images/loading.gif')" alt="loading">
-    </div>
-    <v-col cols="12" class="d-flex justify-center" v-else-if="!reports">ارزیابی ثبت شده‌ای برای نمایش وجود ندارد</v-col>
-    <perfect-scrollbar class="reports-content mt-5" v-else>
-        <v-col cols="12">{{ season }}  {{ date[0] }}</v-col>
-        <div class="report-card px-3" v-for="report in reports[0].report" :key="report.id">
-            {{ report[0] }} -> {{ report[1] }}
+    <div class="evaluate-report">
+        <div class="evaluate-report-header">
+            <v-col cols="10" class="reports-title"> گزارش ارزیابی دوره‌ای</v-col>
+            <v-col cols="2 d-flex justify-end">
+                <SVGBack class="back-icon" @click="$router.push('/')" />
+            </v-col>
         </div>
-        <v-col cols="12">امتیاز کسب‌شده در ارزیابی این فصل: {{ toPersianDigits(reports[0].score) }}</v-col>
-    </perfect-scrollbar>
-  </div>
+        <v-col cols="12" class="d-flex justify-between report-evaluate">
+            <v-select :items="seasons" item-text="title" item-value="value" label="انتخاب فصل مورد نطر" outlined
+                v-model="seasonSelected">
+            </v-select>
+            <v-select :items="yearsComputed" label="انتخاب سال مورد نظر" outlined v-model="yearSelected">
+            </v-select>
+        </v-col>
+        <v-col cols="12" class="d-flex justify-end px-0">
+            <v-btn elevation="2" class="px-6 py-5 rounded-lg back-btn mx-1" @click="getEvaluateReports">
+                نمایش
+            </v-btn>
+        </v-col>
+        <div class="loading d-flex justify-center" v-if="loading">
+            <img :src="require('assets/images/loading.gif')" alt="loading">
+        </div>
+        <v-col cols="12" class="d-flex justify-center" v-else-if="!reports.length">ارزیابی ثبت شده‌ای برای نمایش وجود
+            ندارد
+        </v-col>
+        <perfect-scrollbar class="reports-content mt-5" v-else>
+            <v-col cols="12">{{ seasonComputed }} {{ yearSelected }}</v-col>
+            <div class="report-card px-3" v-for="report in reports[0].report" :key="report.id">
+                {{ report[0] }} -> {{ report[1] }}
+            </div>
+            <v-col cols="12">امتیاز کسب‌شده در ارزیابی این فصل: {{ toPersianDigits(reports[0].score) }}</v-col>
+        </perfect-scrollbar>
+    </div>
 </template>
 
 <script>
@@ -35,11 +49,29 @@ export default {
             loading: false,
             reports: [],
             date: [],
-            season: ''
+            yearSelected: localStorage.getItem('year'),
+            seasonSelected: localStorage.getItem('season'),
+            seasons: [
+                {
+                    title: 'بهار',
+                    value: 'B'
+                },
+                {
+                    title: 'تابستان',
+                    value: 'T'
+                },
+                {
+                    title: 'پاییز',
+                    value: 'P'
+                },
+                {
+                    title: 'زمستان',
+                    value: 'Z'
+                }
+            ],
         }
     },
     created() {
-        this.getEvaluateReports();
         this.date = new Date().toLocaleDateString('fa-IR').split('/');
     },
     methods: {
@@ -48,8 +80,8 @@ export default {
                 this.loading = true;
                 const response = await this.$axios.post(routes.reportEvaluate, {
                     staff: localStorage.getItem('beEvaluatedUserId'),
-                    season: this.seasonComputed,
-                    year: this.yearComputed
+                    season: this.seasonSelected,
+                    year: this.yearSelected
                 })
                 this.reports = response.data;
             } catch (error) {
@@ -66,31 +98,30 @@ export default {
         }
     },
     computed: {
-        yearComputed() {
-            this.date = new Date().toLocaleDateString('fa-IR').split('/');
-            return this.date[0];
-        },
         seasonComputed() {
-            this.date = new Date().toLocaleDateString('fa-IR').split('/');
-            if (this.date[1] == '۱' || this.date[1] == '۲' || this.date[1] == '۳') {
-                this.season = 'بهار';
-                return 'B';
-            } else if (this.date[1] == '۴' || this.date[1] == '۵' || this.date[1] == '۶') {
-                this.season = 'تابستان';
-                return 'T';
-            } else if (this.date[1] == '۷' || this.date[1] == '۸' || this.date[1] == '۹') {
-                this.season = 'پاییز';
-                return 'P';
+            if (this.seasonSelected === 'B') {
+                return 'بهار';
+            } else if (this.seasonSelected === 'T') {
+                return 'تابستان';
+            } else if (this.seasonSelected === 'P') {
+                return 'پاییز';
             } else {
-                this.season = 'زمستان';
-                return 'Z';
+                return 'زمستان';
             }
+        },
+        yearsComputed() {
+            let years = [];
+            for (let index = localStorage.getItem('year'); index > localStorage.getItem('year') - 20; index--) {
+                years.push(index);
+            }
+            return years;
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+
 .evaluate-report {
     margin: auto;
     max-width: 65rem;
@@ -114,6 +145,14 @@ export default {
         margin-left: -20px;
         cursor: pointer;
     }
+  }
+  .report-evaluate {
+      column-gap: 3rem;
+      padding: 3rem 0;
+
+      @media screen and (max-width: 450px) {
+          gap: 0.5rem;
+      }
   }
   .reports-content {
         display: flex;

@@ -2,9 +2,11 @@
     <v-col cols="12" class="indicator-items-card pr-0 py-0">
         <v-col cols="12" md="5" class="indicator-title">{{ indicator.name }}</v-col>
         <v-col cols="10" md="5" class="d-flex pr-0 ">
-            <v-select :items="indicator.item_of_indicators" item-text="[1]" item-value="[0]" label="انتخاب آیتم ارزیابی" outlined v-model="itemToBeSelected" @change="setItemForIndicator(indicator.id, itemToBeSelected)"></v-select>
+            <v-select :items="indicator.item_of_indicators" item-text="[1]" item-value="[0]" label="انتخاب گویه ارزیابی"
+                outlined v-model="itemToBeSelected" @change="setItemForIndicator(indicator.id, itemToBeSelected)">
+            </v-select>
         </v-col>
-        <v-col cols="2" md="auto" class="score"><span>امتیاز: {{ toPersianDigits() }}</span>  </v-col>
+        <v-col cols="2" md="auto" class="score"><span>امتیاز: {{ toPersianDigits() }}</span> </v-col>
     </v-col>
 </template>
 

@@ -32,7 +32,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <button class="card-btn assessment-btn" @click="goToEvaluate(cardData.id)">
+      <button class="card-btn assessment-btn" @click="goToEvaluate(cardData.id, cardData.fullname)">
         <span>امتیازدهی</span>
       </button>
       <v-menu
@@ -75,7 +75,7 @@ export default {
       id: null,
       recordListDropdown: [
         {
-          title: 'ثبت وقایع مهم',
+          title: 'ثبت واقعه مهم',
           link: 'event'
         },
         {
@@ -89,7 +89,7 @@ export default {
       ],
       reportListDropdown: [
         {
-          title: 'مشاهده وقایع مهم / توافقات',
+          title: 'مشاهده وقایع مهم/توافقات',
           link: 'eventAgreement'
         },
         {
@@ -112,8 +112,9 @@ export default {
     setId(id) {
       localStorage.setItem('beEvaluatedUserId', id);
     },
-    goToEvaluate(id) {
+    goToEvaluate(id, name) {
       localStorage.setItem('beEvaluatedUserId', id);
+      localStorage.setItem('beEvaluatedUser', name);
       this.$router.push('/evaluate/');
     },
   }

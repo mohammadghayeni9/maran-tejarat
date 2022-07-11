@@ -80,9 +80,12 @@ export default {
       var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
           return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
       }).join(''));
-      const { assessor, is_eval_time } = JSON.parse(jsonPayload);
+      const { assessor, is_eval_time, season, year, id } = JSON.parse(jsonPayload);
       localStorage.setItem('isAssessor', assessor);
       localStorage.setItem('isEvalTime', is_eval_time);
+      localStorage.setItem('season', season);
+      localStorage.setItem('year', year);
+      localStorage.setItem('meUserId', id);
     }
   },
 };

@@ -23,19 +23,19 @@
           <v-tab v-if="reportMeetingForMe.length">جلسات</v-tab>
           <v-tab>سوابق ارزیابی دوره‌ای</v-tab>
           <v-tab-item v-if="reportEventForMe.length">
-            <perfect-scrollbar class="reports-content mt-5">
+            <perfect-scrollbar class="reports-content-forMe mt-5">
               <report-event-agreement-card type="E" v-for="event in reportEventForMe" :key="event.date_report"
                 :reportData="event" class="my-5" />
             </perfect-scrollbar>
           </v-tab-item>
           <v-tab-item v-if="reportAgreementForMe.length">
-            <perfect-scrollbar class="reports-content mt-5">
+            <perfect-scrollbar class="reports-content-forMe mt-5">
               <report-event-agreement-card type="A" v-for="agreement in reportAgreementForMe"
                 :key="agreement.date_report" :reportData="agreement" class="my-5" />
             </perfect-scrollbar>
           </v-tab-item>
           <v-tab-item v-if="reportMeetingForMe.length">
-            <perfect-scrollbar class="reports-content mt-5">
+            <perfect-scrollbar class="reports-content-forMe mt-5">
               <report-event-agreement-card type="M" v-for="meeting in reportMeetingForMe" :key="meeting.date_report"
                 :reportData="meeting" class="my-5" />
             </perfect-scrollbar>
@@ -213,6 +213,10 @@ export default {
 <style lang="scss">
 
 
+
+
+
+
 .home-tabs {
   .v-tabs-bar {
     background-color: var(--background-color-primary) !important;
@@ -233,6 +237,11 @@ export default {
     @media screen and (max-width: 450px) {
       gap: 0.5rem;
     }
+  }
+  .reports-content-forMe {
+    max-height: 70vh;
+    overflow: hidden !important;
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
   }
   .reports-content {
     display: flex;

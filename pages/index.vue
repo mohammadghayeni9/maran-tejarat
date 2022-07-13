@@ -170,7 +170,6 @@ export default {
     async getUnits () {
       try {
         const response = await this.$axios.post(routes.units);
-        console.log(response);
         this.units = response.data.unit;
       } catch (error) {
         console.log(error);
@@ -211,12 +210,6 @@ export default {
 </script>
 
 <style lang="scss">
-
-
-
-
-
-
 .home-tabs {
   .v-tabs-bar {
     background-color: var(--background-color-primary) !important;

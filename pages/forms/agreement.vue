@@ -17,7 +17,7 @@
       <v-text-field label="هدف کمی / کیفی" outlined v-model="goal"></v-text-field>
     </v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">
-      <v-select :items="indicators" item-text="name" item-value="axes" label="انتخاب شاخص" outlined v-model="indicator"></v-select>
+      <v-select :items="indicators" item-text="name" item-value="id" label="انتخاب شاخص" outlined v-model="indicator"></v-select>
     </v-col>
     <v-col cols="12"></v-col>
     <v-col cols="12" sm="6" lg="4" class="pb-0">

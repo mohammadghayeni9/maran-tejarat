@@ -7,13 +7,11 @@ export const mutations = {
             this.state.states.indicatorsAndItemsToBeSelected[index] = eval(
               value.obj
             );
-            console.log(this.state.states.indicatorsAndItemsToBeSelected);
         } 
         else {
             this.state.states.indicatorsAndItemsToBeSelected.push(
               eval(value.obj)
             );
-            console.log(this.state.states.indicatorsAndItemsToBeSelected);
         }
     }
 }

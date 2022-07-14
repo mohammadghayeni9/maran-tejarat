@@ -32,7 +32,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <button class="card-btn assessment-btn" @click="goToEvaluate(cardData.id, cardData.fullname)">
+      <button class="card-btn assessment-btn" @click="goToEvaluate(cardData.id, cardData.first_name + ' ' + cardData.last_name)">
         <span>امتیازدهی</span>
       </button>
       <v-menu
@@ -115,7 +115,11 @@ export default {
     goToEvaluate(id, name) {
       localStorage.setItem('beEvaluatedUserId', id);
       localStorage.setItem('beEvaluatedUser', name);
-      this.$router.push('/evaluate/');
+      if (localStorage.getItem('isEvalTime') == 'true') {
+        this.$router.push('/evaluate/');
+      } else {
+        this.$toast.info('در بازه زمانی ارزیابی قرار نداریم')
+      }
     },
   }
 }

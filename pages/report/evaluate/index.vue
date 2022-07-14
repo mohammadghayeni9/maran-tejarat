@@ -71,8 +71,8 @@ export default {
             ],
         }
     },
-    created() {
-        this.date = new Date().toLocaleDateString('fa-IR').split('/');
+    mounted() {
+        this.getEvaluateReports();
     },
     methods: {
         async getEvaluateReports() {

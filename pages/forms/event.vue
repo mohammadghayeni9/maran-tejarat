@@ -163,11 +163,11 @@ export default {
     font-size: 1.25rem;
   }
   .event-form-btn {
-    height: 54px;
-    width: 100%;
-    border-radius: var(--input-border-radius);
-    background-color: var(--color-blue-sky);
-    color: var(--color-white);
+    height: 54px !important;
+    width: 100% !important;
+    border-radius: var(--input-border-radius) !important;
+    background-color: var(--color-blue-sky) !important;
+    color: var(--color-white) !important;
   }
   .disable-btn {
     cursor: default;

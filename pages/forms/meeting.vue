@@ -182,14 +182,14 @@ mounted() {
       margin-top: 10px !important;
   }
   .meeting-form-btn {
-    height: 54px;
-    width: 100%;
-    border-radius: var(--input-border-radius);
-    background-color: var(--color-blue-sky);
-    color: var(--color-white);
+    height: 54px !important;
+    width: 100% !important;
+    border-radius: var(--input-border-radius) !important;
+    background-color: var(--color-blue-sky) !important;
+    color: var(--color-white) !important;
     &.add {
-      background-color: var(--color-white);
-      color: var(--color-blue-sky);
+      background-color: var(--color-white) !important;
+      color: var(--color-blue-sky) !important;
     }
   }
   .disable-btn {

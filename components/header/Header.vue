@@ -9,7 +9,23 @@
             color="indigo"
             @change="toggleTeme"
         ></v-switch> -->
-        <div class="header-logout" @click="logout">خروج</div>
+        <div class="header-menu">
+            <v-menu v-model="showMenu" offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                    <div class="header-menu-box" v-bind="attrs" v-on="on">
+                        <span>{{ meUsernameComputed }}</span>
+                        <img src="../../assets/images/placeholder.png" alt="placeholder" class="avatar-image">
+                    </div>
+                </template>
+
+                <v-list>
+                    <v-list-item v-for="(item, index) in items" :key="index" @click="item.handler">
+                        <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </div>
+        <!-- <div class="header-logout" @click="logout">خروج</div> -->
     </div>
 </template>
 
@@ -17,7 +33,22 @@
 export default {
     data () {
         return {
-            themeIsDark: false
+            themeIsDark: false,
+            showMenu: false,
+            items: [
+                { 
+                    title: 'تغییر رمز ورود',
+                    handler: () => {
+                        this.$router.push('/account/changepassword/');
+                    }
+                },
+                {
+                    title: 'خروج',
+                    handler: () => {
+                        this.logout();
+                    }
+                },
+            ],
         }
     },
     mounted() {
@@ -40,12 +71,20 @@ export default {
                 document.documentElement.className = 'light-theme';
             }
         },
+        goToChangePassword() {
+            this.$router.push('/account/changepassword/');
+        },
         logout () {
             localStorage.clear();
             this.$router.push('/account/login/');
             this.$toast.info('با موفقیت خارج شدید')
         }
-    }
+    },
+    computed: {
+        meUsernameComputed() {
+            return localStorage.getItem('username')
+        }
+    },
 }
 </script>
 
@@ -65,9 +104,30 @@ export default {
         .logo-header {
             height: 100%;
         }
-        .switch {
-            .v-input--switch__track {
-                color: rgba(255, 255, 255, 0.9);
+        // .switch {
+        //     .v-input--switch__track {
+        //         color: rgba(255, 255, 255, 0.9);
+        //     }
+        // }
+        .header-menu {
+            .header-menu-box {
+                display: flex;
+                align-items: center;
+                column-gap: 0.75rem;
+                user-select: none;
+                span {
+                    color: white;
+                }
+                .avatar-image {
+                    object-fit: cover;
+                    max-width: 3.25rem;
+                    max-height: 3.25rem;
+                    min-width: 3.25rem;
+                    min-height: 3.25rem;
+                    border-radius: 50%;
+                    padding: 2px;
+                    border: 2px solid var(--color-purple);
+                }
             }
         }
         .header-logout {

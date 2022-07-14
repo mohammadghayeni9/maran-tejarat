@@ -62,6 +62,7 @@ export default {
           });
           localStorage.setItem("access_token", response.access);
           localStorage.setItem("refresh_token", response.refresh);
+          localStorage.setItem("username", this.username);
           this.parseJwtToken(response.access);
           this.$toast.success('با موفقیت وارد شدید');
           this.$router.push("/");

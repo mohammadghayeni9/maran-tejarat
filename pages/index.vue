@@ -192,7 +192,7 @@ export default {
     this.getEventReports();
     this.getAgreementReports();
     this.getMeetingReports();
-    // this.getEvaluateReports();
+    this.getEvaluateReports();
   },
   computed: {
     isAssessorComputed() {

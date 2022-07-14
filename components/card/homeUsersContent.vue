@@ -115,11 +115,12 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    padding: 1rem 0.2rem;
+    padding: 1rem 0.2rem 10rem 0.2rem;
     max-height: 80vh;
     overflow-y: auto;
     row-gap: 1rem;
     .home-card {
+      margin-bottom: 1rem;
       padding: 0 0.5rem;
       min-width: 33%;
       @media screen and (max-width: 400px) {

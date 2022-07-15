@@ -1,11 +1,6 @@
 <template>
     <div class="evaluate-report">
-        <div class="evaluate-report-header">
-            <v-col cols="10" class="reports-title"> گزارش ارزیابی دوره‌ای</v-col>
-            <v-col cols="2 d-flex justify-end">
-                <SVGBack class="back-icon" @click="$router.push('/')" />
-            </v-col>
-        </div>
+        <HeaderPage title="گزارش ارزیابی دوره‌ای" :seasonVisible="false"></HeaderPage>
         <v-col cols="12" class="d-flex justify-between report-evaluate">
             <v-select :items="seasons" item-text="title" item-value="value" label="انتخاب فصل مورد نطر" outlined
                 v-model="seasonSelected">
@@ -38,12 +33,14 @@
 import SVGBack from "@/components/icons/back-icon.svg";
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import { routes } from "~/API/routes";
+import HeaderPage from "~/components/header/headerPage.vue";
 
 export default {
     components: {
-        SVGBack,
-        PerfectScrollbar,
-    },
+    SVGBack,
+    PerfectScrollbar,
+    HeaderPage
+},
     data () {
         return {
             loading: false,
@@ -85,7 +82,7 @@ export default {
                 })
                 this.reports = response.data;
             } catch (error) {
-                console.log(error);
+                console.log(error.response.data);
             } finally {
                 this.loading = false;
             }

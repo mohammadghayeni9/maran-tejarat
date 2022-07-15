@@ -14,7 +14,7 @@
                 <template v-slot:activator="{ on, attrs }">
                     <div class="header-menu-box" v-bind="attrs" v-on="on">
                         <span>{{ meUsernameComputed }}</span>
-                        <img src="../../assets/images/placeholder.png" alt="placeholder" class="avatar-image">
+                        <img :src="meAvatarComputed" alt="placeholder" class="avatar-image">
                     </div>
                 </template>
 
@@ -82,7 +82,10 @@ export default {
     },
     computed: {
         meUsernameComputed() {
-            return localStorage.getItem('username')
+            return localStorage.getItem('meFullName')
+        },
+        meAvatarComputed() {
+            return this.$axios.defaults.baseURL + localStorage.getItem('meAvatar');
         }
     },
 }

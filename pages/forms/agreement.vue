@@ -1,31 +1,31 @@
 <template>
   <div class="agreement-form">
-    <v-col cols="10 mb-5" class="agreement-form-title">ثبت توافق</v-col>
-    <v-col cols="2 justify-end d-flex">
-      <SVGBack class="back-icon" @click="$router.push('/')" />
-    </v-col>
-    <v-col cols="12" sm="6" lg="4">
-      <persianDatePicker placeholder="تاریخ" ref="pdp"/>
-    </v-col>
-    <v-col cols="12" sm="6" lg="4">
-      <persianDatePicker placeholder="موعد انجام" ref="deadlinePdp"/>
-    </v-col>
-    <v-col cols="12" sm="6" lg="4" class="pb-0">
-      <v-text-field label="شرح" outlined v-model="description"></v-text-field>
-    </v-col>
-    <v-col cols="12" sm="6" lg="4" class="pb-0">
-      <v-text-field label="هدف کمی / کیفی" outlined v-model="goal"></v-text-field>
-    </v-col>
-    <v-col cols="12" sm="6" lg="4" class="pb-0">
-      <v-select :items="indicators" item-text="name" item-value="id" label="انتخاب شاخص" outlined v-model="indicator"></v-select>
-    </v-col>
-    <v-col cols="12"></v-col>
-    <v-col cols="12" sm="6" lg="4" class="pb-0">
-      <v-btn class="agreement-form-btn disable-btn" elevation="2" v-if="loading">
-        <img :src="require('assets/images/loading.gif')" alt="loading">
-      </v-btn>
-      <v-btn class="agreement-form-btn" elevation="2" @click="recordAgreement" v-else>ثبت توافق</v-btn>
-    </v-col>
+    <HeaderPage title="ثبت توافق" :seasonVisible="false"></HeaderPage>
+    <PerfectScrollbar class="agreement-form-scroller">
+      <v-col cols="12" sm="6" lg="4">
+        <persianDatePicker placeholder="تاریخ" ref="pdp" />
+      </v-col>
+      <v-col cols="12" sm="6" lg="4">
+        <persianDatePicker placeholder="موعد انجام" ref="deadlinePdp" />
+      </v-col>
+      <v-col cols="12" sm="6" lg="4" class="pb-0">
+        <v-text-field label="شرح" outlined v-model="description"></v-text-field>
+      </v-col>
+      <v-col cols="12" sm="6" lg="4" class="pb-0">
+        <v-text-field label="هدف کمی / کیفی" outlined v-model="goal"></v-text-field>
+      </v-col>
+      <v-col cols="12" sm="6" lg="4" class="pb-0">
+        <v-select :items="indicators" item-text="name" item-value="id" label="انتخاب شاخص" outlined v-model="indicator">
+        </v-select>
+      </v-col>
+      <v-col cols="12"></v-col>
+      <v-col cols="12" sm="6" lg="4" class="pb-0">
+        <v-btn class="agreement-form-btn disable-btn" elevation="2" v-if="loading">
+          <img :src="require('assets/images/loading.gif')" alt="loading">
+        </v-btn>
+        <v-btn class="agreement-form-btn" elevation="2" @click="recordAgreement" v-else>ثبت توافق</v-btn>
+      </v-col>
+    </PerfectScrollbar>
   </div>
 </template>
 
@@ -33,22 +33,25 @@
 import persianDatePicker from "@/components/datePicker/persianDatePicker.vue";
 import SVGBack from "@/components/icons/back-icon.svg"
 import { routes } from "~/API/routes";
-
+import HeaderPage from "~/components/header/headerPage.vue";
+import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 
 export default {
   components: {
     persianDatePicker,
-    SVGBack
-  },
+    SVGBack,
+    HeaderPage,
+    PerfectScrollbar
+},
   data() {
     return {
       loading: false,
       agreementDate: '',
       deadlineDate: '',
-      description: '',
+      description: null,
       goal: null,
-      indicator: '',
-      indicators: '',
+      indicator: null,
+      indicators: [],
     }
   },
   mounted() {
@@ -56,7 +59,7 @@ export default {
   },
   methods: {
     async recordAgreement() {
-      if (this.goal) {
+      if (this.goal && this.description && this.indicator) {
         try {
           this.loading = true;
           await this.$axios.post(routes.recordEventAgreement, {
@@ -72,14 +75,14 @@ export default {
           this.$toast.success('توافق با موفقیت ثبت شد');
           this.agreementDate = '';
           this.deadlineDate = '';
-          this.description = '';
-          this.goal = '';
-          this.indicator = '';
+          this.description = null;
+          this.goal = null;
+          this.indicator = null;
           this.$refs.pdp.$refs.persianDatePicker.$refs.pdpInput.value = null;
           this.$refs.deadlinePdp.$refs.persianDatePicker.$refs.pdpInput.value = null;
         } catch (error) {
-          this.$toast.error('تمام موارد الزامی می‌باشد');
-          console.log(error);
+          this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
+          console.log(error.response.data);
         } finally {
           this.loading = false;
         }
@@ -92,7 +95,7 @@ export default {
         const response = await this.$axios.get(routes.indicators);
         this.indicators = response?.data?.results;
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
       }
     }
   },
@@ -108,20 +111,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .agreement-form {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  .back-icon {
-    object-fit: cover;
-    max-height: 2rem;
-    width: fit-content;
-    margin-right: auto;
-    cursor: pointer;
-  }
-  .agreement-form-title {
-    font-size: 1.25rem;
+  .agreement-form-scroller {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1rem 0.2rem;
+    max-height: 70vh;
+    overflow-y: auto;
   }
   .agreement-form-btn {
     height: 54px !important;

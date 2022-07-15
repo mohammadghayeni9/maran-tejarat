@@ -1,53 +1,31 @@
 <template>
-<div class="event-agreement-report">
-    <div class="event-agreement-report-header">
-        <v-col cols="10" class="reports-title">فهرست گزارشات</v-col>
-        <v-col cols="2 d-flex justify-end">
-            <SVGBack class="back-icon" @click="$router.push('/')" />
+    <div class="event-agreement-report">
+        <HeaderPage title="گزارش وقایع/توافق" :seasonVisible="false"></HeaderPage>
+        <v-col cols="12" class="d-flex justify-center" v-if="!reports.length && !loading">هیچ گزارشی ثبت نشده است
         </v-col>
-    </div>
-    <v-col cols="12" class="d-flex justify-center" v-if="!reports.length && !loading">هیچ گزارشی ثبت نشده است</v-col>
-    <perfect-scrollbar class="reports-content">
-        <v-col cols="12" class="d-flex flex-wrap justify-end px-5 py-0 position-relative" v-if="reports.length && !loading">
-            <v-btn outlined color="blue" elevation="1" class="px-8" @click="filterIsVisible = !filterIsVisible">فیلتر</v-btn>
-            <v-col cols="12" v-if="filterIsVisible" class="filter-container">
-                <v-col cols="12" class="d-flex flex-wrap">
-                    <v-col cols="12" class="pa-0">نوع گزارش</v-col>
-                    <v-col cols="12" class="pa-0"></v-col>
-                    <v-checkbox
-                        @change="filterWithReportType"
-                        class="pl-7"
-                        v-model="reportTypeFilter"
-                        label="وقایع"
-                        value="E"
-                    ></v-checkbox>
-                    <v-checkbox
-                        @change="filterWithReportType"
-                        class="pl-7"
-                        v-model="reportTypeFilter"
-                        label="اتفاقات"
-                        value="A"
-                    ></v-checkbox>
-                </v-col>
-                <v-col cols="12" class="d-flex flex-wrap">
-                    <v-col cols="12" class="pa-0">نوع واقعه</v-col>
-                    <v-col cols="12" class="pa-0"></v-col>
-                    <v-checkbox
-                        @change="filterWithEventType"
-                        class="pl-7"
-                        v-model="eventTypeFilter"
-                        label="فرصت بهبود"
-                        value="O"
-                    ></v-checkbox>
-                    <v-checkbox
-                        @change="filterWithEventType"
-                        class="pl-7"
-                        v-model="eventTypeFilter"
-                        label="نقطه قوت"
-                        value="S"
-                    ></v-checkbox>
-                </v-col>
-                <!-- <v-col cols="12" class="d-flex flex-wrap">
+        <perfect-scrollbar class="reports-content">
+            <v-col cols="12" class="d-flex flex-wrap justify-end px-5 py-0 position-relative"
+                v-if="reports.length && !loading">
+                <v-btn outlined color="blue" elevation="1" class="px-8" @click="filterIsVisible = !filterIsVisible">
+                    فیلتر</v-btn>
+                <v-col cols="12" v-if="filterIsVisible" class="filter-container">
+                    <v-col cols="12" class="d-flex flex-wrap">
+                        <v-col cols="12" class="pa-0">نوع گزارش</v-col>
+                        <v-col cols="12" class="pa-0"></v-col>
+                        <v-checkbox @change="filterWithReportType" class="pl-7" v-model="reportTypeFilter" label="وقایع"
+                            value="E"></v-checkbox>
+                        <v-checkbox @change="filterWithReportType" class="pl-7" v-model="reportTypeFilter" label="توافق"
+                            value="A"></v-checkbox>
+                    </v-col>
+                    <v-col cols="12" class="d-flex flex-wrap">
+                        <v-col cols="12" class="pa-0">نوع واقعه</v-col>
+                        <v-col cols="12" class="pa-0"></v-col>
+                        <v-checkbox @change="filterWithEventType" class="pl-7" v-model="eventTypeFilter"
+                            label="فرصت بهبود" value="O"></v-checkbox>
+                        <v-checkbox @change="filterWithEventType" class="pl-7" v-model="eventTypeFilter"
+                            label="نقطه قوت" value="S"></v-checkbox>
+                    </v-col>
+                    <!-- <v-col cols="12" class="d-flex flex-wrap">
                     <v-col cols="12" class="pa-0">فصل ارزیابی</v-col>
                     <v-col cols="12" class="pa-0"></v-col>
                     <v-checkbox
@@ -75,29 +53,31 @@
                         value="Z"
                     ></v-checkbox>
                 </v-col> -->
+                </v-col>
             </v-col>
-        </v-col>    
-        <div class="loading" v-if="loading">
-            <img :src="require('assets/images/loading.gif')" alt="loading">
-        </div>
-        <div class="report-target report-event-target mb-5" v-else-if="!loading && eventReportsComputed.length && eventsIsVisible">
-            <span class="target-title">وقایع</span>
-            <div v-if="eventReportsComputed">
-                <div class="report-card" v-for="report in eventReportsComputed" :key="report.id">
-                    <report-event-agreement-card type="E" :reportData="report" />
+            <div class="loading" v-if="loading">
+                <img :src="require('assets/images/loading.gif')" alt="loading">
+            </div>
+            <div class="report-target report-event-target mb-5"
+                v-else-if="!loading && eventReportsComputed.length && eventsIsVisible">
+                <span class="target-title">وقایع</span>
+                <div v-if="eventReportsComputed">
+                    <div class="report-card" v-for="report in eventReportsComputed" :key="report.id">
+                        <report-event-agreement-card type="E" :reportData="report" />
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="report-target report-agreement-target" v-if="!loading && agreementReportsComputed.length && agreementsIsVisible">
-            <span class="target-title">توافقات</span>
-            <div v-if="agreementReportsComputed">
-                <div class="report-card" v-for="report in agreementReportsComputed" :key="report.id">
-                    <report-event-agreement-card type="A" :reportData="report" />
+            <div class="report-target report-agreement-target"
+                v-if="!loading && agreementReportsComputed.length && agreementsIsVisible">
+                <span class="target-title">توافقات</span>
+                <div v-if="agreementReportsComputed">
+                    <div class="report-card" v-for="report in agreementReportsComputed" :key="report.id">
+                        <report-event-agreement-card type="A" :reportData="report" />
+                    </div>
                 </div>
             </div>
-        </div>
-    </perfect-scrollbar>
-  </div>
+        </perfect-scrollbar>
+    </div>
 </template>
 
 <script>
@@ -105,13 +85,15 @@ import SVGBack from "@/components/icons/back-icon.svg";
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import { routes } from "~/API/routes";
 import ReportEventAgreementCard from '~/components/card/reportEventAgreementCard.vue';
+import HeaderPage from "~/components/header/headerPage.vue";
 
 export default {
     components: {
-        SVGBack,
-        PerfectScrollbar,
-        ReportEventAgreementCard
-    },
+    SVGBack,
+    PerfectScrollbar,
+    ReportEventAgreementCard,
+    HeaderPage
+},
     data () {
         return {
             loading: false,
@@ -153,7 +135,7 @@ export default {
                 this.reports = response.data;
                 this.filterWithEventType();
             } catch (error) {
-                console.log(error);
+                console.log(error.response.data);
             } finally {
                 this.loading = false;
             }

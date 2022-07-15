@@ -36,7 +36,7 @@ export default function (context) {
     }
   }
 
-  if (localStorage.getItem('isEvalTime') && context.route.name === "evaluate") {
+  if (localStorage.getItem('isEvalTime') === 'false' && context.route.name === "evaluate") {
     return context.redirect('/');
   }
 }

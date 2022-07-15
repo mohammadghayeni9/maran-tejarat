@@ -47,7 +47,6 @@ export default {
                     this.$toast.success('رمز ورود با موفقیت تغییر یافت');
                 } catch (e) {
                     this.$toast.error(e.response.data.old_password);
-                    console.log(e.response.data);
                 } finally {
                     this.loading = false;
                 }

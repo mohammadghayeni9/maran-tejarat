@@ -106,7 +106,7 @@ export default {
                 const response = await this.$axios.get(routes.indicators);
                 this.indicators = response?.data?.results;
             } catch (error) {
-                console.log(error);
+                console.log(error.response.data);
             } finally {
                 this.loading = false;
             }
@@ -119,7 +119,7 @@ export default {
                 });
                 this.selectedIndicators = response?.data;
             } catch (error) {
-                console.log(error);
+                console.log(error.response.data);
             } finally {
                 this.loading = false;
             }

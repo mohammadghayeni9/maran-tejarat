@@ -15,7 +15,7 @@
             class="card-btn record-btn"
             v-bind="attrs"
             v-on="on"
-            @click="setId(cardData.id)"
+            @click="setNameAndId(cardData.id, cardData.first_name + ' ' + cardData.last_name)"
           >
             <span>ثبت</span>
           </button>
@@ -44,7 +44,7 @@
             class="card-btn report-btn"
             v-bind="attrs"
             v-on="on"
-            @click="setId(cardData.id)"
+            @click="setNameAndId(cardData.id, cardData.first_name + ' ' + cardData.last_name)"
           >
             <span>گزارش‌ها</span>
           </button>
@@ -109,8 +109,9 @@ export default {
     },
   },
   methods: {
-    setId(id) {
+    setNameAndId(id, name) {
       localStorage.setItem('beEvaluatedUserId', id);
+      localStorage.setItem('beEvaluatedUser', name);
     },
     goToEvaluate(id, name) {
       localStorage.setItem('beEvaluatedUserId', id);

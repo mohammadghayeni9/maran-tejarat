@@ -124,7 +124,7 @@ export default {
         const response = await this.$axios.get(routes.users);
         this.users = response.data.results;
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
       }
     },
     async getEventReports () {
@@ -134,7 +134,7 @@ export default {
         });
         this.reportEventForMe = response.data;
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
       }
     },
     async getAgreementReports () {
@@ -144,7 +144,7 @@ export default {
         });
         this.reportAgreementForMe = response.data;
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
       }
     },
     async getMeetingReports () {
@@ -152,7 +152,7 @@ export default {
         const response = await this.$axios.get(routes.reportMeetingForMe);
         this.reportMeetingForMe = response.data.results;
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
       }
     },
     async getEvaluateReports () {
@@ -164,7 +164,7 @@ export default {
         })
         this.reportEvaluateForMe = response.data;
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
       }
     },
     async getUnits () {
@@ -172,7 +172,7 @@ export default {
         const response = await this.$axios.post(routes.units);
         this.units = response.data.unit;
       } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
       }
     },
     toPersianDigits(str) {
@@ -196,7 +196,6 @@ export default {
   },
   computed: {
     isAssessorComputed() {
-      console.log(localStorage.getItem('isAssessor'));
       return localStorage.getItem('isAssessor') == 'true';
     },
     yearsComputed() {

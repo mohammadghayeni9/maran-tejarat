@@ -1,16 +1,6 @@
 <template>
     <div class="evaluation-form">
-        <div class="evaluation-form-header mb-5">
-            <v-col cols="9" lg="4" class="evaluation-form-title">
-                امتیازدهی پایان فصل<span> {{ seasonComputed }} </span>
-            </v-col>
-            <v-col cols="12" lg="4" class="username d-flex justify-center order-4 order-lg-3" v-if="nameComputed.length">
-                {{ nameComputed }}
-            </v-col>
-            <v-col cols="3" lg="4" class="justify-end d-flex order-3 order-lg-4">
-                <SVGBack class="back-icon" @click="$router.push('/')" />
-            </v-col>
-        </div>
+        <HeaderPage title="امتیازدهی پایان فصل" :seasonVisible="true"></HeaderPage>
         <div class="loading d-flex justify-center" v-if="loading">
             <img :src="require('assets/images/loading.gif')" alt="loading">
         </div>
@@ -33,13 +23,15 @@ import SVGBack from "@/components/icons/back-icon.svg"
 import { routes } from "~/API/routes";
 import evaluateCard from '~/components/card/evaluateCard.vue';
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
+import HeaderPage from "~/components/header/headerPage.vue";
 
 export default {
     components: {
-        SVGBack,
-        evaluateCard,
-        PerfectScrollbar,
-    },
+    SVGBack,
+    evaluateCard,
+    PerfectScrollbar,
+    HeaderPage
+},
     data() {
         return {
             axesList: [],
@@ -59,7 +51,7 @@ export default {
                 const response = await this.$axios.get(routes.axesList);
                 this.axesList = response.data.results;
             } catch (error) {
-                console.log(error);
+                console.log(error.response.data);
             }
         },
         async getIndicators () {
@@ -69,7 +61,7 @@ export default {
                 });
                 this.indicators = response.data;
             } catch (error) {
-                console.log(error);
+                console.log(error.response.data);
             } finally {
                 this.loading = false;
             }
@@ -86,23 +78,6 @@ export default {
             }
         },
     },
-    computed: {
-        seasonComputed() {
-            const season = localStorage.getItem('season');
-            if (season === 'B') {
-                return 'بهار';
-            } else if (season === 'T') {
-                return 'تابستان';
-            } else if (season === 'P') {
-                return 'پاییز';
-            } else {
-                return 'زمستان';
-            }
-        },
-        nameComputed() {
-            return localStorage.getItem('beEvaluatedUser');
-        },
-    }
 }
 </script>
 
@@ -113,24 +88,6 @@ export default {
     flex-wrap: wrap;
     max-width: 1200px;
     margin: auto;
-    .evaluation-form-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        width: 100%;
-    }
-    .evaluation-form-title {
-        font-size: 1.25rem;
-    }
-    .back-icon {
-        object-fit: cover;
-        max-height: 2rem;
-        width: fit-content;
-        margin-right: auto;
-        cursor: pointer;
-    }
-
     .axes-list {
         display: flex;
         width: 100%;

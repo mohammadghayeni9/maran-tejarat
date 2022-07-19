@@ -6,7 +6,6 @@
     id="date-picker"
     ref="persianDatePicker"
     :placeholder="placeholder"
-    clearable
   ></date-picker>
 </template>
 
@@ -54,7 +53,6 @@ export default {
       border-radius: var(--input-border-radius);
       padding: var(--input-padding);
       min-height: 54px;
-      transform: translateY(-10px);
       color: var(--text-primary-color);
       background-color: var(--background-color-secondary);
       outline: none !important;

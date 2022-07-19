@@ -90,7 +90,7 @@ export default {
       reportListDropdown: [
         {
           title: 'مشاهده وقایع مهم/توافقات',
-          link: 'eventAgreement'
+          link: 'eventagreement'
         },
         {
           title: 'مشاهده سوابق ارزیابی دوره‌ای',

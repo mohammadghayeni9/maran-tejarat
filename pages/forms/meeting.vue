@@ -156,6 +156,8 @@ mounted() {
 </script>
 
 <style lang="scss" scoped>
+
+
 .meeting-form {
   display: flex;
   justify-content: center;
@@ -168,10 +170,14 @@ mounted() {
     padding: 1rem 0.2rem;
     max-height: 80vh;
     overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 5rem;
   }
   .meeting-form-datepicker {
       align-self: start;
       margin-top: 10px !important;
+      transform: translateY(-10px);
+      z-index: 10;
   }
   .meeting-form-btn {
     height: 54px !important;

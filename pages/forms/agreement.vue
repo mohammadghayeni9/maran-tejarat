@@ -125,6 +125,11 @@ export default {
     padding: 1rem 0.2rem;
     max-height: 70vh;
     overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 12rem;
+    @media screen and(max-width: 500px) {
+      padding-bottom: 5rem;
+    }
   }
   .agreement-form-btn {
     height: 54px !important;

@@ -149,21 +149,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .event-form {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   .event-form-scroller {
-      display: flex;
-      width: 100%;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 1rem 0.2rem;
-      max-height: 70vh;
-      overflow-y: auto;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1rem 0.2rem;
+    max-height: 70vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 12rem;
+    @media screen and(max-width: 500px) {
+      padding-bottom: 5rem;
     }
+  }
   .event-form-btn {
     height: 54px !important;
     width: 100% !important;

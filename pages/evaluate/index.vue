@@ -11,7 +11,7 @@
                 <evaluateCard v-for="axes in axesList" :key="axes.id" :axes="axes" :indicators="indicators" />
             </v-col>
             <v-col cols="12" class="d-flex justify-end mt-5 mb-5">
-                <v-btn elevation="2" class="px-12 py-5 rounded-lg record-btn" @click="recordEvaluate">ثبت امتیازدهی
+                <v-btn elevation="2" class="px-12 py-5 rounded-lg record-btn" @click="recordEvaluate">ثبت امتیاز
                 </v-btn>
             </v-col>
         </perfect-scrollbar>
@@ -98,8 +98,8 @@ export default {
         overflow-y: auto;
     }
     .record-btn {
-        background-color: var(--color-blue-sky);
-        color: var(--color-white);
+        background-color: var(--color-blue-sky) !important;
+        color: var(--color-white) !important;
     }
 }
 </style>

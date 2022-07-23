@@ -31,7 +31,7 @@
               input-format="jYYYY-jMM-jDD" v-model="deadlineDate"></date-picker>
           </v-col>
           <v-col cols="12" sm="6" lg="4" class="pb-0">
-            <v-text-field label="شرح" outlined v-model="agreementDescription"></v-text-field>
+            <v-text-field label="شرح" outlined v-model="agreementDescription" class="desc-agreement"></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" lg="4" class="pb-0">
             <v-text-field label="هدف کمی / کیفی" outlined v-model="goal"></v-text-field>
@@ -167,6 +167,8 @@ export default {
 </script>
 
 <style lang="scss">
+
+
 .pdp {
   .pdp-icon {
     display: none;
@@ -257,6 +259,11 @@ export default {
       cursor: default;
       pointer-events: none;
     }
+  }
+}
+.desc-agreement {
+  @media screen and (min-width: 1264px) {
+    margin-top: 20px !important;
   }
 }
 </style>

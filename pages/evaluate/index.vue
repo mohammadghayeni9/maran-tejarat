@@ -51,7 +51,7 @@ export default {
                 const response = await this.$axios.get(routes.axesList);
                 this.axesList = response.data.results;
             } catch (error) {
-                console.log(error.response.data);
+                console.log(error?.response?.data);
             }
         },
         async getIndicators () {
@@ -61,7 +61,7 @@ export default {
                 });
                 this.indicators = response.data;
             } catch (error) {
-                console.log(error.response.data);
+                console.log(error?.response?.data);
             } finally {
                 this.loading = false;
             }

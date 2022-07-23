@@ -7,8 +7,8 @@
         <img :src="require('assets/images/loading.gif')" alt="loading">
       </div>
       <v-tab-item v-else-if="!loading && isAssessorComputed">
-        <v-col cols="12" class="d-flex justify-center mt-5 pt-5" v-if="!units.length">هنوز فردی برای ازریابی به شما
-          انتساب داده نشده است</v-col>
+        <v-col cols="12" class="d-flex justify-center mt-5 pt-5" v-if="!units.length">هنوز فردی برای ارزیابی به شما
+          انتساب داده نشده است.</v-col>
         <v-tabs class="mt-5" v-else>
           <v-tab v-for="unit in units" :key="unit[1]">{{ unit[0] }}</v-tab>
           <v-tab-item v-for="unit in units" :key="unit[0]">
@@ -124,7 +124,7 @@ export default {
         const response = await this.$axios.get(routes.users);
         this.users = response.data.results;
       } catch (error) {
-        console.log(error.response.data);
+        console.log(error?.response?.data);
       }
     },
     async getEventReports () {
@@ -134,7 +134,7 @@ export default {
         });
         this.reportEventForMe = response.data;
       } catch (error) {
-        console.log(error.response.data);
+        console.log(error?.response?.data);
       }
     },
     async getAgreementReports () {
@@ -144,7 +144,7 @@ export default {
         });
         this.reportAgreementForMe = response.data;
       } catch (error) {
-        console.log(error.response.data);
+        console.log(error?.response?.data);
       }
     },
     async getMeetingReports () {
@@ -152,7 +152,7 @@ export default {
         const response = await this.$axios.get(routes.reportMeetingForMe);
         this.reportMeetingForMe = response.data.results;
       } catch (error) {
-        console.log(error.response.data);
+        console.log(error?.response?.data);
       }
     },
     async getEvaluateReports () {
@@ -164,7 +164,7 @@ export default {
         })
         this.reportEvaluateForMe = response.data;
       } catch (error) {
-        console.log(error.response.data);
+        console.log(error?.response?.data);
       }
     },
     async getUnits () {
@@ -172,7 +172,7 @@ export default {
         const response = await this.$axios.post(routes.units);
         this.units = response.data.unit;
       } catch (error) {
-        console.log(error.response.data);
+        console.log(error?.response?.data);
       }
     },
     toPersianDigits(str) {

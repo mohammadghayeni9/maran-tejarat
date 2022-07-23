@@ -82,7 +82,7 @@ export default {
                 })
                 this.reports = response.data;
             } catch (error) {
-                console.log(error.response.data);
+                console.log(error?.response?.data);
             } finally {
                 this.loading = false;
             }

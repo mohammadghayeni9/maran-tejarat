@@ -135,7 +135,7 @@ export default {
                 this.reports = response.data;
                 this.filterWithEventType();
             } catch (error) {
-                console.log(error.response.data);
+                console.log(error?.response?.data);
             } finally {
                 this.loading = false;
             }

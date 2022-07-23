@@ -3,7 +3,8 @@
     <HeaderPage title="ثبت جلسه بازخورد" :seasonVisible="false"></HeaderPage>
     <Perfect-scrollbar class="meeting-form-scroller">
       <v-col cols="12" sm="6" lg="4" class="meeting-form-datepicker">
-        <persianDatePicker placeholder="تاریخ" ref="pdp" />
+        <date-picker :styles="styles" :column="1" mode="single" placeholder="تاریخ" input-format="jYYYY-jMM-jDD"
+          v-model="meetingDate"></date-picker>
       </v-col>
       <v-col cols="12" lg="8">
         <v-textarea label="شرح جلسه" outlined v-model="description"></v-textarea>
@@ -22,10 +23,12 @@
         </v-col>
         <v-col cols="12" class="agreement-form px-0" v-else>
           <v-col cols="12" sm="6" lg="4">
-            <persianDatePicker placeholder="تاریخ" ref="agreementPdp" />
+            <date-picker :styles="styles" :column="1" mode="single" id="date-picker" placeholder="تاریخ"
+              input-format="jYYYY-jMM-jDD" v-model="agreementDate"></date-picker>
           </v-col>
           <v-col cols="12" sm="6" lg="4">
-            <persianDatePicker placeholder="موعد انجام" ref="deadlinePdp" />
+            <date-picker :styles="styles" :column="1" mode="single" id="date-picker" placeholder="موعد انجام"
+              input-format="jYYYY-jMM-jDD" v-model="deadlineDate"></date-picker>
           </v-col>
           <v-col cols="12" sm="6" lg="4" class="pb-0">
             <v-text-field label="شرح" outlined v-model="agreementDescription"></v-text-field>
@@ -34,8 +37,9 @@
             <v-text-field label="هدف کمی / کیفی" outlined v-model="goal"></v-text-field>
           </v-col>
           <v-col cols="12" sm="6" lg="4" class="pb-0">
-            <v-select :items="indicators" item-text="name" item-value="axes" label="انتخاب شاخص" outlined
-              v-model="indicator"></v-select>
+            <v-select :items="indicators" item-text="name" item-value="id" label="انتخاب شاخص" outlined
+              v-model="indicator">
+            </v-select>
           </v-col>
           <v-col cols="12"></v-col>
           <v-col cols="12" class="pb-0 d-flex flex-wrap flex-row btn-container">
@@ -53,7 +57,7 @@
 </template>
 
 <script>
-import persianDatePicker from "@/components/datePicker/persianDatePicker.vue";
+import datePicker from "@alireza-ab/vue-persian-datepicker";
 import SVGBack from "@/components/icons/back-icon.svg";
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import { routes } from "~/API/routes";
@@ -61,7 +65,7 @@ import HeaderPage from "~/components/header/headerPage.vue";
 
 export default {
   components: {
-    persianDatePicker,
+    datePicker,
     SVGBack,
     PerfectScrollbar,
     HeaderPage
@@ -71,13 +75,34 @@ export default {
       loading: false,
       meetingDate: null,
       description: null,
-      agreementDate: '',
-      deadlineDate: '',
+      agreementDate: null,
+      deadlineDate: null,
       agreementDescription: '',
       goal: '',
       indicator: '',
       indicators: '',
       agreementFormIsVisible: false,
+      localeConfigs: {
+        fa: {
+          inputFormat: 'jYYYY/jMM/jDD'
+        },
+      },
+      styles: {
+        "primary-color": "var(--color-green)",
+        "secondary-color": "var(--color-blue)",
+        "in-range-background": "var(--accent-color)",
+        "icon-background": "var(--color-green)",
+        "text-color": "var(--text-primary-color)",
+        "hover-color": "var(--color-green)",
+        "border-color": "var(--color-green)",
+        "z-index": 1000,
+        "disabled-opacity": 0.3,
+        "overlay-color": "transparent",
+        "main-box-shadow": "1px 1px 8px 1px --card-box-shadow",
+        "day-dimensions": "2.08rem",
+        radius: "0.25rem",
+        background: "var(--background-color-primary)",
+      },
     }
   },
   methods: {
@@ -86,16 +111,15 @@ export default {
         this.loading = true;
         await this.$axios.post(routes.recordMeeting, {
           be_evaluated: localStorage.getItem('beEvaluatedUserId'),
-          date_report: this.dateReportComputed,
+          date_report: this.meetingDate,
           description: this.description,
         });
         this.$toast.success('جلسه بازخورد با موفقیت ثبت شد');
-        this.meetingDate = '';
+        this.meetingDate = null;
         this.description = '';
-        this.$refs.pdp.$refs.persianDatePicker.$refs.pdpInput.value = null;
       } catch (error) {
         this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
-        console.log(error.response.data);
+        console.log(error?.response?.data);
       } finally {
         this.loading = false;
       }
@@ -106,25 +130,23 @@ export default {
         await this.$axios.post(routes.recordEventAgreement, {
           type_report: "A",
           be_evaluated: localStorage.getItem('beEvaluatedUserId'),  //ایدی ارزیابی شونده
-          date_report: this.agreementDateReportComputed,
-          deadline: this.deadlineComputed,
+          date_report: this.agreementDate,
+          deadline: this.deadlineDate,
           description: this.agreementDescription,
           quantitative_qualitative_goal: this.goal,
           indicators: this.indicator,
           is_open_agreement: true,
         });
         this.$toast.success('توافق با موفقیت ثبت شد');
-        this.agreementDate = '';
-        this.deadlineDate = '';
+        this.agreementDate = null;
+        this.deadlineDate = null;
         this.agreementDescription = '';
         this.goal = '';
         this.indicator = '';
-        this.$refs.agreementPdp.$refs.persianDatePicker.$refs.pdpInput.value = null;
-        this.$refs.deadlinePdp.$refs.persianDatePicker.$refs.pdpInput.value = null;
         this.agreementFormIsVisible = false;
       } catch (error) {
         this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
-        console.log(error.response.data);
+        console.log(error?.response?.data);
       } finally {
         this.loading = false;
       }
@@ -134,30 +156,38 @@ export default {
         const response = await this.$axios.get(routes.indicators);
         this.indicators = response?.data?.results;
       } catch (error) {
-        console.log(error.response.data);
+        console.log(error?.response?.data);
       }
     }
   },
-mounted() {
+  mounted() {
     this.getIndicators();
   },
-  computed: {
-    dateReportComputed() {
-      return this.$refs?.pdp?.$refs?.persianDatePicker?.$refs?.pdpInput?.value.replaceAll('/', '-');
-    },
-    agreementDateReportComputed() {
-      return this.$refs?.agreementPdp?.$refs?.persianDatePicker?.$refs?.pdpInput?.value.replaceAll('/', '-');
-    },
-    deadlineComputed() {
-      return this.$refs?.deadlinePdp?.$refs?.persianDatePicker?.$refs?.pdpInput?.value.replaceAll('/', '-');
-    } 
-  }
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.pdp {
+  .pdp-icon {
+    display: none;
+  }
 
+  .pdp-group {
+    input.pdp-input {
+      border: 1px solid var(--bordr-input-color);
+      border-radius: var(--input-border-radius);
+      padding: var(--input-padding);
+      min-height: 54px;
+      color: var(--text-primary-color);
+      background-color: var(--background-color-secondary);
+      outline: none !important;
 
+      &::placeholder {
+        color: var(--text-color-primary);
+      }
+    }
+  }
+}
 .meeting-form {
   display: flex;
   justify-content: center;

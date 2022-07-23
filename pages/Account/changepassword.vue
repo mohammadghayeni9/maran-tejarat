@@ -1,9 +1,6 @@
 <template>
     <div class="change-password">
-        <v-col cols="10 mb-5" class="change-password-title">تغییر رمز ورود</v-col>
-        <v-col cols="2 justify-end d-flex">
-            <SVGBack class="back-icon" @click="$router.push('/')" />
-        </v-col>
+        <HeaderPage title="تغییر رمز ورود" :seasonVisible="false" :nameVisible="false"></HeaderPage>
         <v-col cols="12" sm="6" lg="4" class="pb-0">
             <v-text-field label="رمز کنونی" outlined type="password" v-model="oldPassword"></v-text-field>
         </v-col>
@@ -21,12 +18,8 @@
 
 <script>
 import { routes } from "~/API/routes";
-import SVGBack from "@/components/icons/back-icon.svg"
 
 export default {
-    components: {
-        SVGBack,
-    },
     data() {
         return {
             oldPassword: null,
@@ -67,15 +60,5 @@ export default {
     justify-content: center;
     max-width: 1200px;
     flex-wrap: wrap;
-    .back-icon {
-        object-fit: cover;
-        max-height: 2rem;
-        width: fit-content;
-        margin-right: auto;
-        cursor: pointer;
-    }
-    .change-password-title {
-        font-size: 1.25rem;
-    }
 }
 </style>

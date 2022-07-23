@@ -58,7 +58,6 @@
 
 <script>
 import datePicker from "@alireza-ab/vue-persian-datepicker";
-import SVGBack from "@/components/icons/back-icon.svg";
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import { routes } from "~/API/routes";
 import HeaderPage from "~/components/header/headerPage.vue";
@@ -66,7 +65,6 @@ import HeaderPage from "~/components/header/headerPage.vue";
 export default {
   components: {
     datePicker,
-    SVGBack,
     PerfectScrollbar,
     HeaderPage
 },
@@ -153,8 +151,10 @@ export default {
     },
     async getIndicators() {
       try {
-        const response = await this.$axios.get(routes.indicators);
-        this.indicators = response?.data?.results;
+        const response = await this.$axios.post(routes.selectedIndicators, {
+          staff: localStorage.getItem('beEvaluatedUserId')
+        });
+        this.indicators = response.data;
       } catch (error) {
         console.log(error?.response?.data);
       }
@@ -244,15 +244,15 @@ export default {
       width: 45%;
       max-width: 22rem;
       border-radius: var(--input-border-radius);
-      background-color: var(--color-blue-sky);
-      color: var(--color-white);
+      background-color: var(--color-blue-sky) !important;
+      color: var(--color-white) !important;
       @media screen and (max-width: 500px) {
         width: 100%;
         max-width: 100%;
       }
       &.cancel {
-        background-color: var(--color-white);
-        color: var(--color-blue-sky);
+        background-color: var(--color-white) !important;
+        color: var(--color-blue-sky) !important;
       }
     }
     .disable-btn {

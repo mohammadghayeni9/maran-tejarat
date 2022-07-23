@@ -81,7 +81,6 @@
 </template>
 
 <script>
-import SVGBack from "@/components/icons/back-icon.svg";
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import { routes } from "~/API/routes";
 import ReportEventAgreementCard from '~/components/card/reportEventAgreementCard.vue';
@@ -89,7 +88,6 @@ import HeaderPage from "~/components/header/headerPage.vue";
 
 export default {
     components: {
-    SVGBack,
     PerfectScrollbar,
     ReportEventAgreementCard,
     HeaderPage
@@ -189,14 +187,6 @@ export default {
         font-size: 1.2rem;
         white-space: nowrap;
         margin-right: -20px;
-    }
-    .back-icon {
-        object-fit: cover;
-        max-height: 2rem;
-        width: fit-content;
-        margin-right: auto;
-        margin-left: -20px;
-        cursor: pointer;
     }
   }
   .reports-content {

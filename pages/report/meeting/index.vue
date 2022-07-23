@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import SVGBack from "@/components/icons/back-icon.svg";
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 import { routes } from "~/API/routes";
 import ReportEventAgreementCard from '~/components/card/reportEventAgreementCard.vue';
@@ -23,7 +22,6 @@ import HeaderPage from "~/components/header/headerPage.vue";
 
 export default {
     components: {
-    SVGBack,
     PerfectScrollbar,
     ReportEventAgreementCard,
     HeaderPage

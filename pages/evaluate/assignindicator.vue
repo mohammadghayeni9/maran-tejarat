@@ -1,9 +1,5 @@
 <template>
     <div class="assign-indicator">
-        <v-col cols="10 mb-5" class="assign-indicator-title">انتخاب شاخص</v-col>
-        <v-col cols="2 justify-end d-flex">
-            <SVGBack class="back-icon" @click="$router.push('/')" />
-        </v-col>
         <!-- <v-col cols="12" v-if="!loading && isAssignIndicators && !selectIndicatorsIsVisible">
             <v-col cols="12" class="selected-indicator-list rounded-xl px-4 pt-4">
                 شما برای این شخص انتساب شاخص ها را انجام داده اید و لیست شاخص‌های انتخابی شما به شرح ذیل می‌باشد :
@@ -79,13 +75,9 @@
 </template>
 
 <script>
-import SVGBack from "@/components/icons/back-icon.svg"
 import { routes } from "~/API/routes";
 
 export default {
-    components: {
-        SVGBack,
-    },
     data() {
         return {
             indicators: [],
@@ -169,13 +161,6 @@ export default {
         span {
             font-size: 0.9rem;
         }
-    }
-    .back-icon {
-        object-fit: cover;
-        max-height: 2rem;
-        width: fit-content;
-        margin-right: auto;
-        cursor: pointer;
     }
     .record-btn {
         background-color: var(--color-blue-sky);

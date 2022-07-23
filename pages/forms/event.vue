@@ -37,7 +37,6 @@
 
 <script>
 import datePicker from "@alireza-ab/vue-persian-datepicker";
-import SVGBack from "@/components/icons/back-icon.svg"
 import { routes } from "~/API/routes";
 import HeaderPage from "~/components/header/headerPage.vue";
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
@@ -45,8 +44,8 @@ import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 export default {
   components: {
     datePicker,
-    SVGBack,
-    HeaderPage
+    HeaderPage,
+    PerfectScrollbar
 },
   data() {
     return {
@@ -124,8 +123,10 @@ export default {
     },
     async getIndicators() {
       try {
-        const response = await this.$axios.get(routes.indicators);
-        this.indicators = response?.data?.results;
+        const response = await this.$axios.post(routes.selectedIndicators, {
+          staff: localStorage.getItem('beEvaluatedUserId')
+        });
+        this.indicators = response.data;
       } catch (error) {
         console.log(error?.response?.data);
       }
@@ -159,7 +160,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .pdp {
   .pdp-icon {
     display: none;

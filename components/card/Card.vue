@@ -164,6 +164,7 @@ export default {
       text-align: center;
       font-size: 1.05rem;
       color: var(--text-color-primary);
+      user-select: none;
     }
   }
   .card-actions {

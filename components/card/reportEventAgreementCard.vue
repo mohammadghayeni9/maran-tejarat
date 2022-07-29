@@ -14,9 +14,9 @@
             <span>نوع ارزیابی: </span>
             {{ assessmentTypeComputed }}
         </v-col>
-        <!-- <v-col cols="auto" class="d-flex justify-end pr-0">
-            <v-btn>نمایش جزئیات</v-btn>
-        </v-col> -->
+        <v-col cols="12" sm="6" v-if="reportData.type_report === 'A' && !reportData.is_open_agreement">
+            <span>این توافق پایان یافته است.</span>
+        </v-col>
     </div>
 </template>
 

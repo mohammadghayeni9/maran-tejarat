@@ -8,7 +8,8 @@
       </v-col>
       <v-col cols="12" sm="6" lg="4" class="pb-0">
         <v-select :items="openAgreements" label="انتخاب توافق صورت گرفته" outlined item-text="description"
-          item-value="id" v-model="agreement" @change="getSelectedAgreement"></v-select>
+          item-value="id" v-model="agreement" @change="getSelectedAgreement"
+          append-outer-icon="$clear" @click:append-outer="agreement = null"></v-select>
       </v-col>
       <v-col cols="12" sm="6" lg="4" class="pb-0">
         <v-text-field label="شرح" outlined v-model="description"></v-text-field>

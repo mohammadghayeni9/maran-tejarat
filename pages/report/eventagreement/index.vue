@@ -1,14 +1,14 @@
 <template>
-    <div class="event-agreement-report">
+    <div class="event-agreement-report" @click="filterIsVisible = false">
         <HeaderPage title="گزارش وقایع/توافق" :seasonVisible="false"></HeaderPage>
         <v-col cols="12" class="d-flex justify-center" v-if="!reports.length && !loading">هیچ گزارشی ثبت نشده است
         </v-col>
         <perfect-scrollbar class="reports-content">
             <v-col cols="12" class="d-flex flex-wrap justify-end px-5 py-0 position-relative"
                 v-if="reports.length && !loading">
-                <v-btn outlined color="blue" elevation="1" class="px-8" @click="filterIsVisible = !filterIsVisible">
+                <v-btn outlined color="blue" elevation="1" class="px-8" @click.stop="filterIsVisible = !filterIsVisible">
                     فیلتر</v-btn>
-                <v-col cols="12" v-if="filterIsVisible" class="filter-container">
+                <v-col cols="12" v-if="filterIsVisible" class="filter-container" @click.stop>
                     <v-col cols="12" class="d-flex flex-wrap">
                         <v-col cols="12" class="pa-0">نوع گزارش</v-col>
                         <v-col cols="12" class="pa-0"></v-col>

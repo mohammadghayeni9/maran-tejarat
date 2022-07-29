@@ -1,5 +1,5 @@
 <template>
-  <div class="home-view">
+  <div class="home-view" @click.stop="filterIsVisible = false">
     <v-tabs class="home-tabs">
       <v-tab v-if="isAssessorComputed">ارزیابی کننده</v-tab>
       <v-tab>ارزیابی شونده</v-tab>
@@ -9,7 +9,7 @@
       <v-tab-item v-else-if="!loading && isAssessorComputed">
         <v-col cols="12" class="d-flex justify-center mt-5 pt-5" v-if="!units.length">هنوز فردی برای ارزیابی به شما
           انتساب داده نشده است.</v-col>
-        <v-tabs class="mt-5" v-else>
+        <v-tabs class="mt-5" v-else v-model="activeUnitTab" @change="setActiveUnitTab">
           <v-tab v-for="unit in units" :key="unit[1]">{{ unit[0] }}</v-tab>
           <v-tab-item v-for="unit in units" :key="unit[0]">
             <homeUsersContent :loading="loading" :unit="unit" :users="users" />
@@ -22,10 +22,23 @@
           <v-tab v-if="reportAgreementForMe.length">توافقات</v-tab>
           <v-tab v-if="reportMeetingForMe.length">جلسات</v-tab>
           <v-tab>سوابق ارزیابی دوره‌ای</v-tab>
-          <v-tab-item v-if="reportEventForMe.length">
+          <v-tab-item v-if="reportEventForMe.length" class="position-relative">
+            <v-btn outlined color="blue" elevation="1" class="mr-auto d-flex justify-end ml-2 mt-5 px-8"
+              @click.stop="filterIsVisible = !filterIsVisible">
+              فیلتر</v-btn>
+            <v-col cols="12" v-if="filterIsVisible" class="filter-container" @click.stop>
+              <v-col cols="12" class="d-flex flex-wrap">
+                <v-col cols="12" class="pa-0">نوع ارزیابی</v-col>
+                <v-col cols="12" class="pa-0"></v-col>
+                <v-checkbox class="pl-7" v-model="eventTypeFilter" label="فرصت بهبود" value="O"></v-checkbox>
+                <v-checkbox class="pl-7" v-model="eventTypeFilter" label="نقطه قوت" value="S"></v-checkbox>
+              </v-col>
+            </v-col>
             <perfect-scrollbar class="reports-content-forMe mt-5">
-              <report-event-agreement-card type="E" v-for="event in reportEventForMe" :key="event.date_report"
+              <report-event-agreement-card type="E" v-for="event in filterWithEventTypeData" :key="event.date_report"
                 :reportData="event" class="my-5" />
+              <v-col cols="12 d-flex justify-center mt-5 mb-10 " v-if="!filterWithEventTypeData.length">موردی برای تمایش
+                وجود ندارد.</v-col>
             </perfect-scrollbar>
           </v-tab-item>
           <v-tab-item v-if="reportAgreementForMe.length">
@@ -116,9 +129,15 @@ export default {
           value: 'Z'
         }
       ],
+      filterIsVisible: false,
+      eventTypeFilter: null,
+      activeUnitTab: null,
     }
   },
   methods: {
+    setActiveUnitTab () {
+      localStorage.setItem('activeUnitTab', this.activeUnitTab)
+    },
     async getUsers () {
       try {
         const response = await this.$axios.get(routes.users);
@@ -180,12 +199,13 @@ export default {
       return str?.toString()?.replace(/[0-9]/g, function (w) {
         return persianNum[+w];
       });
-    }
+    },
   },
   async created() {
     this.loading = true;
-    this.getUsers();
+    await this.getUsers();
     await this.getUnits();
+    this.activeUnitTab = Number(localStorage.getItem('activeUnitTab'));
     this.loading = false;
   },
   mounted() {
@@ -204,6 +224,11 @@ export default {
         years.push(index);
       }
       return years;
+    },
+    filterWithEventTypeData() {
+      if (this.eventTypeFilter?.length === 1) {
+        return this.reportEventForMe.filter(report => report.assessment_type === this.eventTypeFilter[0]);
+      } else return this.reportEventForMe
     }
   }
 }
@@ -251,6 +276,17 @@ export default {
     .report-card {
       width: 100%;
     }
+  }
+  .filter-container {
+    position: absolute;
+    border: 1px solid var(--color-blue-sky);
+    width: 20rem;
+    z-index: 20;
+    top: 3.75rem;
+    left: 0.5rem;
+    border-radius: var(--input-border-radius);
+    background-color: var(--background-color-primary-lighter);
+    backdrop-filter: blur(25px);
   }
 }
 </style>

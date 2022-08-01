@@ -9,7 +9,7 @@
       <v-col cols="12" sm="6" lg="4" class="pb-0">
         <v-select :items="openAgreements" label="انتخاب توافق صورت گرفته" outlined item-text="description"
           item-value="id" v-model="agreement" @change="getSelectedAgreement"
-          append-outer-icon="$clear" @click:append-outer="agreement = null"></v-select>
+          append-outer-icon="$clear" @click:append-outer="clearAgreementBox"></v-select>
       </v-col>
       <v-col cols="12" sm="6" lg="4" class="pb-0">
         <v-text-field label="شرح" outlined v-model="description"></v-text-field>
@@ -156,6 +156,12 @@ export default {
       this.agreement = this.openAgreements.find(agree => agree.id == e);
       this.indicator = this.indicators.find(indicator => indicator.id == this.agreement.indicators).id;
       this.agreement = this.openAgreements.find(agree => agree.id == e).id;
+    },
+    clearAgreementBox() {
+      if (this.agreement) {
+        this.indicator = null;
+      }
+      this.agreement = null;
     }
   },
 };

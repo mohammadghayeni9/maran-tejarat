@@ -14,6 +14,10 @@
             <span>نوع ارزیابی: </span>
             {{ assessmentTypeComputed }}
         </v-col>
+        <v-col cols="12" sm="6" v-if="reportData.type_report === 'A'">
+            <span>موعد انجام: </span>
+            <span dir="ltr">{{ toPersianDigits(reportData.deadline) }}</span>
+        </v-col>
         <v-col cols="12" sm="6" v-if="reportData.type_report === 'A' && !reportData.is_open_agreement">
             <span>این توافق پایان یافته است.</span>
         </v-col>

@@ -15,12 +15,12 @@
         <v-select :items="indicators" item-text="name" item-value="id" label="انتخاب شاخص" outlined v-model="indicator">
         </v-select>
       </v-col>
+      <v-col cols="12" lg="8" class="pb-0">
+        <v-textarea label="شرح" outlined v-model="description"></v-textarea>
+      </v-col>
       <v-col cols="12" sm="6" lg="4" class="pb-0">
         <v-select :items="evaluates" item-text="title" item-value="value" label="ارزیابی" outlined v-model="evaluate">
         </v-select>
-      </v-col>
-      <v-col cols="12" lg="8" class="pb-0">
-        <v-textarea label="شرح" outlined v-model="description"></v-textarea>
       </v-col>
       <v-col cols="12" sm="6" lg="4" class="pb-0" v-if="agreement">
         <v-checkbox v-model="isClosedAgreement" label="آیا توافق پایان یافته است؟"></v-checkbox>

@@ -2,23 +2,27 @@
   <div class="agreement-form">
     <HeaderPage title="ثبت توافق" :seasonVisible="false"></HeaderPage>
     <PerfectScrollbar class="agreement-form-scroller">
-      <v-col cols="12" sm="6" lg="4">
-        <date-picker :styles="styles" :column="1" mode="single" placeholder="تاریخ" input-format="jYYYY-jMM-jDD"
-          v-model="agreementDate" ref="datePicker1"></date-picker>
-      </v-col>
-      <v-col cols="12" sm="6" lg="4">
-        <date-picker :styles="styles" :column="1" mode="single" placeholder="موعد انجام" input-format="jYYYY-jMM-jDD"
-          v-model="deadlineDate"></date-picker>
-      </v-col>
-      <v-col cols="12" sm="6" lg="4" class="pb-0">
-        <v-text-field label="هدف کمی / کیفی" outlined v-model="goal"></v-text-field>
-      </v-col>
-      <v-col cols="12" sm="6" lg="4" class="pb-0">
-        <v-select :items="indicators" item-text="name" item-value="id" label="انتخاب شاخص" outlined v-model="indicator">
-        </v-select>
+      <v-col cols="12" lg="4" class="pb-0">
+        <v-row>
+          <v-col cols="12">
+            <date-picker :styles="styles" :column="1" mode="single" placeholder="تاریخ" input-format="jYYYY-jMM-jDD"
+              v-model="agreementDate" ref="datePicker1"></date-picker>
+          </v-col>
+          <v-col cols="12" class="pt-7 pb-11">
+            <date-picker :styles="styles" :column="1" mode="single" placeholder="موعد انجام"
+              input-format="jYYYY-jMM-jDD" v-model="deadlineDate"></date-picker>
+          </v-col>
+        </v-row>
       </v-col>
       <v-col cols="12" lg="8" class="pb-0">
         <v-textarea label="شرح" outlined v-model="description"></v-textarea>
+      </v-col>
+      <v-col cols="12" md="6" class="pb-0">
+        <v-text-field label="هدف کمی / کیفی" outlined v-model="goal"></v-text-field>
+      </v-col>
+      <v-col cols="12" md="6" class="pb-0">
+        <v-select :items="indicators" item-text="name" item-value="id" label="انتخاب شاخص" outlined v-model="indicator">
+        </v-select>
       </v-col>
       <v-col cols="12"></v-col>
       <v-col cols="12" sm="6" lg="4" class="pb-0">

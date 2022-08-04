@@ -61,12 +61,12 @@ export default {
       openAgreements: [],
       evaluates: [
         {
-          title: 'فرصت بهبود',
-          value: 'O'
-        },
-        {
           title: 'نقطه قوت',
           value: 'S'
+        },
+        {
+          title: 'فرصت بهبود',
+          value: 'O'
         }
       ],
       isClosedAgreement: false,

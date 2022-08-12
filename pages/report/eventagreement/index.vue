@@ -6,53 +6,41 @@
         <perfect-scrollbar class="reports-content">
             <v-col cols="12" class="d-flex flex-wrap justify-end px-5 py-0 position-relative"
                 v-if="reports.length && !loading">
-                <v-btn outlined color="blue" elevation="1" class="px-8" @click.stop="filterIsVisible = !filterIsVisible">
+                <v-btn outlined color="blue" elevation="1" class="px-8"
+                    @click.stop="filterIsVisible = !filterIsVisible">
                     فیلتر</v-btn>
                 <v-col cols="12" v-if="filterIsVisible" class="filter-container" @click.stop>
                     <v-col cols="12" class="d-flex flex-wrap">
-                        <v-col cols="12" class="pa-0">نوع گزارش</v-col>
+                        <v-col cols="12" class="px-0 pt-0">نوع گزارش</v-col>
                         <v-col cols="12" class="pa-0"></v-col>
-                        <v-checkbox @change="filterWithReportType" class="pl-7" v-model="reportTypeFilter" label="وقایع"
-                            value="E"></v-checkbox>
-                        <v-checkbox @change="filterWithReportType" class="pl-7" v-model="reportTypeFilter" label="توافق"
-                            value="A"></v-checkbox>
+                        <v-row>
+                            <v-checkbox class="pl-7" v-model="reportTypeFilter" label="وقایع" value="E"></v-checkbox>
+                            <v-checkbox class="pl-7" v-model="reportTypeFilter" label="توافق" value="A"></v-checkbox>
+                        </v-row>
                     </v-col>
                     <v-col cols="12" class="d-flex flex-wrap">
-                        <v-col cols="12" class="pa-0">نوع واقعه</v-col>
+                        <v-col cols="12" class="px-0 pt-0">نوع واقعه</v-col>
                         <v-col cols="12" class="pa-0"></v-col>
-                        <v-checkbox @change="filterWithEventType" class="pl-7" v-model="eventTypeFilter"
-                            label="فرصت بهبود" value="O"></v-checkbox>
-                        <v-checkbox @change="filterWithEventType" class="pl-7" v-model="eventTypeFilter"
-                            label="نقطه قوت" value="S"></v-checkbox>
+                        <v-row>
+                            <v-checkbox class="pl-7" v-model="eventTypeFilter" label="فرصت بهبود" value="O">
+                            </v-checkbox>
+                            <v-checkbox class="pl-7" v-model="eventTypeFilter" label="نقطه قوت" value="S"></v-checkbox>
+                        </v-row>
                     </v-col>
-                    <!-- <v-col cols="12" class="d-flex flex-wrap">
-                    <v-col cols="12" class="pa-0">فصل ارزیابی</v-col>
-                    <v-col cols="12" class="pa-0"></v-col>
-                    <v-checkbox
-                        class="pl-7"
-                        v-model="seasonFilter"
-                        label="فصل بهار"
-                        value="B"
-                    ></v-checkbox>
-                    <v-checkbox
-                        class="pl-7"
-                        v-model="seasonFilter"
-                        label="فصل تابستان"
-                        value="T"
-                    ></v-checkbox>
-                    <v-checkbox
-                        class="pl-7"
-                        v-model="seasonFilter"
-                        label="فصل پاییز"
-                        value="P"
-                    ></v-checkbox>
-                    <v-checkbox
-                        class="pl-7"
-                        v-model="seasonFilter"
-                        label="فصل زمستان"
-                        value="Z"
-                    ></v-checkbox>
-                </v-col> -->
+                    <v-col cols="12" class="d-flex flex-wrap">
+                        <v-col cols="12" class="px-0 pt-0">فصل ارزیابی</v-col>
+                        <v-col cols="12" class="pa-0"></v-col>
+                        <v-row>
+                            <v-checkbox class="pl-7" v-model="seasonFilter" label="فصل بهار" value="B">
+                            </v-checkbox>
+                            <v-checkbox class="pl-7" v-model="seasonFilter" label="فصل تابستان" value="T">
+                            </v-checkbox>
+                            <v-checkbox class="pl-7 mt-0" v-model="seasonFilter" label="فصل پاییز" value="P">
+                            </v-checkbox>
+                            <v-checkbox class="pl-7 mt-0" v-model="seasonFilter" label="فصل زمستان" value="Z">
+                            </v-checkbox>
+                        </v-row>
+                    </v-col>
                 </v-col>
             </v-col>
             <div class="loading" v-if="loading">
@@ -88,11 +76,11 @@ import HeaderPage from "~/components/header/headerPage.vue";
 
 export default {
     components: {
-    PerfectScrollbar,
-    ReportEventAgreementCard,
-    HeaderPage
-},
-    data () {
+        PerfectScrollbar,
+        ReportEventAgreementCard,
+        HeaderPage
+    },
+    data() {
         return {
             loading: false,
             reports: [],
@@ -112,16 +100,71 @@ export default {
     },
     computed: {
         eventReportsComputed() {
-            let eventReports = this.eventTypeFilterValue.filter((report) => report.type_report === 'E');
+            let eventReports = this.filteredValueComputed.filter((report) => report.type_report === 'E');
             return eventReports;
         },
         agreementReportsComputed() {
-            let agreementReports = this.eventTypeFilterValue.filter((report) => report.type_report === 'A');
+            let agreementReports = this.filteredValueComputed.filter((report) => report.type_report === 'A');
             return agreementReports;
         },
         filteredValueComputed() {
-            return this.eventTypeFilterValue
-        }
+            let filteredValue = [];
+            let filteredEventTypeValue = [];
+            if (this.reportTypeFilter.length) {
+                if (this.reportTypeFilter.length === 1) {
+                    if (this.reportTypeFilter == 'A') {
+                        this.eventsIsVisible = false;
+                        this.agreementsIsVisible = true;
+                    } else {
+                        this.agreementsIsVisible = false;
+                        this.eventsIsVisible = true;
+                    }
+                } else {
+                    this.eventsIsVisible = true;
+                    this.agreementsIsVisible = true;
+                }
+            } else {
+                this.eventsIsVisible = true;
+                this.agreementsIsVisible = true;
+            }
+            this.reports.filter((event) => {
+                this.seasonFilter.forEach((season) => {
+                    if (event.season_date_report == season) {
+                        filteredValue.push(event);
+                    }
+                })
+            })
+
+            if (this.seasonFilter.length) {
+                filteredValue.filter((event) => {
+                    this.eventTypeFilter.forEach((type) => {
+                        if (event.assessment_type == type) {
+                            filteredEventTypeValue.push(event);
+                        }
+                    })
+                })
+            } else {
+                this.reports.filter((event) => {
+                    this.eventTypeFilter.forEach((type) => {
+                        if (event.assessment_type == type) {
+                            filteredValue.push(event);
+                        }
+                    })
+                })
+            }
+
+            if (this.seasonFilter.length) {
+                if (this.eventTypeFilter.length) {
+                    return filteredEventTypeValue;
+                } else {
+                    return filteredValue;
+                }
+            } else if (this.eventTypeFilter.length) {
+                return filteredValue;
+            } else {
+                return this.reports;
+            }
+        },
     },
     methods: {
         async getReportEventAgreements() {
@@ -131,43 +174,12 @@ export default {
                     staff: localStorage.getItem('beEvaluatedUserId')
                 })
                 this.reports = response.data;
-                this.filterWithEventType();
             } catch (error) {
                 console.log(error?.response?.data);
             } finally {
                 this.loading = false;
             }
         },
-        filterWithReportType() {
-            if (this.reportTypeFilter.length === 1) {
-                if (this.reportTypeFilter == 'A') {
-                    this.eventsIsVisible = false;
-                    this.agreementsIsVisible = true;
-                } else {
-                    this.agreementsIsVisible = false;
-                    this.eventsIsVisible = true;
-                }
-            } else {
-                this.eventsIsVisible = true;
-                this.agreementsIsVisible = true;             
-            }
-        },
-        filterWithEventType() {
-            if (this.eventTypeFilter.length === 1) {
-                this.eventTypeFilterValue = this.reports.filter(report => report.assessment_type === this.eventTypeFilter[0]); 
-            } else if (this.eventTypeFilter.length === 2){
-                this.eventTypeFilterValue = this.reports.filter(report => report.assessment_type === this.eventTypeFilter[0] || report.assessment_type === this.eventTypeFilter[1]);
-            } else {
-                this.eventTypeFilterValue = this.reports;
-            }
-        },
-        // filterWithSeason() {
-        //     if (this.seasonFilter.length > 0 && this.seasonFilter.length < 3) {
-        //         return this.reports.filter(report => report.assessment_type === this.seasonFilter[0]); 
-        //     } else {
-        //         return this.reports
-        //     }
-        // },
     }
 }
 </script>
@@ -176,29 +188,33 @@ export default {
 .event-agreement-report {
     margin: auto;
     max-width: 65rem;
-  .event-agreement-report-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    column-gap: 1rem;
-    padding: 0.75rem;
-    overflow: hidden;
-    .reports-title {
-        font-size: 1.2rem;
-        white-space: nowrap;
-        margin-right: -20px;
+
+    .event-agreement-report-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        column-gap: 1rem;
+        padding: 0.75rem;
+        overflow: hidden;
+
+        .reports-title {
+            font-size: 1.2rem;
+            white-space: nowrap;
+            margin-right: -20px;
+        }
     }
-  }
-  .reports-content {
+
+    .reports-content {
         display: flex;
         flex-wrap: wrap;
         // justify-content: center;
-        padding: 1rem 0.2rem 1rem 0.2rem;
+        padding: 1rem 0.2rem 30rem 0.2rem;
         max-height: 78vh;
         min-height: 20rem;
         overflow: hidden !important;
         width: 100%;
         gap: 2.5rem;
+
         .report-target {
             // display: flex;
             // flex-wrap: wrap;
@@ -210,13 +226,15 @@ export default {
             border-radius: var(--input-border-radius);
             margin-left: 1rem;
             position: relative;
-            &> div {
+
+            &>div {
                 display: flex;
                 flex-wrap: wrap;
                 flex-direction: column;
                 padding: 0.5rem;
                 gap: 1rem;
             }
+
             .target-title {
                 position: absolute;
                 background-color: var(--background-color-secondary);
@@ -225,20 +243,22 @@ export default {
                 padding: 0 10px;
                 font-size: 1.15rem;
             }
+
             .report-card {
                 width: 100%;
             }
         }
-  }
-  .filter-container {
-    position: absolute;
-    border: 1px solid var(--color-blue-sky);
-    width: 20rem;
-    z-index: 2;
-    top: 3.5rem;
-    border-radius: var(--input-border-radius);
-    background-color: var(--background-color-primary-lighter);
-    backdrop-filter: blur(25px);
-  }
+    }
+
+    .filter-container {
+        position: absolute;
+        border: 1px solid var(--color-blue-sky);
+        width: 22.5rem;
+        z-index: 2;
+        top: 3.5rem;
+        border-radius: var(--input-border-radius);
+        background-color: var(--background-color-primary-lighter);
+        backdrop-filter: blur(25px);
+    }
 }
 </style>

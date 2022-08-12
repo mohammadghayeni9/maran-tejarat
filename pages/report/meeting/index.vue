@@ -1,9 +1,31 @@
 <template>
-    <div class="meeting-report">
+    <div class="meeting-report" @click="filterIsVisible = false">
         <HeaderPage title="گزارش جلسات" :seasonVisible="false"></HeaderPage>
         <v-col cols="12" class="d-flex justify-center" v-if="!reports.length && !loading">جلسه‌ی به ثبت رسیده‌ای برای
             نمایش وجود ندارد</v-col>
         <perfect-scrollbar class="reports-content">
+            <!-- <v-col cols="12" class="d-flex flex-wrap justify-end px-0 py-0 position-relative"
+                v-if="reports.length && !loading">
+                <v-btn outlined color="blue" elevation="1" class="px-8"
+                    @click.stop="filterIsVisible = !filterIsVisible">
+                    فیلتر</v-btn>
+                <v-col cols="12" v-if="filterIsVisible" class="filter-container" @click.stop>
+                    <v-col cols="12" class="d-flex flex-wrap">
+                        <v-col cols="12" class="px-0 pt-0">فصل ارزیابی</v-col>
+                        <v-col cols="12" class="pa-0"></v-col>
+                        <v-row>
+                            <v-checkbox class="pl-7" v-model="seasonFilter" label="فصل بهار" value="B">
+                            </v-checkbox>
+                            <v-checkbox class="pl-7" v-model="seasonFilter" label="فصل تابستان" value="T">
+                            </v-checkbox>
+                            <v-checkbox class="pl-7 mt-0" v-model="seasonFilter" label="فصل پاییز" value="P">
+                            </v-checkbox>
+                            <v-checkbox class="pl-7 mt-0" v-model="seasonFilter" label="فصل زمستان" value="Z">
+                            </v-checkbox>
+                        </v-row>
+                    </v-col>
+                </v-col>
+            </v-col> -->
             <div class="loading" v-if="loading">
                 <img :src="require('assets/images/loading.gif')" alt="loading">
             </div>
@@ -22,19 +44,41 @@ import HeaderPage from "~/components/header/headerPage.vue";
 
 export default {
     components: {
-    PerfectScrollbar,
-    ReportEventAgreementCard,
-    HeaderPage
-},
-    data () {
+        PerfectScrollbar,
+        ReportEventAgreementCard,
+        HeaderPage
+    },
+    data() {
         return {
             loading: false,
             reports: [],
+            filterIsVisible: false,
+            seasonFilter: [],
         }
     },
     created() {
         this.getMeetingReports();
     },
+    // computed: {
+    //     filteredValueComputed() {
+    //         let filteredValue = [];
+
+    //         this.reports.filter((event) => {
+    //             this.seasonFilter.forEach((season) => {
+    //                 if (event.season_date_report == season) {
+    //                     filteredValue.push(event);
+    //                 }
+    //             })
+    //         })
+    //         if (this.seasonFilter.length) {
+    //             console.log(filteredValue);
+    //             return filteredValue;
+    //         } else {
+    //             console.log(this.reports);
+    //             return this.reports;
+    //         }
+    //     },
+    // },
     methods: {
         async getMeetingReports() {
             try {
@@ -57,17 +101,30 @@ export default {
 .meeting-report {
     margin: auto;
     max-width: 65rem;
+
     .reports-content {
         display: flex;
         flex-wrap: wrap;
-        padding: 1rem 0.2rem 1rem 0.2rem;
+        padding: 1rem 0.2rem 25rem 1.2rem;
         max-height: 70vh;
-        overflow: hidden !important;   
+        overflow: hidden !important;
         width: 100%;
         gap: 2rem;
+
         .report-card {
             width: 100%;
         }
+    }
+
+    .filter-container {
+        position: absolute;
+        border: 1px solid var(--color-blue-sky);
+        width: 22.5rem;
+        z-index: 2;
+        top: 3.5rem;
+        border-radius: var(--input-border-radius);
+        background-color: var(--background-color-primary-lighter);
+        backdrop-filter: blur(25px);
     }
 }
 </style>

@@ -32,13 +32,13 @@ export default {
     },
     computed: {
         assessmentTypeComputed() {
-            return this.reportData.assessment_type === 'S' ? 'نقطه قوت' : 'فرصت بهبود'
+            return this.reportData.assessment_type === 'S' ? 'نقطه قوت' : this.reportData.assessment_type === 'O' ? 'فرصت بهبود' : 'ندارد';
         },
     },
     methods: {
         toPersianDigits(str) {
-            let persianNum = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-            return str?.replace(/[0-9]/g, function(w){
+            let persianNum = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+            return str?.replace(/[0-9]/g, function (w) {
                 return persianNum[+w];
             });
         }
@@ -47,17 +47,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .report-event-agreement-card {
-        background-color: var(--background-color-primary);
-        border-radius: var(--input-border-radius);
-        border: 2px solid var(--color-blue-dark);
-        min-width: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        font-size: 0.9rem;
-        span {
-            font-size: 0.95rem;
-        }
+.report-event-agreement-card {
+    background-color: var(--background-color-primary);
+    border-radius: var(--input-border-radius);
+    border: 2px solid var(--color-blue-dark);
+    min-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: 0.9rem;
+
+    span {
+        font-size: 0.95rem;
     }
+}
 </style>

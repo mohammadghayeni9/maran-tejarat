@@ -6,11 +6,11 @@
         <v-row>
           <v-col cols="12">
             <date-picker :styles="styles" :column="1" mode="single" placeholder="تاریخ" input-format="jYYYY-jMM-jDD"
-              v-model="agreementDate" ref="datePicker1"></date-picker>
+              v-model="agreementDate" ref="datePicker1" clearable></date-picker>
           </v-col>
           <v-col cols="12" class="pt-7 pb-11">
             <date-picker :styles="styles" :column="1" mode="single" placeholder="موعد انجام"
-              input-format="jYYYY-jMM-jDD" v-model="deadlineDate"></date-picker>
+              input-format="jYYYY-jMM-jDD" v-model="deadlineDate" clearable></date-picker>
           </v-col>
         </v-row>
       </v-col>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import datePicker from "@alireza-ab/vue-persian-datepicker";  
+import datePicker from "@alireza-ab/vue-persian-datepicker";
 import { routes } from "~/API/routes";
 import HeaderPage from "~/components/header/headerPage.vue";
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
@@ -46,7 +46,7 @@ export default {
     datePicker,
     HeaderPage,
     PerfectScrollbar
-},
+  },
   data() {
     return {
       loading: false,
@@ -79,7 +79,15 @@ export default {
   },
   methods: {
     async recordAgreement() {
-      if (this.goal && this.description && this.indicator) {
+      if (!this.agreementDate) {
+        this.$toast.error('تاریخ الزامی است');
+      } else if (!this.deadlineDate) {
+        this.$toast.error('موعد انجام الزامی است');
+      } else if (!this.description) {
+        this.$toast.error('شرح الزامی است');
+      } else if (!this.indicator) {
+        this.$toast.error('شاخص الزامی است');
+      } else {
         try {
           this.loading = true;
           await this.$axios.post(routes.recordEventAgreement, {
@@ -93,8 +101,6 @@ export default {
             is_open_agreement: true,
           });
           this.$toast.success('توافق با موفقیت ثبت شد');
-          this.agreementDate = null;
-          this.deadlineDate = null;
           this.description = null;
           this.goal = null;
           this.indicator = null;
@@ -104,8 +110,6 @@ export default {
         } finally {
           this.loading = false;
         }
-      } else {
-        this.$toast.error('تمام موارد الزامی می‌باشد');
       }
     },
     async getIndicators() {
@@ -144,11 +148,13 @@ export default {
     }
   }
 }
+
 .agreement-form {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+
   .agreement-form-scroller {
     display: flex;
     width: 100%;
@@ -159,10 +165,12 @@ export default {
     overflow-y: auto;
     overflow-x: hidden;
     padding-bottom: 12rem;
+
     @media screen and(max-width: 500px) {
       padding-bottom: 5rem;
     }
   }
+
   .agreement-form-btn {
     height: 54px !important;
     width: 100% !important;
@@ -170,6 +178,7 @@ export default {
     background-color: var(--color-blue-sky) !important;
     color: var(--color-white) !important;
   }
+
   .disable-btn {
     cursor: default;
     pointer-events: none;

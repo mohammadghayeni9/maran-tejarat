@@ -27,15 +27,18 @@ export default {
 <style lang="scss">
 .v-application {
   background-color: var(--background-color-secondary) !important;
+
   .header-container {
     margin-bottom: 5rem;
   }
+
   .v-main {
     padding: 2rem 1rem !important;
     margin: auto;
     max-width: 1600px;
     width: 80vw;
     overflow: hidden;
+
     @media screen and (max-width: 700px) {
       width: 100vw;
     }
@@ -43,6 +46,11 @@ export default {
 
   .loading {
     transform: scale(0.8) !important;
+  }
+
+  .pdp-clear {
+    top: 0 !important;
+    bottom: 0 !important;
   }
 }
 </style>

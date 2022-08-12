@@ -4,7 +4,7 @@
     <PerfectScrollbar class="event-form-scroller">
       <v-col cols="12" sm="6" lg="4">
         <date-picker :styles="styles" :column="1" mode="single" id="date-picker" placeholder="تاریخ"
-          input-format="jYYYY-jMM-jDD" v-model="eventDate"></date-picker>
+          input-format="jYYYY-jMM-jDD" v-model="eventDate" clearable></date-picker>
       </v-col>
       <v-col cols="12" sm="6" lg="4" class="pb-0">
         <v-select :items="openAgreements" label="انتخاب توافق صورت گرفته" outlined item-text="description"
@@ -47,11 +47,11 @@ export default {
     datePicker,
     HeaderPage,
     PerfectScrollbar
-},
+  },
   data() {
     return {
       loading: false,
-      eventDate: null,
+      eventDate: '',
       agreement: null,
       description: null,
       indicator: null,
@@ -94,32 +94,39 @@ export default {
   },
   methods: {
     async recordEvent() {
-      try {
-        this.loading = true;
-        await this.$axios.post(routes.recordEventAgreement, {
-          type_report: "E",
-          be_evaluated: localStorage.getItem('beEvaluatedUserId'),  //ایدی ارزیابی شونده
-          date_report: this.eventDate,
-          deadline: this.eventDate,
-          agreement: this.agreement,
-          description: this.description,
-          assessment_type: this.evaluate,
-          indicators: this.indicator,
-          is_open_agreement: !this.isClosedAgreement,
-        });
-        this.$toast.success('واقعه با موفقیت ثبت شد');
-        this.eventDate = null;
-        this.agreement = '';
-        this.description = '';
-        this.evaluate = '';
-        this.indicator = '';
-        this.isClosedAgreement = false;
-        this.getOpenAgreements();
-      } catch (error) {
-        this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
-        console.log(error?.response?.data);
-      } finally {
-        this.loading = false;
+      if (!this.eventDate) {
+        this.$toast.error('تاریخ الزامی است');
+      } else if (!this.description) {
+        this.$toast.error('شاخص الزامی است');
+      } else if (!this.indicator) {
+        this.$toast.error('شرح الزامی است');
+      } else {
+        try {
+          this.loading = true;
+          await this.$axios.post(routes.recordEventAgreement, {
+            type_report: "E",
+            be_evaluated: localStorage.getItem('beEvaluatedUserId'),  //ایدی ارزیابی شونده
+            date_report: this.eventDate,
+            deadline: this.eventDate,
+            agreement: this.agreement,
+            description: this.description,
+            assessment_type: this.evaluate,
+            indicators: this.indicator,
+            is_open_agreement: !this.isClosedAgreement,
+          });
+          this.$toast.success('واقعه با موفقیت ثبت شد');
+          this.agreement = '';
+          this.description = '';
+          this.evaluate = '';
+          this.indicator = '';
+          this.isClosedAgreement = false;
+          this.getOpenAgreements();
+        } catch (error) {
+          this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
+          console.log(error?.response?.data);
+        } finally {
+          this.loading = false;
+        }
       }
     },
     async getIndicators() {
@@ -189,11 +196,13 @@ export default {
     }
   }
 }
+
 .event-form {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+
   .event-form-scroller {
     display: flex;
     width: 100%;
@@ -204,10 +213,12 @@ export default {
     overflow-y: auto;
     overflow-x: hidden;
     padding-bottom: 12rem;
+
     @media screen and(max-width: 500px) {
       padding-bottom: 5rem;
     }
   }
+
   .event-form-btn {
     height: 54px !important;
     width: 100% !important;
@@ -215,6 +226,7 @@ export default {
     background-color: var(--color-blue-sky) !important;
     color: var(--color-white) !important;
   }
+
   .disable-btn {
     cursor: default;
     pointer-events: none;

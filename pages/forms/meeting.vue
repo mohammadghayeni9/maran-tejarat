@@ -2,9 +2,9 @@
   <div class="meeting-form">
     <HeaderPage title="ثبت جلسه بازخورد" :seasonVisible="false"></HeaderPage>
     <Perfect-scrollbar class="meeting-form-scroller">
-      <v-col cols="12" sm="6" lg="4" class="meeting-form-datepicker">
+      <v-col cols="12" lg="4" class="meeting-form-datepicker">
         <date-picker :styles="styles" :column="1" mode="single" placeholder="تاریخ" input-format="jYYYY-jMM-jDD"
-          v-model="meetingDate"></date-picker>
+          v-model="meetingDate" clearable></date-picker>
       </v-col>
       <v-col cols="12" lg="8">
         <v-textarea label="شرح جلسه" outlined v-model="description"></v-textarea>
@@ -22,21 +22,25 @@
           </v-btn>
         </v-col>
         <v-col cols="12" class="agreement-form px-0" v-else>
-          <v-col cols="12" sm="6" lg="4">
-            <date-picker :styles="styles" :column="1" mode="single" id="date-picker" placeholder="تاریخ"
-              input-format="jYYYY-jMM-jDD" v-model="agreementDate"></date-picker>
+          <v-col cols="12" lg="4" class="pb-0 mt-5">
+            <v-row>
+              <v-col cols="12">
+                <date-picker :styles="styles" :column="1" mode="single" id="date-picker" placeholder="تاریخ"
+                  input-format="jYYYY-jMM-jDD" v-model="agreementDate" clearable></date-picker>
+              </v-col>
+              <v-col cols="12" class="pt-7 pb-11">
+                <date-picker :styles="styles" :column="1" mode="single" id="date-picker" placeholder="موعد انجام"
+                  input-format="jYYYY-jMM-jDD" v-model="deadlineDate" clearable></date-picker>
+              </v-col>
+            </v-row>
           </v-col>
-          <v-col cols="12" sm="6" lg="4">
-            <date-picker :styles="styles" :column="1" mode="single" id="date-picker" placeholder="موعد انجام"
-              input-format="jYYYY-jMM-jDD" v-model="deadlineDate"></date-picker>
+          <v-col cols="12" lg="8" class="pb-0">
+            <v-textarea label="شرح" outlined v-model="agreementDescription" class="desc-agreement"></v-textarea>
           </v-col>
-          <v-col cols="12" sm="6" lg="4" class="pb-0">
-            <v-text-field label="شرح" outlined v-model="agreementDescription" class="desc-agreement"></v-text-field>
-          </v-col>
-          <v-col cols="12" sm="6" lg="4" class="pb-0">
+          <v-col cols="12" md="6" class="pb-0">
             <v-text-field label="هدف کمی / کیفی" outlined v-model="goal"></v-text-field>
           </v-col>
-          <v-col cols="12" sm="6" lg="4" class="pb-0">
+          <v-col cols="12" md="6" class="pb-0">
             <v-select :items="indicators" item-text="name" item-value="id" label="انتخاب شاخص" outlined
               v-model="indicator">
             </v-select>
@@ -67,7 +71,7 @@ export default {
     datePicker,
     PerfectScrollbar,
     HeaderPage
-},
+  },
   data() {
     return {
       loading: false,
@@ -105,48 +109,61 @@ export default {
   },
   methods: {
     async recordMeeting() {
-      try {
-        this.loading = true;
-        await this.$axios.post(routes.recordMeeting, {
-          be_evaluated: localStorage.getItem('beEvaluatedUserId'),
-          date_report: this.meetingDate,
-          description: this.description,
-        });
-        this.$toast.success('جلسه بازخورد با موفقیت ثبت شد');
-        this.meetingDate = null;
-        this.description = '';
-      } catch (error) {
-        this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
-        console.log(error?.response?.data);
-      } finally {
-        this.loading = false;
+      if (!this.meetingDate) {
+        this.$toast.error('تاریخ الزامی است');
+      } else if (!this.description) {
+        this.$toast.error('شرح جلسه الزامی است');
+      } else {
+        try {
+          this.loading = true;
+          await this.$axios.post(routes.recordMeeting, {
+            be_evaluated: localStorage.getItem('beEvaluatedUserId'),
+            date_report: this.meetingDate,
+            description: this.description,
+          });
+          this.$toast.success('جلسه بازخورد با موفقیت ثبت شد');
+          this.description = '';
+        } catch (error) {
+          this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
+          console.log(error?.response?.data);
+        } finally {
+          this.loading = false;
+        }
       }
     },
     async recordAgreement() {
-      try {
-        this.loading = true;
-        await this.$axios.post(routes.recordEventAgreement, {
-          type_report: "A",
-          be_evaluated: localStorage.getItem('beEvaluatedUserId'),  //ایدی ارزیابی شونده
-          date_report: this.agreementDate,
-          deadline: this.deadlineDate,
-          description: this.agreementDescription,
-          quantitative_qualitative_goal: this.goal,
-          indicators: this.indicator,
-          is_open_agreement: true,
-        });
-        this.$toast.success('توافق با موفقیت ثبت شد');
-        this.agreementDate = null;
-        this.deadlineDate = null;
-        this.agreementDescription = '';
-        this.goal = '';
-        this.indicator = '';
-        this.agreementFormIsVisible = false;
-      } catch (error) {
-        this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
-        console.log(error?.response?.data);
-      } finally {
-        this.loading = false;
+      if (!this.agreementDate) {
+        this.$toast.error('تاریخ الزامی است');
+      } else if (!this.deadlineDate) {
+        this.$toast.error('موعد انجام الزامی است');
+      } else if (!this.agreementDescription) {
+        this.$toast.error('شرح توافق الزامی است');
+      } else if (!this.indicator) {
+        this.$toast.error('شاخص الزامی است');
+      } else {
+        try {
+          this.loading = true;
+          await this.$axios.post(routes.recordEventAgreement, {
+            type_report: "A",
+            be_evaluated: localStorage.getItem('beEvaluatedUserId'),  //ایدی ارزیابی شونده
+            date_report: this.agreementDate,
+            deadline: this.deadlineDate,
+            description: this.agreementDescription,
+            quantitative_qualitative_goal: this.goal,
+            indicators: this.indicator,
+            is_open_agreement: true,
+          });
+          this.$toast.success('توافق با موفقیت ثبت شد');
+          this.agreementDescription = '';
+          this.goal = '';
+          this.indicator = '';
+          this.agreementFormIsVisible = false;
+        } catch (error) {
+          this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
+          console.log(error?.response?.data);
+        } finally {
+          this.loading = false;
+        }
       }
     },
     async getIndicators() {
@@ -167,8 +184,6 @@ export default {
 </script>
 
 <style lang="scss">
-
-
 .pdp {
   .pdp-icon {
     display: none;
@@ -190,10 +205,12 @@ export default {
     }
   }
 }
+
 .meeting-form {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+
   .meeting-form-scroller {
     display: flex;
     width: 100%;
@@ -205,23 +222,27 @@ export default {
     overflow-x: hidden;
     padding-bottom: 5rem;
   }
+
   .meeting-form-datepicker {
-      align-self: start;
-      margin-top: 10px !important;
-      transform: translateY(-10px);
-      z-index: 10;
+    align-self: start;
+    margin-top: 10px !important;
+    transform: translateY(-10px);
+    z-index: 10;
   }
+
   .meeting-form-btn {
     height: 54px !important;
     width: 100% !important;
     border-radius: var(--input-border-radius) !important;
     background-color: var(--color-blue-sky) !important;
     color: var(--color-white) !important;
+
     &.add {
       background-color: var(--color-white) !important;
       color: var(--color-blue-sky) !important;
     }
   }
+
   .disable-btn {
     cursor: default;
     pointer-events: none;
@@ -232,6 +253,7 @@ export default {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
+
     .btn-container {
       gap: 0.5rem;
       display: flex;
@@ -239,6 +261,7 @@ export default {
       flex-direction: row;
       justify-content: center;
     }
+
     .agreement-form-btn {
       height: 54px;
       width: 45%;
@@ -246,21 +269,25 @@ export default {
       border-radius: var(--input-border-radius);
       background-color: var(--color-blue-sky) !important;
       color: var(--color-white) !important;
+
       @media screen and (max-width: 500px) {
         width: 100%;
         max-width: 100%;
       }
+
       &.cancel {
         background-color: var(--color-white) !important;
         color: var(--color-blue-sky) !important;
       }
     }
+
     .disable-btn {
       cursor: default;
       pointer-events: none;
     }
   }
 }
+
 .desc-agreement {
   @media screen and (min-width: 1264px) {
     margin-top: 20px !important;

@@ -14,6 +14,10 @@
             <span>نوع ارزیابی: </span>
             {{ assessmentTypeComputed }}
         </v-col>
+        <v-col cols="12" class="d-flex justify-end" v-if="reportData.type_report === 'E'">
+            <SVGLike class="like-svg" :class="vote == 'like' ? 'selected' : ''" @click="likeEvent" />
+            <SVGLike class="dislike-svg" :class="vote == 'dislike' ? 'selected' : ''" @click="dislikeEvent" />
+        </v-col>
         <v-col cols="12" sm="6" v-if="reportData.type_report === 'A'">
             <span>موعد انجام: </span>
             <span dir="ltr">{{ toPersianDigits(reportData.deadline) }}</span>
@@ -25,10 +29,23 @@
 </template>
 
 <script>
+import SVGLike from '@/components/icons/like.svg'
 export default {
     props: {
         type: '',
-        reportData: {}
+        reportData: {},
+        isAssesor: {
+            type: Boolean,
+            default: true,
+        }
+    },
+    components: {
+        SVGLike,
+    },
+    data() {
+        return {
+            vote: null,
+        }
     },
     computed: {
         assessmentTypeComputed() {
@@ -41,8 +58,18 @@ export default {
             return str?.replace(/[0-9]/g, function (w) {
                 return persianNum[+w];
             });
+        },
+        likeEvent() {
+            if (!this.isAssesor) {
+                this.vote = 'like';
+            }
+        },
+        dislikeEvent() {
+            if (!this.isAssesor) {
+                this.vote = 'dislike';
+            }
         }
-    }
+    },
 }
 </script>
 
@@ -59,6 +86,75 @@ export default {
 
     span {
         font-size: 0.95rem;
+    }
+
+    .like-svg {
+        transition: all 0.4s ease;
+        max-width: 28px; 
+        max-height: 28px;
+        cursor: pointer;
+        fill: rgba(128, 128, 128, 0.4);
+        margin: 0 5px;
+        &.selected {
+            animation-name: like-animate;
+            animation-duration: 1s;
+            fill: var(--color-blue-dark);
+        }
+    }
+
+    .dislike-svg {
+        transition: all 0.4s ease;
+        max-width: 28px;
+        max-height: 28px;
+        transform: rotate(180deg);
+        cursor: pointer;
+        fill: rgba(128, 128, 128, 0.4);
+        margin: 0 5px;
+        &.selected {
+            animation-name: dislike-animate;
+            animation-duration: 1s;
+            fill: var(--color-blue-dark);
+        }
+    }
+}
+
+@keyframes like-animate {
+    0% {
+        transform: rotate(0deg);
+    }
+    35% {
+        transform: rotate(-60deg);
+    }
+    60% {
+        transform: rotate(-20deg);
+    }
+    85% {
+        transform: rotate(-40deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes dislike-animate {
+    0% {
+        transform: rotate(180deg);
+    }
+
+    35% {
+        transform: rotate(120deg);
+    }
+
+    60% {
+        transform: rotate(160deg);
+    }
+
+    85% {
+        transform: rotate(140deg);
+    }
+
+    100% {
+        transform: rotate(180deg);
     }
 }
 </style>

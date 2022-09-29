@@ -36,7 +36,7 @@
             </v-col>
             <perfect-scrollbar class="reports-content-forMe mt-5">
               <report-event-agreement-card type="E" v-for="event in filterWithEventTypeData" :key="event.date_report"
-                :reportData="event" class="my-5" />
+                :reportData="event" :is-assesor="false" class="my-5" />
               <v-col cols="12 d-flex justify-center mt-5 mb-10 " v-if="!filterWithEventTypeData.length">موردی برای نمایش
                 وجود ندارد.</v-col>
             </perfect-scrollbar>

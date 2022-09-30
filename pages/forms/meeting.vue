@@ -9,6 +9,11 @@
       <v-col cols="12" lg="8">
         <v-textarea label="شرح جلسه" outlined v-model="description"></v-textarea>
       </v-col>
+      <v-col cols="12" class="pt-0">
+        <v-btn class="blue lighten-1 white--text py-5" v-if="!hiddenDescriptionIsVisible"
+          @click="hiddenDescriptionIsVisible = true">نمایش شرح مخفی</v-btn>
+        <v-textarea v-else outlined label="شرح مخفی" v-model="hiddenDescription"></v-textarea>
+      </v-col>
       <v-col cols="12"></v-col>
       <v-col cols="12" sm="6" lg="4" class="pb-0">
         <v-btn class="meeting-form-btn disable-btn" elevation="2" v-if="loading">
@@ -45,6 +50,11 @@
               v-model="indicator">
             </v-select>
           </v-col>
+          <v-col cols="12">
+            <v-btn class="blue lighten-1 white--text py-5" v-if="!agreementHiddenDescriptionIsVisible"
+              @click="agreementHiddenDescriptionIsVisible = true">نمایش شرح مخفی</v-btn>
+            <v-textarea v-else outlined label="شرح مخفی" v-model="agreementHiddenDescription"></v-textarea>
+          </v-col>
           <v-col cols="12"></v-col>
           <v-col cols="12" class="pb-0 d-flex flex-wrap flex-row btn-container">
             <v-btn class="agreement-form-btn disable-btn col-6" elevation="2" v-if="loading">
@@ -74,6 +84,10 @@ export default {
   },
   data() {
     return {
+      hiddenDescriptionIsVisible: false,
+      hiddenDescription: null,
+      agreementHiddenDescriptionIsVisible: false,
+      agreementHiddenDescription: null,
       loading: false,
       meetingDate: null,
       description: null,

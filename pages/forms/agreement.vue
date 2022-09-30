@@ -24,6 +24,10 @@
         <v-select :items="indicators" item-text="name" item-value="id" label="انتخاب شاخص" outlined v-model="indicator">
         </v-select>
       </v-col>
+      <v-col cols="12">
+        <v-btn class="blue lighten-1 white--text py-5" v-if="!hiddenDescriptionIsVisible" @click="hiddenDescriptionIsVisible = true">نمایش شرح مخفی</v-btn>
+        <v-textarea v-else outlined label="شرح مخفی" v-model="hiddenDescription"></v-textarea>
+      </v-col>
       <v-col cols="12"></v-col>
       <v-col cols="12" sm="6" lg="4" class="pb-0">
         <v-btn class="agreement-form-btn disable-btn" elevation="2" v-if="loading">
@@ -49,6 +53,8 @@ export default {
   },
   data() {
     return {
+      hiddenDescriptionIsVisible: false,
+      hiddenDescription: null,
       loading: false,
       agreementDate: null,
       deadlineDate: null,

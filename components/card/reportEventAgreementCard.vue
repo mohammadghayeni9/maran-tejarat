@@ -10,6 +10,10 @@
             <span>تارخ ثبت: </span>
             <span dir="ltr">{{ toPersianDigits(reportData.date_report) }}</span>
         </v-col>
+        <v-col cols="12" sm="6" class="pb-1" v-if="type === 'M' && isAssesor">
+            <span>امتیاز بازخورد جلسه: </span>
+            <span >0</span>
+        </v-col>
         <v-col cols="12" sm="6" v-if="reportData.type_report === 'E'">
             <span>نوع ارزیابی: </span>
             {{ assessmentTypeComputed }}
@@ -25,7 +29,7 @@
         <v-col cols="12" sm="6" v-if="reportData.type_report === 'A' && !reportData.is_open_agreement">
             <span>این توافق پایان یافته است.</span>
         </v-col>
-        <v-col cols="12" class="d-flex justify-end" v-if="type === 'M'">
+        <v-col cols="12" class="d-flex justify-end" v-if="type === 'M' && !isAssesor">
             <v-dialog v-model="dialog" width="500">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn color="green lighten-1" dark v-bind="attrs" v-on="on">

@@ -44,6 +44,7 @@ export default {
 
 <style lang="scss">
 .pdp {
+  font-family: iranSansFaNum;
   .pdp-icon {
     display: none;
   }

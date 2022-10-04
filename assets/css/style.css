@@ -3,6 +3,10 @@
   src: url("../font/IranSans.woff") format("woff");
 }
 @font-face {
+  font-family: "iranSansFaNum";
+  src: url("../font/IRANSansWeb(FaNum).woff") format("woff");
+}
+@font-face {
   font-family: "iranSans-light";
   src: url("../font/IranSans.woff") format("woff");
   font-weight: lighter;

@@ -18,9 +18,12 @@
             <span>نوع ارزیابی: </span>
             {{ assessmentTypeComputed }}
         </v-col>
-        <v-col cols="12" class="d-flex justify-end" v-if="reportData.type_report === 'E'">
-            <SVGLike class="like-svg" :class="vote == 'like' ? 'selected' : ''" @click="likeEvent" />
-            <SVGLike class="dislike-svg" :class="vote == 'dislike' ? 'selected' : ''" @click="dislikeEvent" />
+        <v-col cols="12" class="d-flex justify-end like-wrapper" v-if="reportData.type_report === 'E'">
+            <div class="loading d-flex justify-center" v-if="loading">
+                <img :src="require('assets/images/loading.gif')" alt="loading">
+            </div>
+            <SVGLike class="like-svg" v-if="!isAssesor || (isAssesor && reportData.like_dislike == 'L')" :class="vote == 'like' || reportData.like_dislike == 'L' ? 'selected' : ''" @click="likeEvent(reportData.id)" />
+            <SVGLike class="dislike-svg" v-if="!isAssesor || (isAssesor && reportData.like_dislike == 'D')" :class="vote == 'dislike' || reportData.like_dislike == 'D' ? 'selected' : ''" @click="dislikeEvent(reportData.id)" />
         </v-col>
         <v-col cols="12" sm="6" v-if="reportData.type_report === 'A'">
             <span>موعد انجام: </span>
@@ -29,7 +32,7 @@
         <v-col cols="12" sm="6" v-if="reportData.type_report === 'A' && !reportData.is_open_agreement">
             <span>این توافق پایان یافته است.</span>
         </v-col>
-        <v-col cols="12" class="d-flex justify-end" v-if="type === 'M' && !isAssesor">
+        <!-- <v-col cols="12" class="d-flex justify-end" v-if="type === 'M' && !isAssesor">
             <v-dialog v-model="dialog" width="500">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn color="green lighten-1" dark v-bind="attrs" v-on="on">
@@ -40,13 +43,14 @@
                     <Feedback :feedbacks-array="feedbackArray" @saveFeedbacks="saveFeedbacks" />
                 </div>
             </v-dialog>
-        </v-col>
+        </v-col> -->
     </div>
 </template>
 
 <script>
 import SVGLike from '@/components/icons/like.svg'
 import Feedback from '@/components/feedback/Feedback.vue';
+import { routes } from "~/API/routes";
 
 export default {
     props: {
@@ -63,6 +67,7 @@ export default {
     },
     data() {
         return {
+            loading: false,
             vote: null,
             dialog: false,
             feedbackArray: [
@@ -236,15 +241,44 @@ export default {
                 return persianNum[+w];
             });
         },
-        likeEvent() {
-            if (!this.isAssesor) {
-                this.vote = 'like';
+        async likeEvent(id) {
+            if (!this.isAssesor && this.vote !== 'like') {
+                try {
+                    this.loading = true;
+                    this.vote = 'like';
+                    const response = await this.$axios.post(routes.likeOrDislike, {
+                        id,
+                        like_dislike: "L"
+                    });
+                    await this.getEvents();
+                    // this.users = response.data.results;
+                } catch (error) {
+                    console.log(error?.response?.data);
+                } finally {
+                    this.loading = false;
+                }
             }
         },
-        dislikeEvent() {
-            if (!this.isAssesor) {
-                this.vote = 'dislike';
-            }
+        async dislikeEvent(id) {
+            if (!this.isAssesor && this.vote !== 'dislike') {
+                try {
+                    this.loading = true;
+                    this.vote = 'dislike';
+                    const response = await this.$axios.post(routes.likeOrDislike, {
+                        id,
+                        like_dislike: "D"
+                    });
+                    await this.getEvents();
+                    // this.users = response.data.results;
+                } catch (error) {
+                    console.log(error?.response?.data);
+                } finally {
+                    this.loading = false;
+                }
+            }        
+        },
+        getEvents() {
+            this.$emit('getEvents')
         },
         saveFeedbacks(value) {
             this.dialog = false;
@@ -281,6 +315,16 @@ export default {
 
     span {
         font-size: 0.95rem;
+    }
+
+    .like-wrapper {
+        position: relative;
+        .loading {
+            position: absolute;
+            bottom: 30px;
+            left: 25px;
+            transform: scale(0.75);
+        }
     }
 
     .like-svg {

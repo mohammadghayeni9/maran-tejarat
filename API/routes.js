@@ -15,5 +15,8 @@ export const routes = {
   openAgreements: "report/show-all-agreements-open/",
   evalUser: "performanceManagement/eval-a-user/",
   reportEvaluate: "performanceManagement/show-report-eval/",
-  changePassword: "auth/change_password/"
+  changePassword: "auth/change_password/",
+  likeOrDislike: "report/like-or-dislike",
+  feedbackAnswers: "report/evaluation-for-feedbackSessions",
+  feedbackQuestions: "report/show-questions-for-feedbackSessions",
 };

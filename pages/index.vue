@@ -2,7 +2,7 @@
   <div class="home-view" @click.stop="filterIsVisible = false">
     <v-tabs class="home-tabs">
       <v-tab v-if="isAssessorComputed">ارزیابی کننده</v-tab>
-      <v-tab>ارزیابی شونده</v-tab>
+      <v-tab>ارزیابی شونده <span class="new-event-count" v-if="newEventCount > 0">{{ newEventCount }}</span></v-tab>
       <div class="loading d-flex justify-center" v-if="loading">
         <img :src="require('assets/images/loading.gif')" alt="loading">
       </div>
@@ -44,13 +44,13 @@
           <v-tab-item v-if="reportAgreementForMe.length">
             <perfect-scrollbar class="reports-content-forMe mt-5">
               <report-event-agreement-card type="A" v-for="agreement in reportAgreementForMe"
-                :key="agreement.date_report" :reportData="agreement" class="my-5" />
+                :key="agreement.date_report" :reportData="agreement" :is-assesor="false" class="my-5" />
             </perfect-scrollbar>
           </v-tab-item>
           <v-tab-item v-if="reportMeetingForMe.length">
             <perfect-scrollbar class="reports-content-forMe mt-5">
               <report-event-agreement-card type="M" :isAssesor="false" v-for="meeting in reportMeetingForMe" :key="meeting.date_report"
-                :reportData="meeting" class="my-5" />
+                :reportData="meeting" class="my-5" @refreshReporthMeeting="getMeetingReports" />
             </perfect-scrollbar>
           </v-tab-item>
           <v-tab-item>
@@ -132,6 +132,7 @@ export default {
       filterIsVisible: false,
       eventTypeFilter: null,
       activeUnitTab: null,
+      newEventCount: 0,
     }
   },
   methods: {
@@ -152,6 +153,13 @@ export default {
           type_report: "E"
         });
         this.reportEventForMe = response.data;
+        if (this.reportEventForMe.length) {
+          this.reportEventForMe.forEach((event) => {
+            if (!event.be_seen) {
+              this.newEventCount += 1;
+            }
+          })
+        }
       } catch (error) {
         console.log(error?.response?.data);
       }
@@ -162,6 +170,13 @@ export default {
           type_report: "A"
         });
         this.reportAgreementForMe = response.data;
+        if (this.reportAgreementForMe.length) {
+          this.reportAgreementForMe.forEach((event) => {
+            if (!event.be_seen) {
+              this.newEventCount += 1;
+            }
+          })
+        }
       } catch (error) {
         console.log(error?.response?.data);
       }
@@ -236,6 +251,18 @@ export default {
 
 <style lang="scss">
 .home-tabs {
+  .new-event-count {
+    position: absolute;
+    font-family: iranSansFaNum;
+    font-size: 1.1rem;
+    color: red;
+    left: -10px;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    border: 1px solid red;
+    border-radius: 50%;
+  }
   .v-tabs-bar {
     background-color: var(--background-color-primary) !important;
     overflow: hidden;

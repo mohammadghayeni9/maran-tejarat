@@ -72,7 +72,7 @@
 
 <script>
 import datePicker from "@alireza-ab/vue-persian-datepicker";
-import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
+import { PerfectScrollbar } from 'vue2-perfect-scrollbar';
 import { routes } from "~/API/routes";
 import HeaderPage from "~/components/header/headerPage.vue";
 
@@ -134,9 +134,12 @@ export default {
             be_evaluated: localStorage.getItem('beEvaluatedUserId'),
             date_report: this.meetingDate,
             description: this.description,
+            description_hidden: this.hiddenDescription,
           });
           this.$toast.success('جلسه بازخورد با موفقیت ثبت شد');
           this.description = '';
+          this.hiddenDescription = null;
+          this.hiddenDescriptionIsVisible = false;
         } catch (error) {
           this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
           console.log(error?.response?.data);
@@ -166,12 +169,15 @@ export default {
             quantitative_qualitative_goal: this.goal,
             indicators: this.indicator,
             is_open_agreement: true,
+            description_hidden: this.agreementHiddenDescription,
           });
           this.$toast.success('توافق با موفقیت ثبت شد');
           this.agreementDescription = '';
           this.goal = '';
           this.indicator = '';
           this.agreementFormIsVisible = false;
+          this.agreementHiddenDescription = null;
+          this.agreementHiddenDescriptionIsVisible = false;
         } catch (error) {
           this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
           console.log(error?.response?.data);

@@ -105,11 +105,14 @@ export default {
             quantitative_qualitative_goal: this.goal,
             indicators: this.indicator,
             is_open_agreement: true,
+            description_hidden: this.hiddenDescription,
           });
           this.$toast.success('توافق با موفقیت ثبت شد');
           this.description = null;
           this.goal = null;
           this.indicator = null;
+          this.hiddenDescription = null;
+          this.hiddenDescriptionIsVisible = false;
         } catch (error) {
           this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');
           console.log(error?.response?.data);

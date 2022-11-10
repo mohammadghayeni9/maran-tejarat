@@ -120,6 +120,7 @@ export default {
             assessment_type: this.evaluate,
             indicators: this.indicator,
             is_open_agreement: !this.isClosedAgreement,
+            description_hidden: this.hiddenDescription,
           });
           this.$toast.success('واقعه با موفقیت ثبت شد');
           this.agreement = '';
@@ -127,6 +128,8 @@ export default {
           this.evaluate = '';
           this.indicator = '';
           this.isClosedAgreement = false;
+          this.hiddenDescriptionIsVisible = false;
+          this.hiddenDescription = null;
           this.getOpenAgreements();
         } catch (error) {
           this.$toast.error('خطایی رخ داده است دوباره تلاش کنید');

@@ -1,5 +1,6 @@
 <template>
     <div class="report-event-agreement-card">
+        <div class="alert-icon" v-if="(type == 'E' || type == 'A') && !reportData.be_seen && !isAssesor">جدید</div>
         <v-col cols="12 pb-1">
             <span v-if="type === 'E'">شرح واقعه: </span>
             <span v-else-if="type === 'A'"> شرح توافق: </span>
@@ -10,9 +11,10 @@
             <span>تارخ ثبت: </span>
             <span dir="ltr">{{ toPersianDigits(reportData.date_report) }}</span>
         </v-col>
-        <v-col cols="12" sm="6" class="pb-1" v-if="type === 'M' && isAssesor">
+        <v-col cols="12" sm="6" class="pb-1" v-if="type === 'M'">
             <span>امتیاز بازخورد جلسه: </span>
-            <span >0</span>
+            <span class="score" v-if="reportData.is_eval" >{{ reportData.score }}</span>
+            <span v-else>بازخوردی ثبت نشده است.</span>
         </v-col>
         <v-col cols="12" sm="6" v-if="reportData.type_report === 'E'">
             <span>نوع ارزیابی: </span>
@@ -32,18 +34,34 @@
         <v-col cols="12" sm="6" v-if="reportData.type_report === 'A' && !reportData.is_open_agreement">
             <span>این توافق پایان یافته است.</span>
         </v-col>
-        <!-- <v-col cols="12" class="d-flex justify-end" v-if="type === 'M' && !isAssesor">
+        <v-col cols="12" class="d-flex justify-end" v-if="type === 'M' && !isAssesor && !reportData.is_eval">
             <v-dialog v-model="dialog" width="500">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn color="green lighten-1" dark v-bind="attrs" v-on="on">
+                    <v-btn color="green lighten-1" class="btn-loading" dark v-if="loading">
+                        <img :src="require('assets/images/loading.gif')" alt="loading">
+                    </v-btn>
+                    <v-btn color="green lighten-1" dark v-bind="attrs" @click="getFeedbackQuestions" v-else>
                         ثبت بازخورد
                     </v-btn>
                 </template>
                 <div class="feedback-modal">
-                    <Feedback :feedbacks-array="feedbackArray" @saveFeedbacks="saveFeedbacks" />
+                    <Feedback :feedbacks-array="feedbackQuestions" :meeting-id="reportData.id" :steps="steps" @saveFeedbacks="saveFeedbacks" />
                 </div>
             </v-dialog>
-        </v-col> -->
+        </v-col>
+        <v-col cols="12" class="d-flex justify-end" v-if="type === 'M' && reportData.is_eval">
+            <v-dialog v-model="detailDialog" class="detail-dialog" >
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn color="green lighten-1" dark v-bind="attrs" @click="getFeedbackdetail(reportData.id)">
+                        نمایش جزئیات بازخورد
+                    </v-btn>
+                </template>
+                <div class="feedback-detail-modal">
+                    <img :src="require('assets/images/loading.gif')" class="loading1" alt="loading" v-if="loading1">
+                    <FeedbackDetail class="feedbac-detail-temp" :feedbackDetail="feedbackDetail" v-else />
+                </div>
+            </v-dialog>
+        </v-col>
     </div>
 </template>
 
@@ -51,6 +69,7 @@
 import SVGLike from '@/components/icons/like.svg'
 import Feedback from '@/components/feedback/Feedback.vue';
 import { routes } from "~/API/routes";
+import FeedbackDetail from "../feedback/FeedbackDetail.vue";
 
 export default {
     props: {
@@ -62,171 +81,20 @@ export default {
         }
     },
     components: {
-        SVGLike,
-        Feedback,
-    },
+    SVGLike,
+    Feedback,
+    FeedbackDetail
+},
     data() {
         return {
             loading: false,
+            loading1: false,
             vote: null,
             dialog: false,
-            feedbackArray: [
-                {
-                    id: 1,
-                    title: 'جلسه‌ای که برگزار شد به موقع بود ؟',
-                    options: [
-                        {
-                            id: 1,
-                            title: '(1) خیلی مخالفم',
-                            score: 1,
-                        },
-                        {
-                            id: 2,
-                            title: '(2) مخالفم',
-                            score: 2,
-                        },
-                        {
-                            id: 3,
-                            title: '(3) متوسط',
-                            score: 3,
-                        },
-                        {
-                            id: 4,
-                            title: '(4) موافقم',
-                            score: 4,
-                        },
-                        {
-                            id: 5,
-                            title: '(5) خیلی موافقم',
-                            score: 5,
-                        }
-                    ]
-                },
-                {
-                    id: 2,
-                    title: 'توضیحات در جلسه برایم کافی و شفاف بود .',
-                    options: [
-                        {
-                            id: 1,
-                            title: '(1) خیلی مخالفم',
-                            score: 1,
-                        },
-                        {
-                            id: 2,
-                            title: '(2) مخالفم',
-                            score: 2,
-                        },
-                        {
-                            id: 3,
-                            title: '(3) متوسط',
-                            score: 3,
-                        },
-                        {
-                            id: 4,
-                            title: '(4) موافقم',
-                            score: 4,
-                        },
-                        {
-                            id: 5,
-                            title: '(5) خیلی موافقم',
-                            score: 5,
-                        }
-                    ]
-                },
-                {
-                    id: 3,
-                    title: 'فرصت کافی برای شنیدن حرف من در جلسه داده شد .',
-                    options: [
-                        {
-                            id: 1,
-                            title: '(1) خیلی مخالفم',
-                            score: 1,
-                        },
-                        {
-                            id: 2,
-                            title: '(2) مخالفم',
-                            score: 2,
-                        },
-                        {
-                            id: 3,
-                            title: '(3) متوسط',
-                            score: 3,
-                        },
-                        {
-                            id: 4,
-                            title: '(4) موافقم',
-                            score: 4,
-                        },
-                        {
-                            id: 5,
-                            title: '(5) خیلی موافقم',
-                            score: 5,
-                        }
-                    ]
-                },
-                {
-                    id: 4,
-                    title: 'محتوای جلسه برایم قابل قبول بود .',
-                    options: [
-                        {
-                            id: 1,
-                            title: '(1) خیلی مخالفم',
-                            score: 1,
-                        },
-                        {
-                            id: 2,
-                            title: '(2) مخالفم',
-                            score: 2,
-                        },
-                        {
-                            id: 3,
-                            title: '(3) متوسط',
-                            score: 3,
-                        },
-                        {
-                            id: 4,
-                            title: '(4) موافقم',
-                            score: 4,
-                        },
-                        {
-                            id: 5,
-                            title: '(5) خیلی موافقم',
-                            score: 5,
-                        }
-                    ]
-                },
-                {
-                    id: 5,
-                    title: 'محتوای جلسه خیرخواهانه، بی‌غرض و توانمندساز بود .',
-                    options: [
-                        {
-                            id: 1,
-                            title: '(1) خیلی مخالفم',
-                            score: 1,
-                        },
-                        {
-                            id: 2,
-                            title: '(2) مخالفم',
-                            score: 2,
-                        },
-                        {
-                            id: 3,
-                            title: '(3) متوسط',
-                            score: 3,
-                        },
-                        {
-                            id: 4,
-                            title: '(4) موافقم',
-                            score: 4,
-                        },
-                        {
-                            id: 5,
-                            title: '(5) خیلی موافقم',
-                            score: 5,
-                        }
-                    ]
-                },
-            ]
+            detailDialog: false,
+            feedbackQuestions: [],
+            feedbackDetail: [],
+            steps: 0,
         }
     },
     computed: {
@@ -280,26 +148,66 @@ export default {
         getEvents() {
             this.$emit('getEvents')
         },
+        async getFeedbackQuestions () {
+            try {
+                this.loading = true;
+                const response = await this.$axios.get(routes.feedbackQuestions);
+                this.feedbackQuestions = response?.data?.results;
+                this.steps = response?.data?.count;
+                this.dialog = true;
+            } catch (error) {
+                console.log(error);
+            } finally {
+                this.loading = false;
+            }
+        },
+        async getFeedbackdetail (id) {
+            try {
+                this.detailDialog = true;
+                this.loading1 = true;
+                const response = await this.$axios.post(routes.feedbackDetail, {
+                    feedbackSessionsID: id, 
+                });
+                this.feedbackDetail = response?.data;
+            } catch (error) {
+                console.log(error);
+            } finally {
+                this.loading1 = false;
+            }
+        },
         saveFeedbacks(value) {
             this.dialog = false;
-            console.log(value);
+            this.$emit('refreshReporthMeeting');
         }
     },
 }
 </script>
 
 <style lang="scss">
-    .v-dialog--active {
-        min-width: 98vw !important;
-        overflow: hidden !important;
-        padding: 15px;
-        background-color: var(--background-color-primary) !important;
+.v-dialog--active {
+    overflow: hidden !important;
+    width: 80% !important;
+    padding: 15px;
+    background-color: var(--background-color-primary) !important;
+    border-radius: 10px;
+    
+    .feedback-modal {
+        width: 100%;
+        height: 100%;
+    }
+    .feedback-detail-modal {
+        min-height: 400px;
+        max-height: 500px;
+        overflow: auto;
+        border: 2px solid var(--color-blue-dark);
         border-radius: 10px;
-        .feedback-modal {
-            width: 100%;
-            height: 100%;
+        padding: 12px;
+        .loading1 {
+            display: flex;
+            margin: auto;
         }
     }
+}
 </style>
 
 <style lang="scss" scoped>
@@ -312,6 +220,24 @@ export default {
     flex-wrap: wrap;
     align-items: center;
     font-size: 0.9rem;
+    position: relative;
+
+    .score {
+        font-family: iranSansFaNum;
+    }
+
+    .alert-icon {
+        color: red;
+        position: absolute;
+        left: 20px;
+        top: 10px;
+        font-size: 1.15rem;
+        font-weight: bold;
+    }
+
+    .btn-loading {
+        transform: scale(0.9);
+    }
 
     span {
         font-size: 0.95rem;

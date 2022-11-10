@@ -19,4 +19,5 @@ export const routes = {
   likeOrDislike: "report/like-or-dislike",
   feedbackAnswers: "report/evaluation-for-feedbackSessions",
   feedbackQuestions: "report/show-questions-for-feedbackSessions",
+  feedbackDetail: 'report/report-evaluation-for-feedbackSessions',
 };

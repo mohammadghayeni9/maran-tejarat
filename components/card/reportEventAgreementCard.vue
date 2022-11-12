@@ -34,6 +34,7 @@
         <v-col cols="12" sm="6" v-if="reportData.type_report === 'A' && !reportData.is_open_agreement">
             <span>این توافق پایان یافته است.</span>
         </v-col>
+        <v-col class="col-12" v-if="reportData.description_hidden && isAssesor">شرح مخفی: <span>{{ reportData.description_hidden }}</span></v-col>
         <v-col cols="12" class="d-flex justify-end" v-if="type === 'M' && !isAssesor && !reportData.is_eval">
             <v-dialog v-model="dialog" width="500">
                 <template v-slot:activator="{ on, attrs }">

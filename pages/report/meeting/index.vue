@@ -4,7 +4,7 @@
         <v-col cols="12" class="d-flex justify-center" v-if="!reports.length && !loading">جلسه‌ی به ثبت رسیده‌ای برای
             نمایش وجود ندارد</v-col>
         <perfect-scrollbar class="reports-content">
-            <!-- <v-col cols="12" class="d-flex flex-wrap justify-end px-0 py-0 position-relative"
+            <v-col cols="12" class="d-flex flex-wrap justify-end px-0 py-0 position-relative"
                 v-if="reports.length && !loading">
                 <v-btn outlined color="blue" elevation="1" class="px-8"
                     @click.stop="filterIsVisible = !filterIsVisible">
@@ -25,12 +25,15 @@
                         </v-row>
                     </v-col>
                 </v-col>
-            </v-col> -->
-            <div class="loading" v-if="loading">
-                <img :src="require('assets/images/loading.gif')" alt="loading">
+            </v-col>
+            <div v-if="loading" class="loading d-flex mx-auto">
+                <img :src="require('assets/images/loading.gif')" alt="loading" class="d-flex mx-auto">
             </div>
-            <div class="report-card" v-for="report in reports" :key="report.id" v-else>
+            <div class="report-card" v-for="report in filteredValueComputed" :key="report.id" v-else-if="filteredValueComputed.length">
                 <report-event-agreement-card type="M" :reportData="report" />
+            </div> 
+            <div v-else class="mx-auto">
+                موردی برای نمایش موجود نیست
             </div>
         </perfect-scrollbar>
     </div>
@@ -59,26 +62,35 @@ export default {
     created() {
         this.getMeetingReports();
     },
-    // computed: {
-    //     filteredValueComputed() {
-    //         let filteredValue = [];
+    computed: {
+        filteredValueComputed() {
+            let filteredValue = [];
 
-    //         this.reports.filter((event) => {
-    //             this.seasonFilter.forEach((season) => {
-    //                 if (event.season_date_report == season) {
-    //                     filteredValue.push(event);
-    //                 }
-    //             })
-    //         })
-    //         if (this.seasonFilter.length) {
-    //             console.log(filteredValue);
-    //             return filteredValue;
-    //         } else {
-    //             console.log(this.reports);
-    //             return this.reports;
-    //         }
-    //     },
-    // },
+            if (this.seasonFilter.length) {
+                this.reports.filter((event) => {
+                    this.seasonFilter.forEach((season) => {
+                        let month = parseInt(event.date_report.substring(5, 7));
+                        if (month >= 1 && month <= 3 && season == 'B') {
+                            filteredValue.push(event);
+                        }
+                        if (month > 3 && month <= 6 && season == 'T') {
+                            filteredValue.push(event);
+                        }
+                        if (month > 6 && month <= 9 && season == 'P') {
+                            filteredValue.push(event);
+                        }
+                        if (month > 9 && month <= 12 && season == 'Z') {
+                            filteredValue.push(event);
+                        }
+                    })
+                });
+
+                return filteredValue;
+            } else {
+                return this.reports;
+            }
+        },
+    },
     methods: {
         async getMeetingReports() {
             try {

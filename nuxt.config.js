@@ -52,7 +52,9 @@ export default {
     className: "global-toast",
   },
 
-  build: {},
+  build: {
+		transpile: ['@amcharts/amcharts4']
+	},
 
   router: {
     middleware: "auth",

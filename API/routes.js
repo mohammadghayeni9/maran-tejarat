@@ -20,4 +20,10 @@ export const routes = {
   feedbackAnswers: "report/evaluation-for-feedbackSessions",
   feedbackQuestions: "report/show-questions-for-feedbackSessions",
   feedbackDetail: 'report/report-evaluation-for-feedbackSessions',
+  dashboard: {
+    eventArgumentChart: 'dashboard/assessor/event-argument-chart',
+    dashboardData: 'dashboard/assessor/data',
+    averageEvalFromBegin: 'dashboard/assessor/average-eval-from-begin',
+    averageEvalCurrentYear: 'dashboard/assessor/average-eval-current-year'
+  }
 };

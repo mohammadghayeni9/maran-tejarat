@@ -9,8 +9,14 @@
       <v-tab-item v-else-if="!loading && isAssessorComputed">
         <v-col cols="12" class="d-flex justify-center mt-5 pt-5" v-if="!units.length">هنوز فردی برای ارزیابی به شما
           انتساب داده نشده است.</v-col>
-        <v-tabs class="mt-5" v-else v-model="activeUnitTab" @change="setActiveUnitTab">
+        <v-tabs class="mt-5" v-model="activeUnitTab" @change="setActiveUnitTab">
+          <v-tab>داشبورد</v-tab>
           <v-tab v-for="unit in units" :key="unit[1]">{{ unit[0] }}</v-tab>
+          <v-tab-item>
+            <perfect-scrollbar class="dashboard-container">
+              <dashboard />
+            </perfect-scrollbar>
+          </v-tab-item>
           <v-tab-item v-for="unit in units" :key="unit[0]">
             <homeUsersContent :loading="loading" :unit="unit" :users="users" />
           </v-tab-item>
@@ -91,13 +97,15 @@
 import homeUsersContent from "@/components/card/homeUsersContent.vue"
 import { routes } from "~/API/routes";
 import ReportEventAgreementCard from '~/components/card/reportEventAgreementCard.vue';
+import dashboard from '~/components/dashboard/dashboard.vue';
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 
 export default {
   components: {
     homeUsersContent,
     ReportEventAgreementCard,
-    PerfectScrollbar
+    PerfectScrollbar,
+    dashboard
   },
   data() {
     return {
@@ -218,8 +226,8 @@ export default {
   },
   async created() {
     this.loading = true;
+    this.getUnits();
     await this.getUsers();
-    await this.getUnits();
     this.activeUnitTab = Number(localStorage.getItem('activeUnitTab'));
     this.loading = false;
   },
@@ -282,6 +290,10 @@ export default {
     @media screen and (max-width: 450px) {
       gap: 0.5rem;
     }
+  }
+  .dashboard-container {
+    max-height: 75vh;
+    overflow: hidden !important;
   }
   .reports-content-forMe {
     max-height: 70vh;

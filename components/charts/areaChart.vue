@@ -1,12 +1,11 @@
 <template>
-    <div class="column-chart" ref="columnChart" dir="ltr"></div>
+    <div class="area-chart" ref="areaChart" dir="ltr"></div>
 </template>
 
 <script>
 import * as am4core from "@amcharts/amcharts4/core"
 import * as am4charts from "@amcharts/amcharts4/charts"
 import am4themes_animated from "@amcharts/amcharts4/themes/animated"
-am4core.useTheme(am4themes_animated);
 
 export default {
     props: {
@@ -16,41 +15,41 @@ export default {
     },
     mounted() {
         // static section
+        am4core.useTheme(am4themes_animated)
         am4core.addLicense("ch-custom-attribution")
-        let chart = am4core.create(this.$refs.columnChart, am4charts.XYChart);
+        let chart = am4core.create(this.$refs.areaChart, am4charts.XYChart);
         chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
         chart.data = this.data;
-        chart.padding(10, 10, 0, 0);
+        chart.padding(10, 30, 0, 0);
 
         let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
         categoryAxis.renderer.grid.template.location = 0;
-        categoryAxis.dataFields.category = "name";
+        categoryAxis.dataFields.category = "year";
         categoryAxis.renderer.minGridDistance = 60;
         categoryAxis.renderer.grid.template.disabled = true;
-        categoryAxis.renderer.grid.template.strokeWidth = 0;
+        categoryAxis.renderer.grid.template.strokeWidth = 10;
+        categoryAxis.startLocation = 0.5;
+        categoryAxis.endLocation = 0.5;
 
         let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
         valueAxis.min = 0;
         valueAxis.extraMax = 0.1;
         valueAxis.rangeChangeEasing = am4core.ease.linear;
-        valueAxis.renderer.grid.template.strokeWidth = 0;
+        valueAxis.renderer.grid.template.strokeWidth = 1;
         valueAxis.rangeChangeDuration = 1500;
 
-        let series = chart.series.push(new am4charts.ColumnSeries());
-        series.dataFields.categoryX = "name";
-        series.dataFields.valueY = "value";
-        series.tooltipText = "{name}: {valueY.value}"
-        series.tooltip.fontSize = 12;
-        series.columns.template.strokeOpacity = 0;
-        series.columns.template.column.cornerRadiusBottomRight = 8;
-        series.columns.template.column.cornerRadiusBottomLeft = 8;
-        series.columns.template.column.cornerRadiusTopRight = 8;
-        series.columns.template.column.cornerRadiusTopLeft = 8;
-        series.interpolationDuration = 1500;
-        series.interpolationEasing = am4core.ease.linear;
-        series.columns.template.width = am4core.percent(50);
-        series.columns.template.maxWidth = 25;
-        series.columns.template.propertyFields.fill = "#6d6dbf";
+        let gradient1 = new am4core.LinearGradient();
+        gradient1.rotation = 90;
+        gradient1.addColor(am4core.color("#6d6dbf"));
+        gradient1.addColor(am4core.color("#3e9de1"));
+
+        let series1 = chart.series.push(new am4charts.LineSeries());
+        series1.dataFields.categoryX = "year";
+        series1.dataFields.valueY = "average";
+        series1.name = "ارزیابی";
+        series1.fill = gradient1;
+        series1.fillOpacity = 0.8;
+        series1.strokeWidth = 0;
 
         chart.cursor = new am4charts.XYCursor();
         chart.cursor.lineX.disabled = true;
@@ -66,8 +65,7 @@ export default {
 </script>
 
 <style lang="scss">
-.column-chart {
-    height: 265px;
-    min-height: 250px !important;
+.area-chart {
+    width: 100%;
 }
 </style>

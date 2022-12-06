@@ -13,9 +13,7 @@
           <v-tab>داشبورد</v-tab>
           <v-tab v-for="unit in units" :key="unit[1]">{{ unit[0] }}</v-tab>
           <v-tab-item>
-            <perfect-scrollbar class="dashboard-container">
               <dashboard />
-            </perfect-scrollbar>
           </v-tab-item>
           <v-tab-item v-for="unit in units" :key="unit[0]">
             <homeUsersContent :loading="loading" :unit="unit" :users="users" />
@@ -290,10 +288,6 @@ export default {
     @media screen and (max-width: 450px) {
       gap: 0.5rem;
     }
-  }
-  .dashboard-container {
-    max-height: 75vh;
-    overflow: hidden !important;
   }
   .reports-content-forMe {
     max-height: 70vh;

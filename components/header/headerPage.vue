@@ -20,11 +20,17 @@ export default {
         seasonVisible: false,
         nameVisible: {
             default: true
-        }
+        },
+        isEvaluatePage: false,
     },
     computed: {
         seasonComputed() {
-            const season = localStorage.getItem('season');
+            let season;
+            if (this.isEvaluatePage) {
+                season = localStorage.getItem('season_eval');
+            } else {
+                season = localStorage.getItem('season');
+            }
             if (season === 'B') {
                 return 'بهار';
             } else if (season === 'T') {

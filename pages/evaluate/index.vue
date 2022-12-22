@@ -1,6 +1,6 @@
 <template>
     <div class="evaluation-form">
-        <HeaderPage title="امتیازدهی پایان فصل" :seasonVisible="true"></HeaderPage>
+        <HeaderPage title="امتیازدهی پایان فصل" :isEvaluatePage="true" :seasonVisible="true"></HeaderPage>
         <div class="loading d-flex justify-center" v-if="loading">
             <img :src="require('assets/images/loading.gif')" alt="loading">
         </div>

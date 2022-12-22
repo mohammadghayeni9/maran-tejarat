@@ -26,7 +26,7 @@
                     <div class="dashboard__section2__agreement-count-count">{{ dashboardData.ave_argument }}</div>
                 </div>
                 <div class="dashboard__section2__agreement-count">
-                    <div class="dashboard__section2__agreement-count-title mb-3">تعدا دتوافقات باز</div>
+                    <div class="dashboard__section2__agreement-count-title mb-3">تعداد توافقات باز</div>
                     <div class="dashboard__section2__agreement-count-count">{{ dashboardData.num_open_argument }}</div>
                 </div>
                 <!-- <div class="dashboard__section2__agreement-count">

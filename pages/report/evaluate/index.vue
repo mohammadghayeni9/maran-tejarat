@@ -20,10 +20,10 @@
             ندارد
         </v-col>
         <perfect-scrollbar class="reports-content mt-5" v-else>
-            <v-col cols="12">{{ seasonComputed }} {{ yearSelected }}</v-col>
-            <div class="report-card px-3" v-for="report in reports[0].report" :key="report.id">
+            <v-col cols="12" class="season-year-title">{{ seasonComputed }} {{ yearSelected }}</v-col>
+            <li class="report-card px-3" v-for="report in reports[0].report" :key="report.id">
                 {{ report[0] }} -> {{ report[1] }}
-            </div>
+            </li>
             <v-col cols="12">امتیاز کسب‌شده در ارزیابی این فصل: {{ toPersianDigits(reports[0].score) }}</v-col>
         </perfect-scrollbar>
     </div>
@@ -116,7 +116,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .evaluate-report {
     margin: auto;
     max-width: 65rem;
@@ -135,25 +134,36 @@ export default {
   }
   .report-evaluate {
       column-gap: 3rem;
-      padding: 3rem 0;
+      padding: 3rem 0 0 0;
 
       @media screen and (max-width: 450px) {
           gap: 0.5rem;
       }
   }
+
+  .season-year-title {
+    font-family: IranSansFaNum;
+    font-size: 1.25rem;
+  }
+
   .reports-content {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        padding: 1rem 0.2rem 1rem 0.2rem;
-        max-height: 70vh;
+        padding: 1rem 0.2rem 5rem 0.2rem;
+        max-height: 52.5vh;
         overflow: hidden !important;   
         width: 100%;
         gap: 2rem;
         background-color: var(--background-color-primary);
         border-radius: var(--card-border-radius);
+
+        @media screen and (max-width: 400px) {
+            max-height: 40vh;
+        }
         .report-card {
             width: 100%;
+            list-style: disc;
         }
   }
 }

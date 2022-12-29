@@ -58,7 +58,7 @@
             </perfect-scrollbar>
           </v-tab-item>
           <v-tab-item>
-            <v-col cols="12 px-1" class="d-flex justify-between report-evaluate">
+            <v-col cols="12 px-1" class="d-flex justify-between report-evaluate pb-0">
               <v-select :items="seasons" item-text="title" item-value="value" label="انتخاب فصل مورد نطر" outlined
                 v-model="seasonSelected">
               </v-select>
@@ -70,16 +70,17 @@
               </v-btn>
             </v-col>
             <v-col cols="12">
-              <div class="loading d-flex justify-center" v-if="loading">
+              <div class="d-flex justify-center" v-if="beEvaluateLoading">
                 <img :src="require('assets/images/loading.gif')" alt="loading">
               </div>
               <v-col cols="12" class="d-flex justify-center" v-else-if="!reportEvaluateForMe.length">
                 موردی برای نمایش وجود ندارد
               </v-col>
               <perfect-scrollbar class="reports-content mt-5" v-else>
-                <div class="report-card px-3" v-for="report in reportEvaluateForMe[0].report" :key="report.id">
+                <v-col cols="12" class="season-year-title">{{ seasonComputed }} {{ yearSelected }}</v-col>
+                <li class="report-card px-3" v-for="report in reportEvaluateForMe[0].report" :key="report.id">
                   {{ report[0] }} -> {{ report[1] }}
-                </div>
+                </li>
                 <v-col cols="12">امتیاز کسب‌شده در ارزیابی این فصل: {{ toPersianDigits(reportEvaluateForMe[0].score) }}
                 </v-col>
               </perfect-scrollbar>
@@ -108,6 +109,7 @@ export default {
   data() {
     return {
       loading: false,
+      beEvaluateLoading: false,
       users: [],
       reportEventForMe: [],
       reportAgreementForMe: [],
@@ -197,14 +199,18 @@ export default {
     },
     async getEvaluateReports () {
       try {
+        this.beEvaluateLoading = true;
         const response = await this.$axios.post(routes.reportEvaluate, {
           staff: localStorage.getItem('meUserId'),
           season: this.seasonSelected,
           year: this.yearSelected
         })
         this.reportEvaluateForMe = response.data;
+        this.beEvaluateLoading = false;
       } catch (error) {
         console.log(error?.response?.data);
+      } finally {
+        this.beEvaluateLoading = false;
       }
     },
     async getUnits () {
@@ -245,6 +251,17 @@ export default {
         years.push(index);
       }
       return years;
+    },
+    seasonComputed() {
+      if (this.seasonSelected === 'B') {
+        return 'بهار';
+      } else if (this.seasonSelected === 'T') {
+        return 'تابستان';
+      } else if (this.seasonSelected === 'P') {
+        return 'پاییز';
+      } else {
+        return 'زمستان';
+      }
     },
     filterWithEventTypeData() {
       if (this.eventTypeFilter?.length === 1) {
@@ -294,20 +311,28 @@ export default {
     overflow: hidden !important;
     padding: 0.5rem 0.5rem 0.5rem 1rem;
   }
+  .season-year-title {
+    font-family: IranSansFaNum;
+    font-size: 1.25rem;
+  }
   .reports-content {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     padding: 1rem 0.2rem 1rem 0.2rem;
-    max-height: 70vh;
+    max-height: 52vh;
     overflow: hidden !important;
     width: 100%;
     gap: 2rem;
     background-color: var(--background-color-primary);
     border-radius: var(--card-border-radius);
 
+    @media screen and (max-width: 400px) {
+      max-height: 40vh;
+    }
     .report-card {
       width: 100%;
+      list-style: disc;
     }
   }
   .filter-container {

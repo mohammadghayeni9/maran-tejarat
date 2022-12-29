@@ -26,7 +26,10 @@
           placeholder="رمز عبور خود را وارد نمایید"
           class="login-input"
         />
-        <button class="login-button" @click="login">ورود</button>
+        <button class="login-button" @click="login">
+          <span v-if="!loading">ورود</span>
+          <img v-else :src="require('assets/images/loading.gif')" class="loading" alt="loading">
+        </button>
       </div>
     </div>
   </div>
@@ -49,10 +52,13 @@ export default {
     return {
       username: null,
       password: null,
+      loading: false,
     };
   },
   methods: {
     async login() {
+      if (this.loading) return;
+      this.loading = true;
       localStorage.clear();
       if (this.username.length && this.password.length) {
         try {
@@ -66,10 +72,13 @@ export default {
           this.parseJwtToken(response.access);
           this.$toast.success('با موفقیت وارد شدید');
           this.$router.push("/");
+          setTimeout(() => location.reload(), 1)
         } catch (e) {
           if (e.response?.status === 401) {
             this.$toast.error('نام کاربری یا رمز ورود اشتباه وارد شده است');
           }
+        } finally {
+          this.loading = false;
         }
       } else {
         this.$toast.error('نام کاربری و رمز ورود الزامی است');
@@ -198,6 +207,7 @@ export default {
         }
       }
       .login-button {
+        position: relative;
         margin-top: 4rem;
         outline: none;
         border: none;
@@ -207,9 +217,24 @@ export default {
         background-color: #0ca2b9;
         color: white;
         cursor: pointer;
+        max-height: 3.15rem;
+        min-height: 3.15rem;
         &.disabled {
           pointer-events: none;
           background-color: rgb(165, 175, 195);
+        }
+        span {
+          display: block;
+          transform: translateY(-4px);
+        }
+        .loading {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          margin: auto;
+          width: 70px;
         }
       }
     }

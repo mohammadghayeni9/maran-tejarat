@@ -3,7 +3,7 @@
         <div class="axes-title pb-5">{{ axes.name }}</div>
         <v-col cols="12">
             <div v-for="indicator in indicators" :key="indicator.id" >
-                <indicator-with-items-card :indicator="indicator" v-if="indicator.axes === axes.id" />
+                <indicator-with-items-card :indicator="indicator" :evaluate-reports="evaluateReports" v-if="indicator.axes === axes.id" />
             </div>
         </v-col>
     </div>
@@ -23,6 +23,7 @@ export default {
     props: {
         axes: {},
         indicators: [],
+        evaluateReports: [],
     },
 }
 </script>

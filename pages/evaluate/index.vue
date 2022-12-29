@@ -8,11 +8,15 @@
             ندارد</v-col>
         <perfect-scrollbar class="axes-list" v-else>
             <v-col cols="12" class="pr-0">
-                <evaluateCard v-for="axes in axesList" :key="axes.id" :axes="axes" :indicators="indicators" />
+                <evaluateCard v-for="axes in axesList" :key="axes.id" :axes="axes" :indicators="indicators" :evaluate-reports="evaluateReportsComputed" />
             </v-col>
-            <v-col cols="12" class="d-flex justify-end mt-5 mb-5">
+            <v-col cols="12" class="d-flex justify-end mt-5 mb-5 pb-5">
+                <v-col class="mr-auto" v-if="evaluateReports.length">
+                    <span>امتیاز کسب شده: </span>
+                    <span class="score">{{ evaluateReportsScoreComputed }}</span>
+                </v-col>
                 <v-btn elevation="2" class="px-12 py-5 rounded-lg record-btn" @click="recordEvaluate">
-                    <span v-if="!recordBtnLoading">ثبت امتیاز</span>
+                    <span v-if="!recordBtnLoading"><span v-if="!evaluateReports.length">ثبت</span><span v-else>ویرایش</span> امتیاز</span>
                     <img v-else :src="require('assets/images/loading.gif')" class="record-loading" alt="loading">
                 </v-btn>
             </v-col>
@@ -37,14 +41,17 @@ export default {
             axesList: [],
             indicators: [],
             evaluateItems: [],
+            evaluateReports: [],
             loading: false,
             recordBtnLoading: false,
         }
     },
-    created() {
+    async created() {
         this.loading = true;
         this.getAxesList();
         this.getIndicators();
+        await this.getEvaluateReports();
+        this.loading = false;
     },
     methods: {
         async getAxesList () {
@@ -63,8 +70,18 @@ export default {
                 this.indicators = response.data;
             } catch (error) {
                 console.log(error?.response?.data);
-            } finally {
-                this.loading = false;
+            }
+        },
+        async getEvaluateReports() {
+            try {
+                const response = await this.$axios.post(routes.reportEvaluate, {
+                    staff: localStorage.getItem('beEvaluatedUserId'),
+                    season: localStorage.getItem('season_eval'),
+                    year: localStorage.getItem('year')
+                })
+                this.evaluateReports = response.data;
+            } catch (error) {
+                console.log(error?.response?.data);
             }
         },
         async recordEvaluate () {
@@ -76,12 +93,21 @@ export default {
                     list_of_eval: this.$store.state.states.indicatorsAndItemsToBeSelected
                 });
                 this.$toast.success('ارزیابی با موفقیت ثبت شد');
+                this.getEvaluateReports();
             } catch (error) {
                 this.$toast.error('ثبت ارزیابی با خطا مواجه شد');
             } finally {
                 this.recordBtnLoading = false
             }
         },
+    },
+    computed: {
+        evaluateReportsComputed() {
+            return this.evaluateReports?.[0]?.report;
+        },
+        evaluateReportsScoreComputed() {
+            return this.evaluateReports?.[0]?.score;
+        }
     },
 }
 </script>
@@ -110,6 +136,9 @@ export default {
     }
     .record-loading {
         width: 66px;
+    }
+    .score {
+        font-family: IranSansFaNum;
     }
 }
 </style>

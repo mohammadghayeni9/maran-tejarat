@@ -6,7 +6,7 @@
                 outlined v-model="itemToBeSelected" @change="setItemForIndicator(indicator.id, itemToBeSelected)">
             </v-select>
         </v-col>
-        <v-col cols="2" md="auto" class="score"><span>امتیاز: {{ toPersianDigits() }}</span> </v-col>
+        <v-col cols="2" md="auto" class="score"><span>امتیاز: {{ itemToBeSelectedScore }}</span> </v-col>
     </v-col>
 </template>
 
@@ -15,29 +15,32 @@
 export default {
     props: {
         indicator: {},
+        evaluateReports: [],
     },
     data() {
         return {
             itemToBeSelected: null,
         }
     },
+    mounted() {
+        if (!this.evaluateReports) return
+        for (const report of this.evaluateReports) {
+            if (report[0] === this.indicator.name) {
+                this.itemToBeSelected = this.indicator.item_of_indicators.find(item => item[1] === report[1])[0];
+                this.setItemForIndicator(this.indicator.id, this.itemToBeSelected)
+            }
+        }
+    },
     methods: {
         setItemForIndicator(indicatorId, itemId) {
             this.$store.commit('mutation/setItemForIndicator', { obj: '[' + indicatorId + ',' + itemId + ']', indicatorId: indicatorId})
         },
-        toPersianDigits() {
-            let persianNum = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-            return this.itemToBeSelectedScore?.toString()?.replace(/[0-9]/g, function(w){
-                return persianNum[+w];
-            });
-        }
     },
     computed: {
         itemToBeSelectedScore() {
-            if (this.itemToBeSelected) {
-                return this.indicator.item_of_indicators.find(item => this.itemToBeSelected === item[0])[2];
-            }
-        }
+            let foundItem = this.indicator.item_of_indicators.find(item => item[0] == this.itemToBeSelected)
+            return foundItem?.[2];
+        },
     }
 }
 </script>
@@ -62,8 +65,12 @@ export default {
     align-items: baseline;
     font-size: 0.9rem !important;
     .score {
+        font-family: IranSansFaNum;
         display: flex;
         flex-wrap: nowrap;
+        span {
+            white-space: nowrap;
+        }
     }
 }
 </style>

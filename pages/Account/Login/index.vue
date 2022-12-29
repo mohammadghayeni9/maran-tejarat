@@ -72,7 +72,7 @@ export default {
           this.parseJwtToken(response.access);
           this.$toast.success('با موفقیت وارد شدید');
           this.$router.push("/");
-          setTimeout(() => location.reload(), 1)
+          this.loading = false;
         } catch (e) {
           if (e.response?.status === 401) {
             this.$toast.error('نام کاربری یا رمز ورود اشتباه وارد شده است');

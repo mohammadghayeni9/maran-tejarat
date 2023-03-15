@@ -9,8 +9,11 @@
                         <div class="loading" v-if="loading">
                             <img :src="require('assets/images/loading.gif')" alt="loading">
                         </div>
-                        <div v-else class="report-card pa-2 text-right" v-for="event in events" :key="event.id">
+                        <div v-else-if="events" class="report-card pa-2 text-right" v-for="event in events" :key="event.id">
                             <report-event-agreement-card type="E" :reportData="event" />
+                        </div>
+                        <div v-else class="text-center mt-5">
+                            واقعه‌ای مرتبط با شاخص موردنظر یافت نشد
                         </div>
                     </div>
                     <v-card-actions class="d-flex justify-center">

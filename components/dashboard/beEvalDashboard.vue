@@ -3,10 +3,10 @@
         <div class="dashboard">
             <div class="dashboard__title">داشبورد اطلاعاتی فصل <span>{{ seasonComputed }}</span></div>
             <div class="dashboard__section1">
-                <div class="dashboard__section1__wrapper-count">
+                <!-- <div class="dashboard__section1__wrapper-count">
                     <div class="dashboard__section1__wrapper-count-title">تعداد ارزیابی‌شوندگان</div>
                     <div class="dashboard__section1__wrapper-count-count">{{ dashboardData.num_be_eval }}</div>
-                </div>
+                </div> -->
                 <div class="dashboard__section1__wrapper-agreement">
                     <div class="dashboard__section1__wrapper-agreement-title">تعداد توافق‌های ثبت‌شده</div>
                     <div class="dashboard__section1__wrapper-agreement-chart">
@@ -20,44 +20,39 @@
                     </div>
                 </div>
             </div>
-            <div class="dashboard__section2">
+            <div class="dashboard__section2" v-if="dashboardData">
                 <div class="dashboard__section2__agreement-count">
-                    <div class="dashboard__section2__agreement-count-title mb-3">میانگین تعداد توافقات ثبت‌شده </div>
-                    <div class="dashboard__section2__agreement-count-count">{{ dashboardData.ave_argument }}</div>
+                    <div class="dashboard__section2__agreement-count-title mb-3">تعداد توافقات ثبت‌شده</div>
+                    <div class="dashboard__section2__agreement-count-count">{{ dashboardData.num_argument }}</div>
+                </div>
+                <div class="dashboard__section2__agreement-count">
+                    <div class="dashboard__section2__agreement-count-title mb-3">تعداد وقایع ثبت‌شده</div>
+                    <div class="dashboard__section2__agreement-count-count">{{ dashboardData.num_event }}</div>
+                </div>
+                <div class="dashboard__section2__agreement-count">
+                    <div class="dashboard__section2__agreement-count-title mb-3">تعداد جلسات بازخورد ثبت‌شده</div>
+                    <div class="dashboard__section2__agreement-count-count">{{ dashboardData.num_feedback_session }}</div>
                 </div>
                 <div class="dashboard__section2__agreement-count">
                     <div class="dashboard__section2__agreement-count-title mb-3">تعداد توافقات باز</div>
                     <div class="dashboard__section2__agreement-count-count">{{ dashboardData.num_open_argument }}</div>
                 </div>
-                <!-- <div class="dashboard__section2__agreement-count">
-                    <div class="dashboard__section2__agreement-count-title">بهترین توافق باز</div>
-                    <div class="dashboard__section2__agreement-count-count">155</div>
-                </div> -->
             </div>
             <div class="dashboard__section3">
                 <div class="dashboard__section3__pieChart-wrapper col-12 col-lg-6">
-                    <div class="col-12 text-center dashboard__section3__pieChart-wrapper__title">میانگین امتیازدهی در سال
-                        جاری</div>
+                    <div class="col-12 text-center dashboard__section3__pieChart-wrapper__title">میانگین امتیازدهی در سال جاری</div>
                     <SinglePieChart class="col-12 col-sm-6 mt-1" title="بهار" color="#00753E" :percent="bahar.average" />
-                    <SinglePieChart class="col-12 col-sm-6 mt-0" title="تابستان" color="#B46490"
-                        :percent="tabestan.average" />
+                    <SinglePieChart class="col-12 col-sm-6 mt-0" title="تابستان" color="#B46490" :percent="tabestan.average" />
                     <SinglePieChart class="col-12 col-sm-6 mt-0" title="پاییز" color="#D19A30" :percent="paeez.average" />
-                    <SinglePieChart class="col-12 col-sm-6 mt-0" title="زمستان" color="#36454F"
-                        :percent="zemestan.average" />
-                    <NameScoreCard class="col-12 col-sm-6" v-if="maxAverageEvalData" title="بالاترین امتیاز"
-                        :name="maxAverageEvalData.be_eval[0]" :score="maxAverageEvalData.score" />
-                    <NameScoreCard class="col-12 col-sm-6" v-if="minAverageEvalData" title="پایین‌ترین امتیاز"
-                        :name="minAverageEvalData.be_eval[0]" :score="minAverageEvalData.score" />
+                    <SinglePieChart class="col-12 col-sm-6 mt-0" title="زمستان" color="#36454F" :percent="zemestan.average" />
+                    <NameScoreCard class="col-12 col-sm-6" v-if="maxAverageEvalData" title="بالاترین امتیاز" :name="maxAverageEvalData.be_eval[0]" :score="maxAverageEvalData.score" />
+                    <NameScoreCard class="col-12 col-sm-6" v-if="minAverageEvalData" title="پایین‌ترین امتیاز" :name="minAverageEvalData.be_eval[0]" :score="minAverageEvalData.score" />
                 </div>
-                <div class="dashboard__section3__radarChart-wrapper col-12 col-lg-6">
-                    <div class="col-12 text-center dashboard__section3__radarChart-wrapper__title">میانگین امتیازدهی از
-                        ابتدا</div>
-                    <AreaChart v-if="(averageGeneralEvalData && averageGeneralEvalData.length > 1)"
-                        :data="averageGeneralEvalData" />
-                    <NameScoreCard class="col-12 col-sm-6 mt-5" v-if="maxAverageGeneralEvalData" title="بالاترین امتیاز"
-                        :name="maxAverageGeneralEvalData.name" :score="maxAverageGeneralEvalData.score" />
-                    <NameScoreCard class="col-12 col-sm-6 mt-5" v-if="minAverageGeneralEvalData" title="پایین‌ترین امتیاز"
-                        :name="minAverageGeneralEvalData.name" :score="minAverageGeneralEvalData.score" />
+                <div class="dashboard__section3__radarChart-wrapper col-12 col-lg-6" v-if="averageGeneralEvalData && averageGeneralEvalData.length">
+                    <div class="col-12 text-center dashboard__section3__radarChart-wrapper__title" v-if="averageGeneralEvalData && averageGeneralEvalData.length">میانگین امتیازدهی از ابتدا</div>
+                    <AreaChart v-if="(averageGeneralEvalData && averageGeneralEvalData.length > 1)" :data="averageGeneralEvalData" />
+                    <NameScoreCard class="col-12 col-sm-6 mt-5" v-if="maxAverageGeneralEvalData && maxAverageGeneralEvalData.length" title="بالاترین امتیاز" :name="maxAverageGeneralEvalData.name" :score="maxAverageGeneralEvalData.score" />
+                    <NameScoreCard class="col-12 col-sm-6 mt-5" v-if="minAverageGeneralEvalData && minAverageGeneralEvalData.length" title="پایین‌ترین امتیاز" :name="minAverageGeneralEvalData.name" :score="minAverageGeneralEvalData.score" />
                 </div>
             </div>
             <div class="dashboard__section4">
@@ -108,10 +103,6 @@
                                     <td>{{ userReport.ave_eval }}</td>
                                 </tr>
                                 <tr>
-                                    <td>تعداد ارزیابی‌کننده زیرمجموعه</td>
-                                    <td>{{ userReport.num_be_eval }}</td>
-                                </tr>
-                                <tr>
                                     <td>تعداد جلسه بازخورد برگزارشده</td>
                                     <td>{{ userReport.num_feedback_session }}</td>
                                 </tr>
@@ -129,7 +120,7 @@
 </template>
 <script>
 import ColumnChart from '@/components/charts/columnChart.vue';
-import { routes } from '@/API/routes'
+import {routes} from '@/API/routes'
 import SinglePieChart from '../charts/singlePieChart.vue'
 import AreaChart from '../charts/areaChart.vue'
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
@@ -151,7 +142,7 @@ export default {
             maxAverageGeneralEvalData: null,
             minAverageEvalData: null,
             maxAverageEvalData: null,
-            userReport: [],
+            userReport: []
         }
     },
     mounted() {
@@ -172,7 +163,7 @@ export default {
     methods: {
         async getEventAgreemntChartData() {
             try {
-                const response = await this.$axios.post(routes.dashboard.eventArgumentChart);
+                const response = await this.$axios.post(routes.beEvalDashboard.eventArgumentChart);
                 this.agreementChartData = response.data.num_argument.reverse();
                 this.eventChartData = response.data.num_event.reverse();
             } catch (error) {
@@ -181,7 +172,7 @@ export default {
         },
         async getDashboardData() {
             try {
-                const response = await this.$axios.post(routes.dashboard.dashboardData);
+                const response = await this.$axios.post(routes.beEvalDashboard.dashboardData);
                 this.dashboardData = response.data.data;
             } catch (error) {
                 console.log(error);
@@ -189,7 +180,7 @@ export default {
         },
         async getAverageEvalFromBegin() {
             try {
-                const response = await this.$axios.post(routes.dashboard.averageEvalFromBegin);
+                const response = await this.$axios.post(routes.beEvalDashboard.averageEvalFromBegin);
                 this.averageGeneralEvalData = response.data.data.average_eval;
                 this.maxAverageGeneralEvalData = response.data.data.max;
                 this.minAverageGeneralEvalData = response.data.data.min;
@@ -200,7 +191,7 @@ export default {
         },
         async getAverageEvalCurrentYear() {
             try {
-                const response = await this.$axios.post(routes.dashboard.averageEvalCurrentYear);
+                const response = await this.$axios.post(routes.beEvalDashboard.averageEvalCurrentYear);
                 console.log(response.data.data);
                 this.bahar = response.data.data.bahar;
                 this.tabestan = response.data.data.tabestan;
@@ -215,7 +206,7 @@ export default {
         },
         async getAssesorReport() {
             try {
-                const response = await this.$axios.post(routes.dashboard.reportTable);
+                const response = await this.$axios.post(routes.beEvalDashboard.reportTable);
                 this.userReport = response.data;
                 console.log(response);
             } catch (error) {
@@ -229,7 +220,6 @@ export default {
 .dashboard-container {
     max-height: 75vh;
     overflow: hidden !important;
-
     .dashboard {
         display: flex;
         flex-direction: column;
@@ -318,13 +308,13 @@ export default {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                flex-basis: 33%;
+                flex-basis: 25%;
                 min-width: 260px;
 
                 &-title {
                     font-size: 1.1rem;
                 }
-
+                
                 &-count {
                     font-size: 2rem;
                     font-family: iranSansFaNum;
@@ -375,4 +365,5 @@ export default {
             row-gap: 50px;
         }
     }
-}</style>
+}
+</style>

@@ -25,6 +25,14 @@ export const routes = {
     eventArgumentChart: 'dashboard/assessor/event-argument-chart',
     dashboardData: 'dashboard/assessor/data',
     averageEvalFromBegin: 'dashboard/assessor/average-eval-from-begin',
-    averageEvalCurrentYear: 'dashboard/assessor/average-eval-current-year'
+    averageEvalCurrentYear: 'dashboard/assessor/average-eval-current-year',
+    reportTable: 'dashboard/assessor/user-report-table'
+  },
+  beEvalDashboard: {
+    eventArgumentChart: 'dashboard/be-eval/event-argument-chart',
+    dashboardData: 'dashboard/be-eval/data',
+    averageEvalFromBegin: 'dashboard/be-eval/average-eval-from-begin',
+    averageEvalCurrentYear: 'dashboard/be-eval/average-eval-current-year',
+    reportTable: 'dashboard/be-eval/user-report-table'
   }
 };

@@ -22,10 +22,14 @@
       </v-tab-item>
       <v-tab-item v-if="!loading">
         <v-tabs class="mt-5">
+          <v-tab>داشبورد</v-tab>
           <v-tab v-if="reportEventForMe.length">وقایع</v-tab>
           <v-tab v-if="reportAgreementForMe.length">توافقات</v-tab>
           <v-tab v-if="reportMeetingForMe.length">جلسات</v-tab>
           <v-tab>سوابق ارزیابی دوره‌ای</v-tab>
+          <v-tab-item>
+            <be-eval-dashboard />
+          </v-tab-item>
           <v-tab-item v-if="reportEventForMe.length" class="position-relative">
             <v-btn outlined color="blue" elevation="1" class="mr-auto d-flex justify-end ml-2 mt-5 px-8"
               @click.stop="filterIsVisible = !filterIsVisible">
@@ -97,6 +101,7 @@ import homeUsersContent from "@/components/card/homeUsersContent.vue"
 import { routes } from "~/API/routes";
 import ReportEventAgreementCard from '~/components/card/reportEventAgreementCard.vue';
 import dashboard from '~/components/dashboard/dashboard.vue';
+import beEvalDashboard from '~/components/dashboard/beEvalDashboard.vue';
 import { PerfectScrollbar } from 'vue2-perfect-scrollbar'
 
 export default {
@@ -104,7 +109,8 @@ export default {
     homeUsersContent,
     ReportEventAgreementCard,
     PerfectScrollbar,
-    dashboard
+    dashboard,
+    beEvalDashboard
   },
   data() {
     return {

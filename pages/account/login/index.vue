@@ -7,10 +7,10 @@
       <div class="login-view-wrapper">
         <img
           class="login-view-logo"
-          :src="require('@/components/icons/vispar-logo-text.png')"
+          :src="require('@/assets/images/logo.png')"
         />
         <div class="login-view-title">
-          به سامانه مدیریت عملکرد گروه صنعتی ویسپار خوش آمدید
+          به سامانه مدیریت عملکرد خوش آمدید
         </div>
       </div>
       <div class="login-view-form">
@@ -31,6 +31,8 @@
           <img v-else :src="require('assets/images/loading.gif')" class="loading" alt="loading">
         </button>
       </div>
+      <div class="login-view-text">توسعه یافته توسط گروه صنعتی ویسپار</div>
+      <a href="https://fumdevops.ir/" class="login-view-text">FUM Devops</a>
     </div>
   </div>
 </template>
@@ -172,6 +174,7 @@ export default {
         margin: 1.5rem auto;
         transform: scale(1.25);
         padding: 1.5rem 0;
+        max-width: 100px;
       }
       .login-view-title {
         display: flex;
@@ -214,7 +217,7 @@ export default {
         padding: var(--input-padding);
         border-radius: var(--input-border-radius);
         width: 100%;
-        background-color: #0ca2b9;
+        background-color: var(--color-blue);
         color: white;
         cursor: pointer;
         max-height: 3.15rem;
@@ -238,6 +241,12 @@ export default {
         }
       }
     }
+  }
+
+  .login-view-text {
+    text-align: center;
+    margin: 16px auto 0 auto;
+    display: block;
   }
 }
 </style>

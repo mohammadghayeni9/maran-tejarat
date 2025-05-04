@@ -1,14 +1,14 @@
 <template>
     <div class="report-event-agreement-card">
         <div class="alert-icon" v-if="(type == 'E' || type == 'A') && !reportData.be_seen && !isAssesor">جدید</div>
-        <v-col cols="12 pb-1">
+        <v-col cols="12 pb-1 pl-10">
             <span v-if="type === 'E'">شرح واقعه: </span>
             <span v-else-if="type === 'A'"> شرح توافق: </span>
             <span v-else-if="type === 'M'"> شرح جلسه: </span>
             {{ reportData.description }}
         </v-col>
         <v-col cols="12" sm="6" class="pb-1">
-            <span>تارخ ثبت: </span>
+            <span>تاریخ ثبت: </span>
             <span dir="ltr">{{ toPersianDigits(reportData.date_report) }}</span>
         </v-col>
         <v-col cols="12" sm="6" class="pb-1" v-if="type === 'M'">
@@ -144,7 +144,7 @@ export default {
                 } finally {
                     this.loading = false;
                 }
-            }        
+            }
         },
         getEvents() {
             this.$emit('getEvents')
@@ -167,7 +167,7 @@ export default {
                 this.detailDialog = true;
                 this.loading1 = true;
                 const response = await this.$axios.post(routes.feedbackDetail, {
-                    feedbackSessionsID: id, 
+                    feedbackSessionsID: id,
                 });
                 this.feedbackDetail = response?.data;
             } catch (error) {
@@ -191,7 +191,7 @@ export default {
     padding: 15px;
     background-color: var(--background-color-primary) !important;
     border-radius: 10px;
-    
+
     .feedback-modal {
         width: 100%;
         height: 100%;
@@ -230,7 +230,7 @@ export default {
     .alert-icon {
         color: red;
         position: absolute;
-        left: 20px;
+        left: 10px;
         top: 10px;
         font-size: 1.15rem;
         font-weight: bold;
@@ -256,7 +256,7 @@ export default {
 
     .like-svg {
         transition: all 0.4s ease;
-        max-width: 28px; 
+        max-width: 28px;
         max-height: 28px;
         cursor: pointer;
         fill: rgba(128, 128, 128, 0.4);

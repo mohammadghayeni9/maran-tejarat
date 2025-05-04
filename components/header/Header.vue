@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <img src="@/components/icons/vispar-logo-text.png" class="logo-header" />
+        <img src="@/assets/images/logo.png" class="logo-header" />
         <!-- <v-switch
             class="switch"
             v-model="themeIsDark"
@@ -36,7 +36,7 @@ export default {
             themeIsDark: false,
             showMenu: false,
             items: [
-                { 
+                {
                     title: 'تغییر رمز ورود',
                     handler: () => {
                         this.$router.push('/account/changepassword/');
@@ -98,7 +98,7 @@ export default {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background:linear-gradient(10deg, var(--color-blue-sky), var(--color-purple)) !important;
+        background:linear-gradient(10deg, var(--color-purple), white) !important;
         height: 5rem;
         padding: 0 1.5rem 0 2.5rem;
         @media screen and (max-width: 700px) {

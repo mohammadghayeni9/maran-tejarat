@@ -5,8 +5,8 @@ export default {
     htmlAttrs: {
       lang: "fa",
     },
-    titleTemplate: "%s - ویسپار",
-    title: "ویسپار",
+    titleTemplate: "%s - ماران تجارت",
+    title: "ماران تجارت",
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -32,7 +32,7 @@ export default {
   modules: ["@nuxtjs/axios", "@nuxtjs/pwa", "nuxt-svg-loader", "@nuxtjs/toast"],
 
   axios: {
-    baseURL: "https://admin.datafication.ir/",
+    baseURL: "https://backend.hrm-ma.ir/",
   },
 
   pwa: {
@@ -43,6 +43,13 @@ export default {
 
   vuetify: {
     rtl: true,
+    theme: {
+      themes: {
+        light: {
+          primary: '#928251',
+        }
+      }
+    }
   },
 
   toast: {
@@ -53,6 +60,9 @@ export default {
   },
 
   build: {
+    babel: {
+      compact: true,
+     },
 		transpile: ['@amcharts/amcharts4']
 	},
 

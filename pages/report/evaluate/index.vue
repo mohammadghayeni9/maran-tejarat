@@ -2,7 +2,7 @@
     <div class="evaluate-report">
         <HeaderPage title="گزارش ارزیابی دوره‌ای" :seasonVisible="false"></HeaderPage>
         <v-col cols="12" class="d-flex justify-between report-evaluate">
-            <v-select :items="seasons" item-text="title" item-value="value" label="انتخاب فصل مورد نطر" outlined
+            <v-select :items="seasons" item-text="title" item-value="value" label="انتخاب فصل مورد نظر" outlined
                 v-model="seasonSelected">
             </v-select>
             <v-select :items="yearsComputed" label="انتخاب سال مورد نظر" outlined v-model="yearSelected">
@@ -152,7 +152,7 @@ export default {
         justify-content: center;
         padding: 1rem 0.2rem 5rem 0.2rem;
         max-height: 52.5vh;
-        overflow: hidden !important;   
+        overflow: hidden !important;
         width: 100%;
         gap: 2rem;
         background-color: var(--background-color-primary);

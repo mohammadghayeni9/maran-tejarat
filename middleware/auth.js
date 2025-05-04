@@ -3,7 +3,7 @@ export default function (context) {
     "Authorization",
     "Bearer " + localStorage.getItem("access_token")
   );
-  
+
   context.$axios.onError((error) => {
     if (
       error.response.status === 401 &&
@@ -13,11 +13,11 @@ export default function (context) {
       return context.redirect("/account/login/");
     }
   })
-  
+
   if (!localStorage.getItem("access_token")) {
     if (context.route.name !== 'account-login') {
       localStorage.clear();
-      return context.redirect("/account/login/"); 
+      return context.redirect("/account/login/");
     }
   } else {
     if (context.route.name === 'account-login') {
@@ -40,3 +40,4 @@ export default function (context) {
     return context.redirect('/');
   }
 }
+

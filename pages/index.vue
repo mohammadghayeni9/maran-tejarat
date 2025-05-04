@@ -63,7 +63,7 @@
           </v-tab-item>
           <v-tab-item>
             <v-col cols="12 px-1" class="d-flex justify-between report-evaluate pb-0">
-              <v-select :items="seasons" item-text="title" item-value="value" label="انتخاب فصل مورد نطر" outlined
+              <v-select :items="seasons" item-text="title" item-value="value" label="انتخاب فصل مورد نظر" outlined
                 v-model="seasonSelected">
               </v-select>
               <v-select :items="yearsComputed" label="انتخاب سال مورد نظر" outlined v-model="yearSelected">

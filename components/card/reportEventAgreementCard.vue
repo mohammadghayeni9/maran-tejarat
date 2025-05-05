@@ -20,22 +20,18 @@
       <span>نوع ارزیابی: </span>
       {{ assessmentTypeComputed }}
     </v-col>
-    <v-col cols="12" class="d-flex justify-end like-wrapper" v-if="reportData.type_report === 'E'">
-      <div class="loading d-flex justify-center" v-if="loading">
-        <img :src="require('assets/images/loading.gif')" alt="loading">
-      </div>
-      <SVGLike class="like-svg" v-if="!isAssesor || (isAssesor && reportData.like_dislike == 'L')"
-        :class="vote == 'like' || reportData.like_dislike == 'L' ? 'selected' : ''" @click="likeEvent(reportData.id)" />
-      <SVGLike class="dislike-svg" v-if="!isAssesor || (isAssesor && reportData.like_dislike == 'D')"
-        :class="vote == 'dislike' || reportData.like_dislike == 'D' ? 'selected' : ''"
-        @click="dislikeEvent(reportData.id)" />
-    </v-col>
-    <v-col cols="12" class="d-flex" v-if="reportData.type_report === 'E'">
+    <v-col cols="12" class="d-flex"
+      v-if="reportData.type_report === 'E' && reportData.opinion.length == 0 && !isAssesor">
       <v-btn outlined color="blue" elevation="1" class="px-8" @click="changeVisibilityCommentBox">
         {{ isShowCommentBox ? 'بستن' : 'ثبت نظر' }}
       </v-btn>
     </v-col>
-    <v-col cols="12" class="d-flex flex-column" v-if="reportData.type_report === 'E' && isShowCommentBox">
+    <v-col cols="12" class="d-flex flex-column" v-if="reportData.type_report === 'E' && reportData.opinion.length > 0">
+      نظر:
+      {{ reportData.opinion }}
+    </v-col>
+    <v-col cols="12" class="d-flex flex-column"
+      v-if="reportData.type_report === 'E' && isShowCommentBox && reportData.opinion.length == 0 && !isAssesor">
       <v-col cols="12">
         <textarea v-model="comment" placeholder="نظر خود را بنویسید"
           style="width: 100%; min-height: 100px; border-radius: 10px; border: 1px solid var(--bordr-input-color); padding: 10px;"></textarea>
@@ -48,6 +44,19 @@
           {{ commentLoading ? 'در حال ارسال...' : 'ارسال' }}
         </v-btn>
       </v-col>
+    </v-col>
+    <v-col cols="12" class="d-flex justify-end like-wrapper" v-if="reportData.type_report === 'E'">
+      <div class="loading d-flex justify-center" v-if="loading">
+        <img :src="require('assets/images/loading.gif')" alt="loading">
+      </div>
+      <div v-if="!isAssesor || (isAssesor && reportData.like_dislike == 'L')" @click="likeEvent(reportData.id)">
+        <SVGLike class="like-svg" :class="vote == 'like' || reportData.like_dislike == 'L' ? 'selected' : ''"
+          @click="likeEvent(reportData.id)" />
+      </div>
+
+      <div v-if="!isAssesor || (isAssesor && reportData.like_dislike == 'D')" @click="dislikeEvent(reportData.id)">
+        <SVGLike class="dislike-svg" :class="vote == 'dislike' || reportData.like_dislike == 'D' ? 'selected' : ''" />
+      </div>
     </v-col>
     <v-col cols="12" sm="6" v-if="reportData.type_report === 'A'">
       <span>موعد انجام: </span>
@@ -308,6 +317,8 @@ export default {
     transition: all 0.4s ease;
     max-width: 28px;
     max-height: 28px;
+    min-width: 28px;
+    min-height: 28px;
     cursor: pointer;
     fill: rgba(128, 128, 128, 0.4);
     margin: 0 5px;
@@ -323,6 +334,8 @@ export default {
     transition: all 0.4s ease;
     max-width: 28px;
     max-height: 28px;
+    min-width: 28px;
+    min-height: 28px;
     transform: rotate(180deg);
     cursor: pointer;
     fill: rgba(128, 128, 128, 0.4);

@@ -21,6 +21,7 @@ export const routes = {
   feedbackQuestions: "report/show-questions-for-feedbackSessions",
   feedbackDetail: 'report/report-evaluation-for-feedbackSessions',
   reportEventForIndicator: 'report/all-reports/show-all-events-agreements-for-indicator',
+  opinionOnEvent: 'report/opinion-on-event/',
   dashboard: {
     eventArgumentChart: 'dashboard/assessor/event-argument-chart',
     dashboardData: 'dashboard/assessor/data',

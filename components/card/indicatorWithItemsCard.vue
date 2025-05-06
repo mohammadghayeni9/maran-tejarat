@@ -22,6 +22,7 @@
                 </v-dialog>
             </v-btn>
         </v-col>
+        <v-col cols="12" class="indicator-description pt-0">{{ indicator.description }}</v-col>
         <v-col cols="10" md="5" class="d-flex pr-0 ">
             <v-select :items="indicator.item_of_indicators" item-text="[1]" item-value="[0]" label="انتخاب گویه ارزیابی"
                 outlined v-model="itemToBeSelected" @change="setItemForIndicator(indicator.id, itemToBeSelected)">
@@ -124,6 +125,11 @@ export default {
     justify-content: space-between;
     align-items: baseline;
     font-size: 0.9rem !important;
+
+    .indicator-description {
+        font-size: 0.8rem;
+        color: var(--accent-color);
+    }
 
     .indicator-agreement-btn {
         border-radius: 1rem;

@@ -100,6 +100,11 @@ export default {
     }
 }
 
+.v-list-item__title, .v-list-item__subtitle {
+    white-space: wrap !important;
+    line-height: 1.5 !important;
+}
+
 .v-dialog {
     min-height: 85vh;
     display: flex;
